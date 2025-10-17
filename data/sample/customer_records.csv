@@ -1,0 +1,12 @@
+customer_id,name,email,age,gender,location,join_date,total_purchases,lifetime_value
+C001,John Smith,john.smith@email.com,35,Male,North,2023-03-15,24,15600
+C002,Jane Doe,jane.doe@email.com,28,Female,South,2023-04-22,18,9200
+C003,Bob Johnson,bob.j@email.com,42,Male,East,2023-01-10,31,18900
+C004,Alice Williams,alice.w@email.com,29,Female,West,2023-05-18,15,7800
+C005,Charlie Brown,charlie.b@email.com,38,Male,North,2023-02-28,27,16200
+C006,Diana Prince,diana.p@email.com,31,Female,South,2023-06-05,22,12400
+C007,Ethan Hunt,ethan.h@email.com,45,Male,East,2023-03-20,19,10500
+C008,Fiona Green,fiona.g@email.com,26,Female,West,2023-07-12,13,6900
+C009,George Lucas,george.l@email.com,51,Male,North,2022-11-30,42,25800
+C010,Hannah Montana,hannah.m@email.com,24,Female,South,2023-08-14,11,5400
+
