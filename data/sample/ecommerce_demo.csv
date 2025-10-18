@@ -1,0 +1,17 @@
+order_id,customer_name,product,category,quantity,price,shipping_cost,order_date,delivery_date,status,rating
+ORD001,Alice Johnson,Smartphone,Electronics,1,799.99,15.00,2024-03-01,2024-03-05,Delivered,5
+ORD002,Bob Smith,T-Shirt,Clothing,3,25.99,8.00,2024-03-02,2024-03-06,Delivered,4
+ORD003,Carol White,Running Shoes,Footwear,2,89.99,12.00,2024-03-03,2024-03-08,Delivered,5
+ORD004,David Brown,Laptop,Electronics,1,1299.99,20.00,2024-03-04,2024-03-09,Delivered,4
+ORD005,Emma Davis,Backpack,Accessories,1,45.99,10.00,2024-03-05,2024-03-10,Delivered,5
+ORD006,Frank Miller,Headphones,Electronics,2,129.99,10.00,2024-03-06,2024-03-11,In Transit,0
+ORD007,Grace Lee,Jeans,Clothing,2,59.99,8.00,2024-03-07,2024-03-12,In Transit,0
+ORD008,Henry Wilson,Watch,Accessories,1,299.99,12.00,2024-03-08,2024-03-13,Processing,0
+ORD009,Iris Taylor,Tablet,Electronics,1,499.99,15.00,2024-03-09,2024-03-14,Processing,0
+ORD010,Jack Anderson,Sneakers,Footwear,1,119.99,12.00,2024-03-10,2024-03-15,Processing,0
+ORD011,Alice Johnson,Phone Case,Accessories,2,19.99,5.00,2024-03-11,2024-03-16,Delivered,5
+ORD012,Bob Smith,Hoodie,Clothing,1,49.99,8.00,2024-03-12,2024-03-17,Delivered,4
+ORD013,Carol White,Fitness Tracker,Electronics,1,149.99,10.00,2024-03-13,2024-03-18,Delivered,5
+ORD014,David Brown,Dress Shoes,Footwear,1,129.99,12.00,2024-03-14,2024-03-19,In Transit,0
+ORD015,Emma Davis,Sunglasses,Accessories,1,79.99,8.00,2024-03-15,2024-03-20,Processing,0
+
