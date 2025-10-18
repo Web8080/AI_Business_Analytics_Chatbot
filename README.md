@@ -77,23 +77,6 @@ Access at: **http://localhost:8501**
 - Interactive visualizations
 - Raw data explorer
 
-### Dashboard Screenshots
-
-#### 📊 Main Dashboard Interface
-![Dashboard Overview](screenshots/dashboard/dashboard_overview.png)
-*Clean, modern interface with data upload, AI chat, and real-time analytics*
-
-#### 🤖 AI Chatbot in Action
-![Chatbot Interface](screenshots/dashboard/chatbot_interface.png)
-*Natural language queries with instant responses and auto-generated visualizations*
-
-#### 📈 Analytics Results & Visualizations
-![Analytics Results](screenshots/dashboard/analytics_results.png)
-*Interactive charts, confidence scores, and strategic recommendations*
-
-#### 🎯 Intelligent Question Handling
-![Vague Question Handling](screenshots/dashboard/vague_question_handling.png)
-*Smart detection of vague questions with contextual suggestions*
 
 ### Example Interactions
 
