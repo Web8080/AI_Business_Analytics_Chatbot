@@ -121,6 +121,7 @@ class SmartAnalyticsAgent:
                 'answer': 'Please upload data first.',
                 'data': {},
                 'visualizations': [],
+                'chart_data': None,
                 'confidence': 0.0,
                 'recommendations': []
             }
@@ -134,6 +135,7 @@ class SmartAnalyticsAgent:
                 'answer': vague_check['guidance_message'],
                 'data': {},
                 'visualizations': [],
+                'chart_data': None,
                 'confidence': 0.3,
                 'recommendations': vague_check['suggested_questions'],
                 'sql_equivalent': '',
@@ -168,10 +170,49 @@ class SmartAnalyticsAgent:
             'timestamp': datetime.now().isoformat()
         })
         
+        # Convert visualizations to chart_data format for dashboard
+        chart_data = None
+        if visualizations and len(visualizations) > 0:
+            viz = visualizations[0]  # Take first visualization
+            if viz.get('type') == 'bar_chart' and viz.get('figure'):
+                # Extract data from bar chart
+                fig = viz['figure']
+                chart_data = {
+                    'type': 'bar',
+                    'title': viz.get('title', 'Chart'),
+                    'x': fig.data[0].x.tolist() if hasattr(fig.data[0], 'x') else [],
+                    'y': fig.data[0].y.tolist() if hasattr(fig.data[0], 'y') else [],
+                    'x_label': 'Category',
+                    'y_label': 'Value'
+                }
+            elif viz.get('type') == 'line_chart' and viz.get('figure'):
+                # Extract data from line chart
+                fig = viz['figure']
+                chart_data = {
+                    'type': 'line',
+                    'title': viz.get('title', 'Chart'),
+                    'x': fig.data[0].x.tolist() if hasattr(fig.data[0], 'x') else [],
+                    'y': fig.data[0].y.tolist() if hasattr(fig.data[0], 'y') else [],
+                    'x_label': 'Date',
+                    'y_label': 'Value'
+                }
+            elif viz.get('type') == 'comparison_chart' and viz.get('figure'):
+                # Extract data from comparison chart
+                fig = viz['figure']
+                chart_data = {
+                    'type': 'bar',
+                    'title': viz.get('title', 'Chart'),
+                    'x': fig.data[0].x.tolist() if hasattr(fig.data[0], 'x') else [],
+                    'y': fig.data[0].y.tolist() if hasattr(fig.data[0], 'y') else [],
+                    'x_label': 'Category',
+                    'y_label': 'Value'
+                }
+        
         return {
             'answer': answer,
             'data': analytics_result,
             'visualizations': visualizations,
+            'chart_data': chart_data,  # Add chart_data for dashboard
             'confidence': confidence,
             'recommendations': recommendations,
             'sql_equivalent': intent.get('sql_equivalent', ''),
