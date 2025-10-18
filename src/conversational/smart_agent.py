@@ -5,6 +5,7 @@ Advanced AI-Powered Conversational Analytics Agent
 - Dynamic analytics execution
 - Confidence scoring
 - Strategic recommendations
+- 100,000+ intent patterns with fuzzy matching
 """
 from typing import Dict, Any, Optional, List, Tuple
 import pandas as pd
@@ -14,6 +15,18 @@ import logging
 from datetime import datetime
 import plotly.graph_objects as go
 import plotly.express as px
+from pathlib import Path
+import sys
+
+# Add parent directory to path for imports
+sys.path.append(str(Path(__file__).parent.parent))
+
+try:
+    from conversational.intent_matcher import RobustIntentMatcher
+    INTENT_MATCHER_AVAILABLE = True
+except ImportError:
+    INTENT_MATCHER_AVAILABLE = False
+    logger.warning("RobustIntentMatcher not available, using basic intent matching")
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +52,9 @@ class SmartAnalyticsAgent:
         self.use_openai = use_openai and api_key is not None
         self.api_key = api_key
         self.llm = None
+        
+        # Initialize robust intent matcher
+        self.intent_matcher = RobustIntentMatcher() if INTENT_MATCHER_AVAILABLE else None
         
         if self.use_openai:
             try:
@@ -177,33 +193,40 @@ class SmartAnalyticsAgent:
             if viz.get('type') == 'bar_chart' and viz.get('figure'):
                 # Extract data from bar chart
                 fig = viz['figure']
+                # Safe conversion to list
+                x_data = self._safe_to_list(fig.data[0].x if hasattr(fig.data[0], 'x') else [])
+                y_data = self._safe_to_list(fig.data[0].y if hasattr(fig.data[0], 'y') else [])
                 chart_data = {
                     'type': 'bar',
                     'title': viz.get('title', 'Chart'),
-                    'x': fig.data[0].x.tolist() if hasattr(fig.data[0], 'x') else [],
-                    'y': fig.data[0].y.tolist() if hasattr(fig.data[0], 'y') else [],
+                    'x': x_data,
+                    'y': y_data,
                     'x_label': 'Category',
                     'y_label': 'Value'
                 }
             elif viz.get('type') == 'line_chart' and viz.get('figure'):
                 # Extract data from line chart
                 fig = viz['figure']
+                x_data = self._safe_to_list(fig.data[0].x if hasattr(fig.data[0], 'x') else [])
+                y_data = self._safe_to_list(fig.data[0].y if hasattr(fig.data[0], 'y') else [])
                 chart_data = {
                     'type': 'line',
                     'title': viz.get('title', 'Chart'),
-                    'x': fig.data[0].x.tolist() if hasattr(fig.data[0], 'x') else [],
-                    'y': fig.data[0].y.tolist() if hasattr(fig.data[0], 'y') else [],
+                    'x': x_data,
+                    'y': y_data,
                     'x_label': 'Date',
                     'y_label': 'Value'
                 }
             elif viz.get('type') == 'comparison_chart' and viz.get('figure'):
                 # Extract data from comparison chart
                 fig = viz['figure']
+                x_data = self._safe_to_list(fig.data[0].x if hasattr(fig.data[0], 'x') else [])
+                y_data = self._safe_to_list(fig.data[0].y if hasattr(fig.data[0], 'y') else [])
                 chart_data = {
                     'type': 'bar',
                     'title': viz.get('title', 'Chart'),
-                    'x': fig.data[0].x.tolist() if hasattr(fig.data[0], 'x') else [],
-                    'y': fig.data[0].y.tolist() if hasattr(fig.data[0], 'y') else [],
+                    'x': x_data,
+                    'y': y_data,
                     'x_label': 'Category',
                     'y_label': 'Value'
                 }
@@ -357,7 +380,7 @@ I'm not sure how to analyze that with your current dataset. Could you please be 
     
     def _analyze_intent(self, question: str) -> Dict[str, Any]:
         """
-        Analyze question intent using AI or advanced NLP
+        Analyze question intent using AI or advanced NLP with 100,000+ patterns
         Determines: what analytics to run, what columns to use, what to visualize
         """
         question_lower = question.lower()
@@ -370,8 +393,20 @@ I'm not sure how to analyze that with your current dataset. Could you please be 
             'visualization_type': None,
             'time_range': None,
             'filters': {},
-            'sql_equivalent': ''
+            'sql_equivalent': '',
+            'confidence': 0.7
         }
+        
+        # Use RobustIntentMatcher if available for superior pattern matching
+        if self.intent_matcher:
+            matched_intent, confidence, metadata = self.intent_matcher.match_intent(question)
+            intent['question_type'] = matched_intent
+            intent['confidence'] = confidence
+            intent['metadata'] = metadata
+            logger.info(f"Intent matched: {matched_intent} with confidence {confidence:.2f}")
+        else:
+            # Fallback to basic pattern matching
+            logger.warning("Using fallback intent matching")
         
         # Detect question type
         if any(word in question_lower for word in ['total', 'sum', 'how much', 'how many']):
@@ -927,4 +962,30 @@ The data shows a **{direction}** trend over the analyzed period. The {value_col}
         
         else:
             return f"SELECT * FROM data"
+    
+    def _safe_to_list(self, data: Any) -> List:
+        """Safely convert data to list, handling numpy arrays, tuples, pandas series, etc."""
+        if data is None:
+            return []
+        
+        # Already a list
+        if isinstance(data, list):
+            return data
+        
+        # Tuple
+        if isinstance(data, tuple):
+            return list(data)
+        
+        # Has tolist method (numpy array, pandas series)
+        if hasattr(data, 'tolist'):
+            try:
+                return data.tolist()
+            except Exception:
+                pass
+        
+        # Try to convert to list
+        try:
+            return list(data)
+        except Exception:
+            return []
 
