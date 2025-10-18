@@ -4,8 +4,15 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
 [![LangChain](https://img.shields.io/badge/LangChain-0.1+-orange.svg)](https://www.langchain.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://streamlit.io)
 
 > **Fully Automated Analytics Intelligence System** that ingests data from PDF/CSV files, performs end-to-end analysis, and provides natural language conversational interface for non-technical users.
+
+## 🌐 Live Demo
+
+**Try it online - no installation required!**
+
+Deployment instructions: See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for deploying to Streamlit Cloud.
 
 ## Overview
 

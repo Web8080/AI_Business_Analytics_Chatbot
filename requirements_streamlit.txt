@@ -1,0 +1,40 @@
+# Optimized requirements for Streamlit Cloud deployment
+# Core dependencies only to reduce build time
+
+# Web Framework
+streamlit>=1.28.0
+fastapi>=0.104.0
+uvicorn>=0.24.0
+
+# Data Processing
+pandas>=2.1.0
+numpy>=1.24.0
+openpyxl>=3.1.0
+
+# Data Ingestion
+pdfplumber>=0.10.0
+chardet>=5.2.0
+
+# AI/ML
+openai>=1.3.0
+langchain>=0.0.335
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.23.0
+
+# Analytics
+prophet>=1.1.5
+xgboost>=2.0.0
+scikit-learn>=1.3.0
+scipy>=1.11.0
+
+# Visualization
+plotly>=5.17.0
+
+# Reports
+reportlab>=4.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.4.0
+requests>=2.31.0
+
