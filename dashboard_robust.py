@@ -26,19 +26,26 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Initialize session state - CRITICAL for state sharing
+def init_session_state():
+    """Initialize all session state variables"""
+    defaults = {
+        'messages': [],
+        'message_charts': {},
+        'uploaded_data': None,
+        'uploaded_filename': None,
+        'theme': 'dark',
+        'current_page': 'Chatbot',
+        'chat_input': '',
+        'file_uploaded': False
+    }
+    
+    for key, default_value in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = default_value
+
 # Initialize session state
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
-if 'uploaded_data' not in st.session_state:
-    st.session_state.uploaded_data = None
-if 'uploaded_filename' not in st.session_state:
-    st.session_state.uploaded_filename = None
-if 'theme' not in st.session_state:
-    st.session_state.theme = 'light'
-if 'current_page' not in st.session_state:
-    st.session_state.current_page = 'Chatbot'
-if 'chat_input' not in st.session_state:
-    st.session_state.chat_input = ''
+init_session_state()
 
 # Professional CSS
 def get_theme_css(theme):
@@ -319,8 +326,8 @@ def get_theme_css(theme):
         </style>
         """
 
-# Apply theme
-st.markdown(get_theme_css(st.session_state.get('theme', 'light')), unsafe_allow_html=True)
+# Apply dark theme only
+st.markdown(get_theme_css('dark'), unsafe_allow_html=True)
 
 # Header
 st.markdown('<div class="main-header">🚀 AI Analytics Intelligence System</div>', unsafe_allow_html=True)
@@ -331,21 +338,74 @@ tab1, tab2, tab3, tab4 = st.tabs(["🤖 AI Chatbot", "📊 Data Overview", "🔧
 
 with tab1:
     # CHATBOT TAB - Main functionality
+    
+    # Show prominent welcome message if data is loaded but no messages yet
+    if (st.session_state.get('uploaded_data') is not None and 
+        st.session_state.get('file_uploaded', False) and 
+        len(st.session_state.messages) == 0):
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    padding: 2rem; border-radius: 15px; margin-bottom: 2rem;
+                    border: 2px solid #764ba2; text-align: center;'>
+            <h2 style='color: white; margin: 0;'>🚀 Data Loaded Successfully!</h2>
+            <p style='color: white; margin: 1rem 0 0 0; font-size: 1.2rem;'>
+                Ask me anything about your data and I'll provide instant insights with charts!
+            </p>
+            <p style='color: white; margin: 0.5rem 0 0 0; opacity: 0.9;'>
+                Try: "show me top 5 products" or "what is the total revenue?"
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
     col1, col2 = st.columns([3, 1])
     
     with col1:
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
         st.header("🤖 AI Analytics Assistant")
         
-        # Display chat messages
-        for message in st.session_state.messages:
+        # Display chat messages with charts
+        for idx, message in enumerate(st.session_state.messages):
             if message["role"] == "user":
                 st.markdown(f'<div class="chat-message user-message"><b>You:</b> {message["content"]}</div>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<div class="chat-message assistant-message"><b>AI:</b> {message["content"]}</div>', unsafe_allow_html=True)
+                
+                # Display chart if exists for this message
+                if idx in st.session_state.message_charts:
+                    chart_data = st.session_state.message_charts[idx]
+                    try:
+                        if chart_data.get('type') == 'bar':
+                            fig = px.bar(
+                                x=chart_data.get('x', []),
+                                y=chart_data.get('y', []),
+                                title=chart_data.get('title', 'Chart'),
+                                labels={'x': chart_data.get('x_label', 'X'), 'y': chart_data.get('y_label', 'Y')}
+                            )
+                            fig.update_layout(template='plotly_dark', height=400)
+                            st.plotly_chart(fig, use_container_width=True, key=f"chart_{idx}")
+                        elif chart_data.get('type') == 'pie':
+                            fig = px.pie(
+                                values=chart_data.get('values', []),
+                                names=chart_data.get('labels', []),
+                                title=chart_data.get('title', 'Chart')
+                            )
+                            fig.update_layout(template='plotly_dark', height=400)
+                            st.plotly_chart(fig, use_container_width=True, key=f"chart_{idx}")
+                        elif chart_data.get('type') == 'line':
+                            fig = px.line(
+                                x=chart_data.get('x', []),
+                                y=chart_data.get('y', []),
+                                title=chart_data.get('title', 'Chart'),
+                                labels={'x': chart_data.get('x_label', 'X'), 'y': chart_data.get('y_label', 'Y')}
+                            )
+                            fig.update_layout(template='plotly_dark', height=400)
+                            st.plotly_chart(fig, use_container_width=True, key=f"chart_{idx}")
+                    except Exception as chart_error:
+                        st.caption(f"⚠️ Chart display error: {str(chart_error)}")
         
         # Chat input with proper clearing
-        if st.session_state.uploaded_data is not None:
+        if (st.session_state.get('uploaded_data') is not None and 
+            st.session_state.get('file_uploaded', False)):
             # Use a form to handle input properly
             with st.form("chat_form", clear_on_submit=True):
                 user_input = st.text_input(
@@ -374,49 +434,12 @@ with tab1:
                         response = agent.ask(user_input)
                     
                     # Add AI response
+                    message_idx = len(st.session_state.messages)
                     st.session_state.messages.append({"role": "assistant", "content": response['answer']})
                     
-                    # Show confidence
-                    if 'confidence' in response:
-                        st.markdown(f'<div class="confidence-badge">Confidence: {response["confidence"]:.0%}</div>', unsafe_allow_html=True)
-                    
-                    # Auto-generate charts if response contains chart data
+                    # Store chart data if exists
                     if 'chart_data' in response and response['chart_data']:
-                        try:
-                            chart_data = response['chart_data']
-                            if chart_data.get('type') == 'bar':
-                                fig = px.bar(
-                                    x=chart_data.get('x', []),
-                                    y=chart_data.get('y', []),
-                                    title=chart_data.get('title', 'Chart'),
-                                    labels={'x': chart_data.get('x_label', 'X'), 'y': chart_data.get('y_label', 'Y')}
-                                )
-                                st.plotly_chart(fig, use_container_width=True)
-                            elif chart_data.get('type') == 'pie':
-                                fig = px.pie(
-                                    values=chart_data.get('values', []),
-                                    names=chart_data.get('labels', []),
-                                    title=chart_data.get('title', 'Chart')
-                                )
-                                st.plotly_chart(fig, use_container_width=True)
-                            elif chart_data.get('type') == 'line':
-                                fig = px.line(
-                                    x=chart_data.get('x', []),
-                                    y=chart_data.get('y', []),
-                                    title=chart_data.get('title', 'Chart'),
-                                    labels={'x': chart_data.get('x_label', 'X'), 'y': chart_data.get('y_label', 'Y')}
-                                )
-                                st.plotly_chart(fig, use_container_width=True)
-                        except Exception as chart_error:
-                            st.warning(f"⚠️ Could not generate chart: {str(chart_error)}")
-                    
-                    # Show suggestions if vague
-                    if response.get('is_vague', False) and 'suggested_questions' in response:
-                        st.markdown("**💡 Try asking:**")
-                        for suggestion in response['suggested_questions'][:3]:
-                            if st.button(f"💬 {suggestion}", key=f"suggest_{suggestion}"):
-                                st.session_state.messages.append({"role": "user", "content": suggestion})
-                                st.rerun()
+                        st.session_state.message_charts[message_idx] = response['chart_data']
                     
                     st.rerun()
                     
@@ -425,16 +448,30 @@ with tab1:
             
             if clear_pressed:
                 st.session_state.messages = []
+                st.session_state.message_charts = {}
                 st.rerun()
                 
         else:
-            st.info("👆 Please upload a CSV file to start chatting with your data")
+            st.markdown("""
+            <div style='background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); 
+                        padding: 2rem; border-radius: 15px; margin: 2rem 0;
+                        border: 2px solid #ee5a24; text-align: center;'>
+                <h3 style='color: white; margin: 0;'>📁 No Data Uploaded</h3>
+                <p style='color: white; margin: 1rem 0 0 0; font-size: 1.1rem;'>
+                    Please upload a CSV file in the sidebar to start chatting with your data!
+                </p>
+                <p style='color: white; margin: 0.5rem 0 0 0; opacity: 0.9;'>
+                    👈 Use the file uploader in the left sidebar
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
     
     with col2:
         # Data metrics and quick actions
-        if st.session_state.uploaded_data is not None:
+        if (st.session_state.get('uploaded_data') is not None and 
+            st.session_state.get('file_uploaded', False)):
             st.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
             st.header("📊 Data Status")
             
@@ -488,7 +525,25 @@ with tab1:
             
             for question in quick_questions:
                 if st.button(f"💬 {question}", key=f"quick_{question}", help="Click to ask this question"):
+                    # Add user message
                     st.session_state.messages.append({"role": "user", "content": question})
+                    
+                    # Get AI response
+                    try:
+                        agent = SmartAnalyticsAgent()
+                        agent.load_data(st.session_state.uploaded_data)
+                        response = agent.ask(question)
+                        
+                        # Add AI response
+                        message_idx = len(st.session_state.messages)
+                        st.session_state.messages.append({"role": "assistant", "content": response['answer']})
+                        
+                        # Store chart data if exists
+                        if 'chart_data' in response and response['chart_data']:
+                            st.session_state.message_charts[message_idx] = response['chart_data']
+                    except Exception as e:
+                        st.session_state.messages.append({"role": "assistant", "content": f"❌ Error: {str(e)}"})
+                    
                     st.rerun()
             
             st.markdown('</div>', unsafe_allow_html=True)
@@ -675,15 +730,7 @@ with tab4:
     
     with col1:
         st.subheader("🎨 Appearance")
-        theme = st.selectbox(
-            "Theme",
-            ["light", "dark"],
-            index=0 if st.session_state.get('theme', 'light') == 'light' else 1,
-            help="Choose your preferred theme"
-        )
-        if theme != st.session_state.get('theme', 'light'):
-            st.session_state.theme = theme
-            st.rerun()
+        st.info("🌙 **Dark Mode Only** - Optimized for extended use and reduced eye strain")
         
         st.subheader("📤 Export Options")
         if st.session_state.uploaded_data is not None:
@@ -721,8 +768,10 @@ with tab4:
         st.subheader("🔄 System Actions")
         if st.button("🗑️ Clear All Data", type="secondary"):
             st.session_state.messages = []
+            st.session_state.message_charts = {}
             st.session_state.uploaded_data = None
             st.session_state.uploaded_filename = None
+            st.session_state.file_uploaded = False
             st.rerun()
         
         if st.button("🔄 Reset Session", type="secondary"):
@@ -747,9 +796,25 @@ with st.sidebar:
             df = pd.read_csv(uploaded_file)
             st.session_state.uploaded_data = df
             st.session_state.uploaded_filename = uploaded_file.name
+            st.session_state.file_uploaded = True  # Set flag for main content
             
             st.success(f"✅ Loaded: {uploaded_file.name}")
             st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            
+            # Prominent instruction
+            st.markdown("""
+            <div style='background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); 
+                        padding: 1rem; border-radius: 10px; margin: 1rem 0;
+                        border: 2px solid #66bb6a;'>
+                <h4 style='color: white; margin: 0;'>🚀 Ready to Chat!</h4>
+                <p style='color: white; margin: 0.5rem 0 0 0;'>
+                    Go to the <strong>🤖 AI Chatbot</strong> tab above to start asking questions!
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Force rerun to update main content
+            st.rerun()
             
             # Show preview
             with st.expander("👀 Preview Data"):
