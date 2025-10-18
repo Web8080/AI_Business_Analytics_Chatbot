@@ -38,7 +38,8 @@ def init_session_state():
         'current_page': 'Chatbot',
         'chat_input': '',
         'file_uploaded': False,
-        'openai_status': 'checking'
+        'openai_status': 'checking',
+        'agent': None  # Cache agent instance
     }
     
     for key, default_value in defaults.items():
@@ -47,6 +48,12 @@ def init_session_state():
 
 # Initialize session state
 init_session_state()
+
+# Initialize or reuse agent
+@st.cache_resource
+def get_agent():
+    """Get or create cached agent instance"""
+    return OpenAIAnalyticsAgent()
 
 # Professional CSS
 def get_theme_css(theme):
@@ -479,7 +486,7 @@ with tab1:
                 # Get AI response
                 try:
                     with st.spinner("🤖 AI is analyzing your data..."):
-                        agent = OpenAIAnalyticsAgent()
+                        agent = get_agent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask(user_input)
                     
@@ -541,7 +548,7 @@ with tab1:
                 st.session_state.messages.append({"role": "user", "content": "Give me a summary of the data"})
                 try:
                     with st.spinner("🤖 Analyzing..."):
-                        agent = OpenAIAnalyticsAgent()
+                        agent = get_agent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask("Give me a summary of the data")
                     
@@ -559,7 +566,7 @@ with tab1:
                 st.session_state.messages.append({"role": "user", "content": "Show me the top 5 items"})
                 try:
                     with st.spinner("🤖 Analyzing..."):
-                        agent = OpenAIAnalyticsAgent()
+                        agent = get_agent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask("Show me the top 5 items")
                     
@@ -577,7 +584,7 @@ with tab1:
                 st.session_state.messages.append({"role": "user", "content": "Show me trends in the data"})
                 try:
                     with st.spinner("🤖 Analyzing..."):
-                        agent = OpenAIAnalyticsAgent()
+                        agent = get_agent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask("Show me trends in the data")
                     
@@ -651,7 +658,7 @@ with tab3:
     
     # Check OpenAI status
     try:
-        agent = OpenAIAnalyticsAgent()
+        agent = get_agent()
         status = agent.get_status()
         
         col1, col2 = st.columns(2)
@@ -694,7 +701,7 @@ with tab4:
         st.success("✅ API Key is configured")
         if st.button("🔍 Test Connection"):
             try:
-                agent = OpenAIAnalyticsAgent()
+                agent = get_agent()
                 status = agent.get_status()
                 if status['openai_available']:
                     st.success("✅ Connection successful!")
