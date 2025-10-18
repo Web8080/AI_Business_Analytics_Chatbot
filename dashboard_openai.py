@@ -656,37 +656,42 @@ with tab3:
     
     st.subheader("🤖 AI Agent Status")
     
-    # Check OpenAI status
-    try:
-        agent = get_agent()
-        status = agent.get_status()
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if status['openai_available']:
-                st.success("✅ OpenAI GPT-4 Available")
-            else:
-                st.warning("⚠️ OpenAI GPT-4 Not Available")
+    # Show basic status without loading agent
+    st.info("Click 'Check Status' button below to view detailed agent information")
+    
+    # Only load agent when button is clicked
+    if st.button("🔄 Check Status", key="check_status_btn"):
+        try:
+            with st.spinner("Checking agent status..."):
+                agent = get_agent()
+                status = agent.get_status()
             
-            if status['api_key_configured']:
-                st.success("✅ API Key Configured")
-            else:
-                st.warning("⚠️ API Key Not Configured")
-        
-        with col2:
-            if status['fallback_system']:
-                st.success("✅ Fallback System Active")
-            
-            st.info(f"🔧 {len(status['capabilities'])} Capabilities")
-        
-        # Capabilities
-        st.subheader("🚀 System Capabilities")
-        for capability in status['capabilities']:
-            st.markdown(f"• {capability}")
-            
-    except Exception as e:
-        st.error(f"Error checking agent status: {str(e)}")
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    if status['openai_available']:
+                        st.success("✅ OpenAI GPT-4 Available")
+                    else:
+                        st.warning("⚠️ OpenAI GPT-4 Not Available")
+                    
+                    if status['api_key_configured']:
+                        st.success("✅ API Key Configured")
+                    else:
+                        st.warning("⚠️ API Key Not Configured")
+                
+                with col2:
+                    if status['fallback_system']:
+                        st.success("✅ Fallback System Active")
+                    
+                    st.info(f"🔧 {len(status['capabilities'])} Capabilities")
+                
+                # Capabilities
+                st.subheader("🚀 System Capabilities")
+                for capability in status['capabilities']:
+                    st.markdown(f"• {capability}")
+                    
+        except Exception as e:
+            st.error(f"Error checking agent status: {str(e)}")
 
 with tab4:
     # SETTINGS TAB
