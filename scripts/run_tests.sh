@@ -2,9 +2,9 @@
 
 # Run Tests Script
 
-echo "🧪 Running tests..."
+echo "Running tests..."
 pytest tests/ -v --cov=src --cov-report=term-missing
 
 echo ""
-echo "✅ Tests complete!"
+echo "Tests complete!"
 

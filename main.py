@@ -15,7 +15,7 @@ if __name__ == "__main__":
     settings = get_settings()
     
     print("=" * 70)
-    print("🤖 AI Analytics Intelligence System")
+    print("AI Analytics Intelligence System")
     print("=" * 70)
     print(f"Starting server on http://{settings.api_host}:{settings.api_port}")
     print(f"API Documentation: http://{settings.api_host}:{settings.api_port}/docs")

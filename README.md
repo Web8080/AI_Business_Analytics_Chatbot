@@ -1,4 +1,4 @@
-# 🤖 AI Analytics Intelligence System with Conversational Interface
+# AI Analytics Intelligence System with Conversational Interface
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
@@ -7,20 +7,20 @@
 
 > **Fully Automated Analytics Intelligence System** that ingests data from PDF/CSV files, performs end-to-end analysis, and provides natural language conversational interface for non-technical users.
 
-## 🌟 Overview
+## Overview
 
 This system eliminates **95% of manual analytics workload** by automating the entire analytics pipeline from data ingestion to insight generation. It combines multiple analytics approaches (descriptive, diagnostic, predictive, prescriptive) with a conversational AI interface powered by OpenAI GPT-4 and LangChain.
 
 ### Key Capabilities
 
-- 🔄 **Automated Data Pipeline**: Intelligent PDF/CSV parsing, validation, and cleaning
-- 📊 **Multi-Model Analytics**: Descriptive, diagnostic, predictive, and prescriptive analytics
-- 💬 **Natural Language Interface**: Ask questions like *"Why did sales drop in Q3?"* or *"What should we stock next month?"*
-- 📈 **Interactive Visualizations**: Dynamic Plotly dashboards with drill-down capabilities
-- 📄 **Automated Reporting**: Generate executive summaries, detailed findings, and action items
-- 🎯 **95% Efficiency Gain**: Reduce reporting cycle from days to minutes
+- **Automated Data Pipeline**: Intelligent PDF/CSV parsing, validation, and cleaning
+- **Multi-Model Analytics**: Descriptive, diagnostic, predictive, and prescriptive analytics
+- **Natural Language Interface**: Ask questions like *"Why did sales drop in Q3?"* or *"What should we stock next month?"*
+- **Interactive Visualizations**: Dynamic Plotly dashboards with drill-down capabilities
+- **Automated Reporting**: Generate executive summaries, detailed findings, and action items
+- **95% Efficiency Gain**: Reduce reporting cycle from days to minutes
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -44,7 +44,7 @@ This system eliminates **95% of manual analytics workload** by automating the en
 └─────────────┘ └─────────┘ └─────────┘ └─────────────┘
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -89,7 +89,7 @@ This system eliminates **95% of manual analytics workload** by automating the en
 
 The API will be available at `http://localhost:8000`
 
-## 📖 Usage
+## Usage
 
 ### 1. Upload Data
 
@@ -151,7 +151,7 @@ response = requests.post("http://localhost:8000/report/generate", json={
 })
 ```
 
-## 💡 Example Questions You Can Ask
+## Example Questions You Can Ask
 
 The conversational interface understands natural language questions like:
 
@@ -160,7 +160,7 @@ The conversational interface understands natural language questions like:
 - **Predictive**: *"What will sales be next quarter?"*, *"Predict inventory needs for next month"*
 - **Prescriptive**: *"What should we stock more of?"*, *"How can we optimize our pricing?"*
 
-## 📊 Analytics Capabilities
+## Analytics Capabilities
 
 ### 1. Descriptive Analytics
 - Summary statistics (mean, median, std, percentiles)
@@ -190,7 +190,7 @@ The conversational interface understands natural language questions like:
 - Resource allocation optimization
 - Priority-based action planning
 
-## 🛠️ API Documentation
+## API Documentation
 
 Once the server is running, access interactive API documentation at:
 
@@ -211,7 +211,7 @@ Once the server is running, access interactive API documentation at:
 | `/report/generate` | POST | Generate comprehensive reports |
 | `/visualizations/{dataset_id}/time_series` | GET | Create time series charts |
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 AI_Analytics_Intelligence_System/
@@ -247,21 +247,21 @@ AI_Analytics_Intelligence_System/
 └── README.md                 # This file
 ```
 
-## 🎯 Real-World Impact
+## Real-World Impact
 
 ### Before This System
-- ⏰ **5-7 days** to generate comprehensive reports
-- 👥 Required dedicated data analyst
-- 📊 Limited to technical users
-- 🔄 Manual data cleaning and validation
-- ❌ Inconsistent analysis methods
+- **5-7 days** to generate comprehensive reports
+- Required dedicated data analyst
+- Limited to technical users
+- Manual data cleaning and validation
+- Inconsistent analysis methods
 
 ### After This System
-- ⚡ **5-15 minutes** for complete analysis
-- 🤖 Fully automated, no analyst needed
-- 💬 Accessible to non-technical users via chat
-- ✅ Automated quality checks and cleaning
-- 📈 Consistent, reproducible analytics
+- **5-15 minutes** for complete analysis
+- Fully automated, no analyst needed
+- Accessible to non-technical users via chat
+- Automated quality checks and cleaning
+- Consistent, reproducible analytics
 
 ### Quantified Benefits
 - **95% reduction** in manual analytics workload
@@ -270,7 +270,7 @@ AI_Analytics_Intelligence_System/
 - **Zero errors** from manual data entry/calculation
 - **Infinite scalability** - handle unlimited datasets
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -297,7 +297,7 @@ SMTP_USERNAME=your_email@gmail.com
 SMTP_PASSWORD=your_app_password
 ```
 
-## 📈 Performance
+## Performance
 
 - **Data Processing**: 10,000 rows/second
 - **Query Response**: < 2 seconds (average)
@@ -305,7 +305,7 @@ SMTP_PASSWORD=your_app_password
 - **Concurrent Users**: Supports 100+ simultaneous users
 - **Memory Usage**: ~500MB base + ~2MB per active dataset
 
-## 🔒 Security
+## Security
 
 - API key authentication
 - Rate limiting on endpoints
@@ -314,7 +314,7 @@ SMTP_PASSWORD=your_app_password
 - Environment variable protection
 - CORS configuration for frontend integration
 
-## 🧪 Testing
+## Testing
 
 Run tests:
 ```bash
@@ -326,14 +326,14 @@ Run with coverage:
 pytest tests/ --cov=src --cov-report=html
 ```
 
-## 📝 Sample Data
+## Sample Data
 
 Sample datasets are provided in `data/sample/`:
 - `sales_data.csv` - Sample retail sales data
 - `customer_records.csv` - Sample customer demographics
 - `operational_metrics.pdf` - Sample PDF with tables
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -343,11 +343,11 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **OpenAI** for GPT-4 API
 - **LangChain** for agent framework
@@ -355,13 +355,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Plotly** for interactive visualizations
 - **Prophet** and **XGBoost** for forecasting
 
-## 📞 Support
+## Support
 
 - **Documentation**: [Full Docs](https://github.com/Web8080/AI_Analytics_Chatbot/wiki)
 - **Issues**: [GitHub Issues](https://github.com/Web8080/AI_Analytics_Chatbot/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/Web8080/AI_Analytics_Chatbot/discussions)
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] Real-time data streaming support
 - [ ] Multi-language support (Spanish, French, German)
@@ -371,7 +371,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Mobile app
 - [ ] Cloud deployment templates (AWS, Azure, GCP)
 
-## 📊 System Requirements
+## System Requirements
 
 **Minimum:**
 - Python 3.9+
@@ -385,7 +385,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 5GB disk space
 - Multi-core processor
 
-## 🎓 Use Cases
+## Use Cases
 
 - **Retail**: Sales analysis, inventory optimization, customer segmentation
 - **Finance**: Risk analysis, fraud detection, forecasting
@@ -394,7 +394,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Operations**: Efficiency metrics, bottleneck identification
 - **HR**: Workforce analytics, retention prediction
 
-## 🌐 Deployment
+## Deployment
 
 ### Docker Deployment
 
@@ -420,9 +420,9 @@ Detailed deployment guides available in the [Wiki](https://github.com/Web8080/AI
 
 <div align="center">
 
-**Built with ❤️ using Python, FastAPI, LangChain, and OpenAI GPT**
+**Built with Python, FastAPI, LangChain, and OpenAI GPT**
 
-[⬆ Back to Top](#-ai-analytics-intelligence-system-with-conversational-interface)
+[Back to Top](#ai-analytics-intelligence-system-with-conversational-interface)
 
 </div>
 
