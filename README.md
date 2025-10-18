@@ -44,12 +44,58 @@ This system eliminates **95% of manual analytics workload** by automating the en
 └─────────────┘ └─────────┘ └─────────┘ └─────────────┘
 ```
 
+## Interactive Dashboard
+
+**Launch the AI-powered dashboard:**
+
+```bash
+streamlit run dashboard_ai.py
+```
+
+Access at: **http://localhost:8501**
+
+### Dashboard Features
+
+**🤖 AI Chatbot Interface**
+- Upload CSV files via drag-and-drop
+- Ask questions in natural language
+- Get instant analytics with auto-generated visualizations
+- Intelligent vague question detection
+- Contextual suggestions based on your data
+
+**🎯 Model Accuracy Page**
+- Real-time performance metrics (MAE, MAPE, R²)
+- Feature importance charts
+- Churn prediction analytics
+- Model comparison matrix
+
+**📊 Analytics Pages**
+- Executive overview with KPIs
+- Descriptive analytics & statistics
+- Predictive models & forecasting
+- Strategic recommendations
+- Interactive visualizations
+- Raw data explorer
+
+### Example Interactions
+
+**Ask:** "What is the total revenue?"  
+**Get:** Instant answer + metrics display + confidence score
+
+**Ask:** "Show me top 5 products"  
+**Get:** Answer + auto-generated bar chart + recommendations
+
+**Ask:** "hi" or vague question  
+**Get:** Polite guidance + 6 contextual question suggestions
+
+---
+
 ## Quick Start
 
 ### Prerequisites
 
 - Python 3.9 or higher
-- OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
+- OpenAI API key (optional - works without it)
 - 2GB+ RAM recommended
 
 ### Installation
@@ -82,11 +128,17 @@ This system eliminates **95% of manual analytics workload** by automating the en
    # Edit .env and add your OpenAI API key
    ```
 
-5. **Run the system**
+5. **Run the Dashboard**
    ```bash
-   python src/api/main.py
+   streamlit run dashboard_ai.py
+   ```
+   
+   Or run the API:
+   ```bash
+   python main.py
    ```
 
+The Dashboard will be available at `http://localhost:8501`  
 The API will be available at `http://localhost:8000`
 
 ## Usage
