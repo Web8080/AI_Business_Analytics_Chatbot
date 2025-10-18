@@ -1,0 +1,85 @@
+{
+  "segment_column": "region",
+  "total_segments": 4,
+  "segments": {
+    "North": {
+      "count": 13,
+      "percentage_of_total": 26.0,
+      "revenue": {
+        "sum": 55818.75,
+        "mean": 4293.75,
+        "median": 3300.0,
+        "std": 3133.3035514985354
+      },
+      "quantity": {
+        "sum": 130.0,
+        "mean": 10.0,
+        "median": 9.0,
+        "std": 6.416125518306719
+      }
+    },
+    "South": {
+      "count": 13,
+      "percentage_of_total": 26.0,
+      "revenue": {
+        "sum": 37900.0,
+        "mean": 2915.3846153846152,
+        "median": 2100.0,
+        "std": 2835.021650077871
+      },
+      "quantity": {
+        "sum": 160.0,
+        "mean": 12.307692307692308,
+        "median": 13.0,
+        "std": 7.0638117116352905
+      }
+    },
+    "East": {
+      "count": 12,
+      "percentage_of_total": 24.0,
+      "revenue": {
+        "sum": 34800.0,
+        "mean": 2900.0,
+        "median": 2250.0,
+        "std": 2592.8222601495986
+      },
+      "quantity": {
+        "sum": 158.0,
+        "mean": 13.166666666666666,
+        "median": 11.5,
+        "std": 7.68508985377569
+      }
+    },
+    "West": {
+      "count": 12,
+      "percentage_of_total": 24.0,
+      "revenue": {
+        "sum": 29700.0,
+        "mean": 2475.0,
+        "median": 2575.0,
+        "std": 1351.2199874726005
+      },
+      "quantity": {
+        "sum": 166.0,
+        "mean": 13.833333333333334,
+        "median": 12.0,
+        "std": 5.9974742158426135
+      }
+    }
+  },
+  "comparisons": {
+    "revenue": {
+      "test": "ANOVA",
+      "f_statistic": 1.1901322381849384,
+      "p_value": 0.3239641086342176,
+      "significant": false
+    },
+    "quantity": {
+      "test": "ANOVA",
+      "f_statistic": 0.7600137513091729,
+      "p_value": 0.5223207813002645,
+      "significant": false
+    }
+  },
+  "status": "success"
+}

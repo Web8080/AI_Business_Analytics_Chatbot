@@ -1,0 +1,78 @@
+{
+  "target_metric": "revenue",
+  "overall_mean": 3164.375,
+  "root_causes": [
+    {
+      "dimension": "product",
+      "segment": "Laptop",
+      "segment_mean": 7535.416666666667,
+      "overall_mean": 3164.375,
+      "variance": 4371.041666666667,
+      "impact_percentage": 138.13285930607677,
+      "sample_size": 9,
+      "direction": "above"
+    },
+    {
+      "dimension": "product",
+      "segment": "Mouse",
+      "segment_mean": 593.75,
+      "overall_mean": 3164.375,
+      "variance": -2570.625,
+      "impact_percentage": 81.23642109421291,
+      "sample_size": 8,
+      "direction": "below"
+    },
+    {
+      "dimension": "product",
+      "segment": "Keyboard",
+      "segment_mean": 1135.7142857142858,
+      "overall_mean": 3164.375,
+      "variance": -2028.6607142857142,
+      "impact_percentage": 64.10936485990801,
+      "sample_size": 7,
+      "direction": "below"
+    },
+    {
+      "dimension": "region",
+      "segment": "North",
+      "segment_mean": 4293.75,
+      "overall_mean": 3164.375,
+      "variance": 1129.375,
+      "impact_percentage": 35.69030219237606,
+      "sample_size": 13,
+      "direction": "above"
+    },
+    {
+      "dimension": "product",
+      "segment": "Bookshelf",
+      "segment_mean": 2100.0,
+      "overall_mean": 3164.375,
+      "variance": -1064.375,
+      "impact_percentage": 33.636184080584634,
+      "sample_size": 5,
+      "direction": "below"
+    },
+    {
+      "dimension": "region",
+      "segment": "West",
+      "segment_mean": 2475.0,
+      "overall_mean": 3164.375,
+      "variance": -689.375,
+      "impact_percentage": 21.785502666403318,
+      "sample_size": 12,
+      "direction": "below"
+    },
+    {
+      "dimension": "product",
+      "segment": "Desk",
+      "segment_mean": 3600.0,
+      "overall_mean": 3164.375,
+      "variance": 435.625,
+      "impact_percentage": 13.766541576140629,
+      "sample_size": 7,
+      "direction": "above"
+    }
+  ],
+  "total_causes_found": 7,
+  "status": "success"
+}

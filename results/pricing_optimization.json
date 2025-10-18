@@ -1,0 +1,82 @@
+{
+  "optimal_price": 1200.0,
+  "current_avg_price": 398.5,
+  "price_points_analysis": [
+    {
+      "price": 25,
+      "quantity": 190,
+      "revenue": 4750
+    },
+    {
+      "price": 75,
+      "quantity": 106,
+      "revenue": 7950
+    },
+    {
+      "price": 200,
+      "quantity": 105,
+      "revenue": 21000
+    },
+    {
+      "price": 300,
+      "quantity": 70,
+      "revenue": 21000
+    },
+    {
+      "price": 350,
+      "quantity": 30,
+      "revenue": 10500
+    },
+    {
+      "price": 450,
+      "quantity": 56,
+      "revenue": 25200
+    },
+    {
+      "price": 1200,
+      "quantity": 57,
+      "revenue": 68400
+    }
+  ],
+  "recommendations": [
+    {
+      "type": "price_adjustment",
+      "current_avg_price": 398.5,
+      "optimal_price": 1200.0,
+      "expected_revenue_increase": -56.93,
+      "recommendation": "Consider adjusting average price to $1200.00 to maximize revenue"
+    },
+    {
+      "type": "segment_pricing",
+      "segment": "region",
+      "analysis": [
+        {
+          "region": "East",
+          "price": 364.5833333333333,
+          "quantity": 158,
+          "revenue": 34800
+        },
+        {
+          "region": "North",
+          "price": 619.2307692307693,
+          "quantity": 130,
+          "revenue": 56400
+        },
+        {
+          "region": "South",
+          "price": 365.38461538461536,
+          "quantity": 160,
+          "revenue": 37900
+        },
+        {
+          "region": "West",
+          "price": 229.16666666666666,
+          "quantity": 166,
+          "revenue": 29700
+        }
+      ],
+      "recommendation": "Consider differentiated pricing strategy for region"
+    }
+  ],
+  "status": "success"
+}

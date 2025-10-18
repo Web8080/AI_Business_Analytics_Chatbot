@@ -34,31 +34,35 @@ class ReportGenerator:
     
     def _add_custom_styles(self):
         """Add custom paragraph styles"""
-        self.styles.add(ParagraphStyle(
-            name='CustomTitle',
-            parent=self.styles['Heading1'],
-            fontSize=24,
-            textColor=colors.HexColor('#1f4788'),
-            spaceAfter=30,
-            alignment=TA_CENTER
-        ))
+        # Only add if they don't exist
+        if 'CustomTitle' not in self.styles:
+            self.styles.add(ParagraphStyle(
+                name='CustomTitle',
+                parent=self.styles['Heading1'],
+                fontSize=24,
+                textColor=colors.HexColor('#1f4788'),
+                spaceAfter=30,
+                alignment=TA_CENTER
+            ))
         
-        self.styles.add(ParagraphStyle(
-            name='SectionHeader',
-            parent=self.styles['Heading2'],
-            fontSize=16,
-            textColor=colors.HexColor('#2e5c8a'),
-            spaceAfter=12,
-            spaceBefore=12
-        ))
+        if 'SectionHeader' not in self.styles:
+            self.styles.add(ParagraphStyle(
+                name='SectionHeader',
+                parent=self.styles['Heading2'],
+                fontSize=16,
+                textColor=colors.HexColor('#2e5c8a'),
+                spaceAfter=12,
+                spaceBefore=12
+            ))
         
-        self.styles.add(ParagraphStyle(
-            name='BodyText',
-            parent=self.styles['Normal'],
-            fontSize=11,
-            alignment=TA_JUSTIFY,
-            spaceAfter=12
-        ))
+        if 'BodyText' not in self.styles:
+            self.styles.add(ParagraphStyle(
+                name='BodyText',
+                parent=self.styles['Normal'],
+                fontSize=11,
+                alignment=TA_JUSTIFY,
+                spaceAfter=12
+            ))
     
     def generate_comprehensive_report(self, df: pd.DataFrame, metadata: Dict[str, Any],
                                      report_type: str = "comprehensive",

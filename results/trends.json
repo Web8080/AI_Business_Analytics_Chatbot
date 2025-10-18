@@ -1,0 +1,23 @@
+{
+  "trends": {
+    "revenue": {
+      "direction": "stable",
+      "slope": 42.23199279711885,
+      "r_squared": 0.05589975619699464,
+      "p_value": 0.09831736751683165,
+      "confidence": "low",
+      "total_change": -5350.0,
+      "percent_change": -89.16666666666667
+    },
+    "quantity": {
+      "direction": "increasing",
+      "slope": 0.14857142857142858,
+      "r_squared": 0.10242059106627215,
+      "p_value": 0.023470783976077846,
+      "confidence": "medium",
+      "total_change": 21.0,
+      "percent_change": 420.0
+    }
+  },
+  "status": "success"
+}

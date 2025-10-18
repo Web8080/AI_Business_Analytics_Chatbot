@@ -1,0 +1,17 @@
+{
+  "revenue": {
+    "total_revenue": 158218.75,
+    "average_revenue": 3164.375,
+    "median_revenue": 2700.0,
+    "revenue_growth_rate": 66.91
+  },
+  "customers": {
+    "total_customers": 50,
+    "average_transactions_per_customer": 1.0
+  },
+  "products": {
+    "total_products": 7,
+    "top_product": "Laptop"
+  },
+  "status": "success"
+}

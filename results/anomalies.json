@@ -1,0 +1,18 @@
+{
+  "method": "zscore",
+  "threshold": 3.0,
+  "anomalies": {
+    "revenue": {
+      "count": 1,
+      "percentage": 2.0,
+      "indices": [
+        48
+      ],
+      "values": [
+        11418.75
+      ]
+    }
+  },
+  "total_anomalies": 1,
+  "status": "success"
+}

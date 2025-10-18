@@ -1,0 +1,35 @@
+{
+  "correlation_matrix": {
+    "quantity": {
+      "quantity": 1.0,
+      "price": -0.6407773465554744,
+      "revenue": -0.4547365531796626
+    },
+    "price": {
+      "quantity": -0.6407773465554744,
+      "price": 1.0,
+      "revenue": 0.8641578619633796
+    },
+    "revenue": {
+      "quantity": -0.4547365531796626,
+      "price": 0.8641578619633796,
+      "revenue": 1.0
+    }
+  },
+  "strong_correlations": [
+    {
+      "variable_1": "price",
+      "variable_2": "revenue",
+      "correlation": 0.8641578619633796,
+      "strength": "strong"
+    },
+    {
+      "variable_1": "quantity",
+      "variable_2": "price",
+      "correlation": -0.6407773465554744,
+      "strength": "moderate"
+    }
+  ],
+  "method": "pearson",
+  "status": "success"
+}
