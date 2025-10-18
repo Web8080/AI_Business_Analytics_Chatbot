@@ -1,9 +1,2 @@
-# System dependencies for Streamlit Cloud
-# These will be installed via apt-get
-
-# For PDF parsing
 poppler-utils
-
-# For data processing
 libgomp1
-
