@@ -630,7 +630,7 @@ with tab2:
             title="Data Types Distribution",
             template='plotly_dark'
         )
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig, width="stretch", key="data_types_chart")
         
         # Missing values
         st.subheader("🔍 Missing Values")
@@ -771,12 +771,14 @@ with st.sidebar:
             </div>
             """, unsafe_allow_html=True)
             
-            # Force rerun to update main content
-            st.rerun()
-            
             # Show preview
             with st.expander("👀 Preview Data"):
                 st.dataframe(df.head())
+            
+            # Force rerun to update main content (only once)
+            if 'rerun_triggered' not in st.session_state:
+                st.session_state.rerun_triggered = True
+                st.rerun()
             
             # Show columns
             with st.expander("📋 Columns"):
