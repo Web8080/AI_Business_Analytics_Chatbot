@@ -454,7 +454,7 @@ with tab1:
                                 height=400,
                                 title=chart_data.get('title', 'Chart')
                             )
-                            st.plotly_chart(fig, use_container_width=True, key=f"chart_{idx}")
+                            st.plotly_chart(fig, width="stretch", key=f"chart_{idx}")
                     except Exception as chart_error:
                         st.caption(f"⚠️ Chart display error: {str(chart_error)}")
                         # Debug: show chart data structure
@@ -474,9 +474,9 @@ with tab1:
                 
                 col_send, col_clear = st.columns([1, 1])
                 with col_send:
-                    send_pressed = st.form_submit_button("🚀 Send", type="primary", use_container_width=True)
+                    send_pressed = st.form_submit_button("🚀 Send", type="primary", width="stretch")
                 with col_clear:
-                    clear_pressed = st.form_submit_button("🗑️ Clear Chat", use_container_width=True)
+                    clear_pressed = st.form_submit_button("🗑️ Clear Chat", width="stretch")
             
             # Handle form submission
             if send_pressed and user_input:
@@ -544,7 +544,7 @@ with tab1:
             # Quick actions
             st.subheader("⚡ Quick Actions")
             
-            if st.button("📈 Show Data Summary", use_container_width=True):
+            if st.button("📈 Show Data Summary", width="stretch"):
                 st.session_state.messages.append({"role": "user", "content": "Give me a summary of the data"})
                 try:
                     with st.spinner("🤖 Analyzing..."):
@@ -562,7 +562,7 @@ with tab1:
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
             
-            if st.button("📊 Show Top Items", use_container_width=True):
+            if st.button("📊 Show Top Items", width="stretch"):
                 st.session_state.messages.append({"role": "user", "content": "Show me the top 5 items"})
                 try:
                     with st.spinner("🤖 Analyzing..."):
@@ -580,7 +580,7 @@ with tab1:
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
             
-            if st.button("📈 Show Trends", use_container_width=True):
+            if st.button("📈 Show Trends", width="stretch"):
                 st.session_state.messages.append({"role": "user", "content": "Show me trends in the data"})
                 try:
                     with st.spinner("🤖 Analyzing..."):
@@ -630,7 +630,7 @@ with tab2:
             title="Data Types Distribution",
             template='plotly_dark'
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         
         # Missing values
         st.subheader("🔍 Missing Values")
@@ -641,11 +641,11 @@ with tab2:
             'Missing Percentage': (missing_data.values / len(df)) * 100
         }).sort_values('Missing Count', ascending=False)
         
-        st.dataframe(missing_df, use_container_width=True)
+        st.dataframe(missing_df, width="stretch")
         
         # Sample data
         st.subheader("👀 Sample Data")
-        st.dataframe(df.head(10), use_container_width=True)
+        st.dataframe(df.head(10), width="stretch")
         
     else:
         st.info("👆 Please upload a CSV file to view data overview")
