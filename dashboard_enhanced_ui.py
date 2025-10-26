@@ -21,7 +21,7 @@ from src.conversational.smart_agent import SmartAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard",
-    page_icon="📊",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -187,7 +187,7 @@ st.markdown("---")
 # Sidebar with Quick Wins
 with st.sidebar:
     # QUICK WIN #1: Theme Toggle
-    st.header("🎨 Settings")
+    st.header(" Settings")
     theme = st.selectbox(
         "Theme",
         ["light", "dark"],
@@ -201,7 +201,7 @@ with st.sidebar:
     st.markdown("---")
     
     # QUICK WIN #2: Quick Actions
-    st.header("⚡ Quick Actions")
+    st.header(" Quick Actions")
     quick_questions = [
         "What is the total revenue?",
         "Show me top 5 products",
@@ -212,14 +212,14 @@ with st.sidebar:
     ]
     
     for question in quick_questions:
-        if st.button(f"💬 {question}", key=f"quick_{question}", help="Click to ask this question"):
+        if st.button(f" {question}", key=f"quick_{question}", help="Click to ask this question"):
             st.session_state.messages.append({"role": "user", "content": question})
             st.rerun()
     
     st.markdown("---")
     
     # QUICK WIN #3: Chat History
-    st.header("📚 Chat History")
+    st.header(" Chat History")
     if st.session_state.chat_history:
         for i, chat in enumerate(st.session_state.chat_history[-5:]):  # Show last 5
             with st.expander(f"Chat {len(st.session_state.chat_history) - 4 + i}"):
@@ -235,7 +235,7 @@ with st.sidebar:
     
     # Save current chat
     if st.session_state.messages and st.session_state.uploaded_filename:
-        if st.button("💾 Save Current Chat"):
+        if st.button(" Save Current Chat"):
             chat_entry = {
                 'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M"),
                 'filename': st.session_state.uploaded_filename,
@@ -247,12 +247,12 @@ with st.sidebar:
     st.markdown("---")
     
     # QUICK WIN #4: Export Options
-    st.header("📤 Export")
+    st.header(" Export")
     if st.session_state.uploaded_data is not None:
         # Export data as CSV
         csv = st.session_state.uploaded_data.to_csv(index=False)
         st.download_button(
-            label="📊 Download Data (CSV)",
+            label=" Download Data (CSV)",
             data=csv,
             file_name=f"{st.session_state.uploaded_filename}_export.csv",
             mime="text/csv",
@@ -263,7 +263,7 @@ with st.sidebar:
         if st.session_state.messages:
             chat_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
             st.download_button(
-                label="💬 Download Chat (TXT)",
+                label=" Download Chat (TXT)",
                 data=chat_text,
                 file_name=f"chat_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
                 mime="text/plain",
@@ -273,7 +273,7 @@ with st.sidebar:
     st.markdown("---")
     
     # File Upload
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     uploaded_file = st.file_uploader(
         "Choose CSV file",
         type=['csv'],
@@ -287,27 +287,27 @@ with st.sidebar:
             st.session_state.uploaded_data = df
             st.session_state.uploaded_filename = uploaded_file.name
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Show preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
             
             # Show columns
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     st.write(f"• {col} ({df[col].dtype})")
                     
         except Exception as e:
-            st.error(f"❌ Error loading file: {str(e)}")
+            st.error(f" Error loading file: {str(e)}")
 
 # Main content area
 col1, col2 = st.columns([2, 1])
 
 with col1:
     # Chat interface
-    st.header("🤖 AI Analytics Assistant")
+    st.header(" AI Analytics Assistant")
     
     # Display chat messages
     for message in st.session_state.messages:
@@ -344,23 +344,23 @@ with col1:
                     
                     # Show suggestions if vague
                     if response.get('is_vague', False) and 'suggested_questions' in response:
-                        st.markdown("**💡 Try asking:**")
+                        st.markdown("** Try asking:**")
                         for suggestion in response['suggested_questions'][:3]:
-                            if st.button(f"💬 {suggestion}", key=f"suggest_{suggestion}"):
+                            if st.button(f" {suggestion}", key=f"suggest_{suggestion}"):
                                 st.session_state.messages.append({"role": "user", "content": suggestion})
                                 st.rerun()
                     
                     st.rerun()
                     
                 except Exception as e:
-                    st.error(f"❌ Error: {str(e)}")
+                    st.error(f" Error: {str(e)}")
     else:
-        st.info("👆 Please upload a CSV file to start chatting with your data")
+        st.info(" Please upload a CSV file to start chatting with your data")
 
 with col2:
     # QUICK WIN #5: Loading Animations & Better Feedback
     if st.session_state.uploaded_data is not None:
-        st.header("📊 Data Overview")
+        st.header(" Data Overview")
         
         # Metrics cards
         col2_1, col2_2 = st.columns(2)
@@ -368,7 +368,7 @@ with col2:
         with col2_1:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>📈 Total Rows</h3>
+                <h3> Total Rows</h3>
                 <h2>{len(st.session_state.uploaded_data):,}</h2>
             </div>
             ''', unsafe_allow_html=True)
@@ -376,25 +376,25 @@ with col2:
         with col2_2:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>📋 Columns</h3>
+                <h3> Columns</h3>
                 <h2>{len(st.session_state.uploaded_data.columns)}</h2>
             </div>
             ''', unsafe_allow_html=True)
         
         # Data quality indicators
-        st.markdown("**🔍 Data Quality:**")
+        st.markdown("** Data Quality:**")
         null_percentage = (st.session_state.uploaded_data.isnull().sum().sum() / 
                           (len(st.session_state.uploaded_data) * len(st.session_state.uploaded_data.columns))) * 100
         
         if null_percentage < 5:
-            st.success(f"✅ Excellent ({null_percentage:.1f}% missing)")
+            st.success(f" Excellent ({null_percentage:.1f}% missing)")
         elif null_percentage < 15:
-            st.warning(f"⚠️ Good ({null_percentage:.1f}% missing)")
+            st.warning(f" Good ({null_percentage:.1f}% missing)")
         else:
-            st.error(f"❌ Needs attention ({null_percentage:.1f}% missing)")
+            st.error(f" Needs attention ({null_percentage:.1f}% missing)")
         
         # Column types
-        st.markdown("**📊 Data Types:**")
+        st.markdown("** Data Types:**")
         type_counts = st.session_state.uploaded_data.dtypes.value_counts()
         for dtype, count in type_counts.items():
             st.write(f"• {dtype}: {count} columns")
@@ -402,16 +402,16 @@ with col2:
     else:
         st.markdown("""
         <div class="metric-card">
-            <h3>🚀 Get Started</h3>
+            <h3> Get Started</h3>
             <p>Upload a CSV file to begin analyzing your data with AI!</p>
         </div>
         """, unsafe_allow_html=True)
 
 # QUICK WIN #6: Help Tooltips
 st.markdown("---")
-with st.expander("❓ Help & Tips"):
+with st.expander(" Help & Tips"):
     st.markdown("""
-    **💡 How to use this dashboard:**
+    ** How to use this dashboard:**
     
     1. **Upload Data**: Use the sidebar to upload your CSV file
     2. **Ask Questions**: Type natural language questions about your data
@@ -419,14 +419,14 @@ with st.expander("❓ Help & Tips"):
     4. **Export Results**: Download your data and chat history
     5. **Save Chats**: Keep track of your analysis sessions
     
-    **🎯 Example Questions:**
+    ** Example Questions:**
     - "What is the total revenue?"
     - "Show me the top 10 products"
     - "Compare sales by region"
     - "What are the trends over time?"
     - "Which customers have the highest value?"
     
-    **⌨️ Keyboard Shortcuts:**
+    **⌨ Keyboard Shortcuts:**
     - `Enter` in chat input to send message
     - `Ctrl/Cmd + S` to save current chat
     - `Ctrl/Cmd + D` to download data
@@ -436,7 +436,7 @@ with st.expander("❓ Help & Tips"):
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 1rem;'>
-    <p>🚀 AI Analytics Intelligence System | Built with Streamlit & Python</p>
-    <p>💡 Tip: Use the theme toggle in the sidebar to switch between light and dark modes!</p>
+    <p> AI Analytics Intelligence System | Built with Streamlit & Python</p>
+    <p> Tip: Use the theme toggle in the sidebar to switch between light and dark modes!</p>
 </div>
 """, unsafe_allow_html=True)

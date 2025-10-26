@@ -58,13 +58,13 @@ for question, test_type in test_questions:
     confidence = response.get('confidence', 0)
     
     if is_vague:
-        print(f"   ✓ Detected as vague/irrelevant (confidence: {confidence})")
+        print(f"    Detected as vague/irrelevant (confidence: {confidence})")
         print(f"   Response: {response['answer'][:100]}...")
         if response.get('recommendations'):
             print(f"   Suggestions provided: {len(response['recommendations'])} questions")
             print(f"   Example: {response['recommendations'][0]}")
     else:
-        print(f"   ✓ Valid question (confidence: {confidence})")
+        print(f"    Valid question (confidence: {confidence})")
         print(f"   Response: {response['answer'][:100]}...")
     
     print()

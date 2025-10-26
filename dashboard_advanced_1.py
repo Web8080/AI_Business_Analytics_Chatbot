@@ -24,7 +24,7 @@ from src.conversational.smart_agent import SmartAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard - Real-time",
-    page_icon="📊",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -65,7 +65,7 @@ def check_for_data_updates():
             # Add a notification message
             st.session_state.messages.append({
                 "role": "assistant", 
-                "content": f"🔄 **Data refreshed automatically** (v{st.session_state.data_version}) - {current_time.strftime('%H:%M:%S')}"
+                "content": f" **Data refreshed automatically** (v{st.session_state.data_version}) - {current_time.strftime('%H:%M:%S')}"
             })
             return True
     return False
@@ -194,7 +194,7 @@ def get_theme_css(theme):
 st.markdown(get_theme_css(st.session_state.theme), unsafe_allow_html=True)
 
 # Title with real-time indicator
-st.markdown('<div class="main-header">🔄 AI Analytics Dashboard - Real-time</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> AI Analytics Dashboard - Real-time</div>', unsafe_allow_html=True)
 st.markdown("Ask questions, get instant analytics with **auto-refreshing data**")
 st.markdown("---")
 
@@ -206,9 +206,9 @@ with col_status1:
         next_refresh = st.session_state.last_refresh + timedelta(seconds=st.session_state.refresh_interval)
         time_until_refresh = (next_refresh - datetime.now()).total_seconds()
         if time_until_refresh > 0:
-            st.markdown(f'<div class="refresh-indicator">🔄 Auto-refresh in {int(time_until_refresh)}s</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="refresh-indicator"> Auto-refresh in {int(time_until_refresh)}s</div>', unsafe_allow_html=True)
         else:
-            st.markdown('<div class="refresh-indicator">🔄 Refreshing...</div>', unsafe_allow_html=True)
+            st.markdown('<div class="refresh-indicator"> Refreshing...</div>', unsafe_allow_html=True)
 
 with col_status2:
     st.metric("Data Version", f"v{st.session_state.data_version}")
@@ -222,7 +222,7 @@ if check_for_data_updates():
 
 # Sidebar with Real-time Controls
 with st.sidebar:
-    st.header("🔄 Real-time Settings")
+    st.header(" Real-time Settings")
     
     # Auto-refresh toggle
     auto_refresh = st.toggle(
@@ -248,19 +248,19 @@ with st.sidebar:
         st.rerun()
     
     # Manual refresh button
-    if st.button("🔄 Refresh Now", type="primary"):
+    if st.button(" Refresh Now", type="primary"):
         st.session_state.data_version += 1
         st.session_state.last_refresh = datetime.now()
         st.session_state.messages.append({
             "role": "assistant", 
-            "content": f"🔄 **Manual refresh completed** (v{st.session_state.data_version}) - {datetime.now().strftime('%H:%M:%S')}"
+            "content": f" **Manual refresh completed** (v{st.session_state.data_version}) - {datetime.now().strftime('%H:%M:%S')}"
         })
         st.rerun()
     
     st.markdown("---")
     
     # Theme toggle
-    st.header("🎨 Settings")
+    st.header(" Settings")
     theme = st.selectbox(
         "Theme",
         ["light", "dark"],
@@ -274,7 +274,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Quick Actions
-    st.header("⚡ Quick Actions")
+    st.header(" Quick Actions")
     quick_questions = [
         "What is the total revenue?",
         "Show me top 5 products",
@@ -285,14 +285,14 @@ with st.sidebar:
     ]
     
     for question in quick_questions:
-        if st.button(f"💬 {question}", key=f"quick_{question}"):
+        if st.button(f" {question}", key=f"quick_{question}"):
             st.session_state.messages.append({"role": "user", "content": question})
             st.rerun()
     
     st.markdown("---")
     
     # File Upload
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     uploaded_file = st.file_uploader(
         "Choose CSV file",
         type=['csv'],
@@ -308,27 +308,27 @@ with st.sidebar:
             st.session_state.data_version += 1
             st.session_state.last_refresh = datetime.now()
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Show preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
             
             # Show columns
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     st.write(f"• {col} ({df[col].dtype})")
                     
         except Exception as e:
-            st.error(f"❌ Error loading file: {str(e)}")
+            st.error(f" Error loading file: {str(e)}")
 
 # Main content area
 col1, col2 = st.columns([2, 1])
 
 with col1:
     # Chat interface
-    st.header("🤖 AI Analytics Assistant")
+    st.header(" AI Analytics Assistant")
     
     # Display chat messages
     for message in st.session_state.messages:
@@ -366,27 +366,27 @@ with col1:
                     st.rerun()
                     
                 except Exception as e:
-                    st.error(f"❌ Error: {str(e)}")
+                    st.error(f" Error: {str(e)}")
     else:
-        st.info("👆 Please upload a CSV file to start chatting with your data")
+        st.info(" Please upload a CSV file to start chatting with your data")
 
 with col2:
     # Real-time metrics
     if st.session_state.uploaded_data is not None:
-        st.header("📊 Real-time Metrics")
+        st.header(" Real-time Metrics")
         
         # Data freshness indicator
         time_since_refresh = (datetime.now() - st.session_state.last_refresh).total_seconds()
         if time_since_refresh < 60:
-            freshness = "🟢 Fresh"
+            freshness = " Fresh"
         elif time_since_refresh < 300:
-            freshness = "🟡 Recent"
+            freshness = " Recent"
         else:
-            freshness = "🔴 Stale"
+            freshness = " Stale"
         
         st.markdown(f'''
         <div class="metric-card">
-            <h3>📈 Data Freshness</h3>
+            <h3> Data Freshness</h3>
             <h2>{freshness}</h2>
             <p>Updated {int(time_since_refresh)}s ago</p>
         </div>
@@ -398,7 +398,7 @@ with col2:
         with col2_1:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>📊 Total Rows</h3>
+                <h3> Total Rows</h3>
                 <h2>{len(st.session_state.uploaded_data):,}</h2>
             </div>
             ''', unsafe_allow_html=True)
@@ -406,21 +406,21 @@ with col2:
         with col2_2:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>📋 Columns</h3>
+                <h3> Columns</h3>
                 <h2>{len(st.session_state.uploaded_data.columns)}</h2>
             </div>
             ''', unsafe_allow_html=True)
         
         # Auto-refresh status
         if st.session_state.auto_refresh:
-            st.success("🔄 Auto-refresh enabled")
+            st.success(" Auto-refresh enabled")
         else:
-            st.warning("⏸️ Auto-refresh disabled")
+            st.warning("⏸ Auto-refresh disabled")
     
     else:
         st.markdown("""
         <div class="metric-card">
-            <h3>🚀 Get Started</h3>
+            <h3> Get Started</h3>
             <p>Upload a CSV file to begin real-time analytics!</p>
         </div>
         """, unsafe_allow_html=True)
@@ -440,7 +440,7 @@ if st.session_state.auto_refresh:
         st.session_state.last_refresh = current_time
         st.session_state.messages.append({
             "role": "assistant", 
-            "content": f"🔄 **Auto-refresh completed** (v{st.session_state.data_version}) - {current_time.strftime('%H:%M:%S')}"
+            "content": f" **Auto-refresh completed** (v{st.session_state.data_version}) - {current_time.strftime('%H:%M:%S')}"
         })
         st.rerun()
 
@@ -448,7 +448,7 @@ if st.session_state.auto_refresh:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 1rem;'>
-    <p>🔄 AI Analytics Intelligence System - Real-time Edition</p>
-    <p>💡 Data refreshes automatically every {st.session_state.refresh_interval} seconds!</p>
+    <p> AI Analytics Intelligence System - Real-time Edition</p>
+    <p> Data refreshes automatically every {st.session_state.refresh_interval} seconds!</p>
 </div>
 """, unsafe_allow_html=True)

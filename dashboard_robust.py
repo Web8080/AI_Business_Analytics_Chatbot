@@ -21,7 +21,7 @@ from src.conversational.smart_agent import SmartAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Intelligence System",
-    page_icon="🚀",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -330,11 +330,11 @@ def get_theme_css(theme):
 st.markdown(get_theme_css('dark'), unsafe_allow_html=True)
 
 # Header
-st.markdown('<div class="main-header">🚀 AI Analytics Intelligence System</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> AI Analytics Intelligence System</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Professional Analytics Platform with Conversational AI</div>', unsafe_allow_html=True)
 
 # Main navigation tabs
-tab1, tab2, tab3, tab4 = st.tabs(["🤖 AI Chatbot", "📊 Data Overview", "🔧 Advanced Features", "⚙️ Settings"])
+tab1, tab2, tab3, tab4 = st.tabs([" AI Chatbot", " Data Overview", " Advanced Features", " Settings"])
 
 with tab1:
     # CHATBOT TAB - Main functionality
@@ -347,7 +347,7 @@ with tab1:
         <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                     padding: 2rem; border-radius: 15px; margin-bottom: 2rem;
                     border: 2px solid #764ba2; text-align: center;'>
-            <h2 style='color: white; margin: 0;'>🚀 Data Loaded Successfully!</h2>
+            <h2 style='color: white; margin: 0;'> Data Loaded Successfully!</h2>
             <p style='color: white; margin: 1rem 0 0 0; font-size: 1.2rem;'>
                 Ask me anything about your data and I'll provide instant insights with charts!
             </p>
@@ -361,7 +361,7 @@ with tab1:
     
     with col1:
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
-        st.header("🤖 AI Analytics Assistant")
+        st.header(" AI Analytics Assistant")
         
         # Display chat messages with charts
         for idx, message in enumerate(st.session_state.messages):
@@ -401,7 +401,7 @@ with tab1:
                             fig.update_layout(template='plotly_dark', height=400)
                             st.plotly_chart(fig, use_container_width=True, key=f"chart_{idx}")
                     except Exception as chart_error:
-                        st.caption(f"⚠️ Chart display error: {str(chart_error)}")
+                        st.caption(f" Chart display error: {str(chart_error)}")
         
         # Chat input with proper clearing
         if (st.session_state.get('uploaded_data') is not None and 
@@ -417,9 +417,9 @@ with tab1:
                 
                 col_send, col_clear = st.columns([1, 1])
                 with col_send:
-                    send_pressed = st.form_submit_button("🚀 Send", type="primary", use_container_width=True)
+                    send_pressed = st.form_submit_button(" Send", type="primary", use_container_width=True)
                 with col_clear:
-                    clear_pressed = st.form_submit_button("🗑️ Clear Chat", use_container_width=True)
+                    clear_pressed = st.form_submit_button(" Clear Chat", use_container_width=True)
             
             # Handle form submission
             if send_pressed and user_input:
@@ -428,7 +428,7 @@ with tab1:
                 
                 # Get AI response
                 try:
-                    with st.spinner("🤖 AI is analyzing your data..."):
+                    with st.spinner(" AI is analyzing your data..."):
                         agent = SmartAnalyticsAgent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask(user_input)
@@ -444,7 +444,7 @@ with tab1:
                     st.rerun()
                     
                 except Exception as e:
-                    st.error(f"❌ Error: {str(e)}")
+                    st.error(f" Error: {str(e)}")
             
             if clear_pressed:
                 st.session_state.messages = []
@@ -456,12 +456,12 @@ with tab1:
             <div style='background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); 
                         padding: 2rem; border-radius: 15px; margin: 2rem 0;
                         border: 2px solid #ee5a24; text-align: center;'>
-                <h3 style='color: white; margin: 0;'>📁 No Data Uploaded</h3>
+                <h3 style='color: white; margin: 0;'> No Data Uploaded</h3>
                 <p style='color: white; margin: 1rem 0 0 0; font-size: 1.1rem;'>
                     Please upload a CSV file in the sidebar to start chatting with your data!
                 </p>
                 <p style='color: white; margin: 0.5rem 0 0 0; opacity: 0.9;'>
-                    👈 Use the file uploader in the left sidebar
+                     Use the file uploader in the left sidebar
                 </p>
             </div>
             """, unsafe_allow_html=True)
@@ -473,7 +473,7 @@ with tab1:
         if (st.session_state.get('uploaded_data') is not None and 
             st.session_state.get('file_uploaded', False)):
             st.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
-            st.header("📊 Data Status")
+            st.header(" Data Status")
             
             # Status indicator
             st.markdown('<span class="status-indicator status-online"></span> **System Online**', unsafe_allow_html=True)
@@ -484,7 +484,7 @@ with tab1:
             with col2_1:
                 st.markdown(f'''
                 <div class="metric-card">
-                    <h3>📊 Rows</h3>
+                    <h3> Rows</h3>
                     <h2>{len(st.session_state.uploaded_data):,}</h2>
                 </div>
                 ''', unsafe_allow_html=True)
@@ -492,7 +492,7 @@ with tab1:
             with col2_2:
                 st.markdown(f'''
                 <div class="metric-card">
-                    <h3>📋 Columns</h3>
+                    <h3> Columns</h3>
                     <h2>{len(st.session_state.uploaded_data.columns)}</h2>
                 </div>
                 ''', unsafe_allow_html=True)
@@ -502,17 +502,17 @@ with tab1:
                               (len(st.session_state.uploaded_data) * len(st.session_state.uploaded_data.columns))) * 100
             
             if null_percentage < 5:
-                st.success(f"✅ Excellent Quality ({null_percentage:.1f}% missing)")
+                st.success(f" Excellent Quality ({null_percentage:.1f}% missing)")
             elif null_percentage < 15:
-                st.warning(f"⚠️ Good Quality ({null_percentage:.1f}% missing)")
+                st.warning(f" Good Quality ({null_percentage:.1f}% missing)")
             else:
-                st.error(f"❌ Needs Attention ({null_percentage:.1f}% missing)")
+                st.error(f" Needs Attention ({null_percentage:.1f}% missing)")
             
             st.markdown('</div>', unsafe_allow_html=True)
             
             # Quick Actions
             st.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
-            st.header("⚡ Quick Actions")
+            st.header(" Quick Actions")
             
             quick_questions = [
                 "What is the total revenue?",
@@ -524,7 +524,7 @@ with tab1:
             ]
             
             for question in quick_questions:
-                if st.button(f"💬 {question}", key=f"quick_{question}", help="Click to ask this question"):
+                if st.button(f" {question}", key=f"quick_{question}", help="Click to ask this question"):
                     # Add user message
                     st.session_state.messages.append({"role": "user", "content": question})
                     
@@ -542,7 +542,7 @@ with tab1:
                         if 'chart_data' in response and response['chart_data']:
                             st.session_state.message_charts[message_idx] = response['chart_data']
                     except Exception as e:
-                        st.session_state.messages.append({"role": "assistant", "content": f"❌ Error: {str(e)}"})
+                        st.session_state.messages.append({"role": "assistant", "content": f" Error: {str(e)}"})
                     
                     st.rerun()
             
@@ -550,14 +550,14 @@ with tab1:
         else:
             st.markdown("""
             <div class="metric-card">
-                <h3>🚀 Ready to Start</h3>
+                <h3> Ready to Start</h3>
                 <p>Upload a CSV file to begin analyzing your data with AI!</p>
             </div>
             """, unsafe_allow_html=True)
 
 with tab2:
     # DATA OVERVIEW TAB
-    st.header("📊 Data Overview")
+    st.header(" Data Overview")
     
     if st.session_state.uploaded_data is not None:
         df = st.session_state.uploaded_data
@@ -578,7 +578,7 @@ with tab2:
         col1, col2 = st.columns(2)
         
         with col1:
-            st.subheader("📋 Column Information")
+            st.subheader(" Column Information")
             col_info = pd.DataFrame({
                 'Column': df.columns,
                 'Type': df.dtypes,
@@ -589,11 +589,11 @@ with tab2:
             st.dataframe(col_info, use_container_width=True)
         
         with col2:
-            st.subheader("👀 Sample Data")
+            st.subheader(" Sample Data")
             st.dataframe(df.head(10), use_container_width=True)
         
         # Data quality analysis
-        st.subheader("🔍 Data Quality Analysis")
+        st.subheader(" Data Quality Analysis")
         
         # Missing values
         missing_data = df.isnull().sum()
@@ -606,7 +606,7 @@ with tab2:
             )
             st.plotly_chart(fig_missing, use_container_width=True)
         else:
-            st.success("✅ No missing values found!")
+            st.success(" No missing values found!")
         
         # Data types distribution
         try:
@@ -628,24 +628,24 @@ with tab2:
                 st.write(f"- {str(dtype)}: {count} columns")
         
     else:
-        st.info("👆 Please upload a CSV file to view data overview")
+        st.info(" Please upload a CSV file to view data overview")
 
 with tab3:
     # ADVANCED FEATURES TAB
-    st.header("🔧 Advanced Features")
+    st.header(" Advanced Features")
     
     if st.session_state.uploaded_data is not None:
         st.markdown("""
         <div class="metric-card">
-            <h3>🎯 Advanced Analytics Features</h3>
+            <h3> Advanced Analytics Features</h3>
             <p>Professional-grade analytics tools for deep data insights:</p>
             <ul>
-                <li>📈 <strong>Cohort Analysis</strong> - Customer retention and behavior tracking</li>
-                <li>🧪 <strong>A/B Testing</strong> - Statistical significance testing</li>
-                <li>📊 <strong>Comparative Analysis</strong> - Period-over-period comparisons</li>
-                <li>🎯 <strong>Scenario Planning</strong> - What-if analysis</li>
-                <li>🔄 <strong>Real-time Refresh</strong> - Auto-updating data</li>
-                <li>🎤 <strong>Voice Interface</strong> - Speech-to-text and text-to-speech</li>
+                <li> <strong>Cohort Analysis</strong> - Customer retention and behavior tracking</li>
+                <li> <strong>A/B Testing</strong> - Statistical significance testing</li>
+                <li> <strong>Comparative Analysis</strong> - Period-over-period comparisons</li>
+                <li> <strong>Scenario Planning</strong> - What-if analysis</li>
+                <li> <strong>Real-time Refresh</strong> - Auto-updating data</li>
+                <li> <strong>Voice Interface</strong> - Speech-to-text and text-to-speech</li>
             </ul>
             <p><em>These features are available as separate modules and can be accessed when needed.</em></p>
         </div>
@@ -664,26 +664,26 @@ with tab3:
                 pass
         
         if date_cols:
-            st.success(f"✅ Found {len(date_cols)} date columns: {', '.join(date_cols)}")
-            st.info("💡 Your data is suitable for cohort analysis and time-based comparisons!")
+            st.success(f" Found {len(date_cols)} date columns: {', '.join(date_cols)}")
+            st.info(" Your data is suitable for cohort analysis and time-based comparisons!")
         else:
-            st.warning("⚠️ No date columns detected. Advanced analytics work best with time-series data.")
+            st.warning(" No date columns detected. Advanced analytics work best with time-series data.")
         
         # Check for categorical columns
         categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
         if categorical_cols:
-            st.success(f"✅ Found {len(categorical_cols)} categorical columns: {', '.join(categorical_cols)}")
-            st.info("💡 Your data is suitable for A/B testing and comparative analysis!")
+            st.success(f" Found {len(categorical_cols)} categorical columns: {', '.join(categorical_cols)}")
+            st.info(" Your data is suitable for A/B testing and comparative analysis!")
         
         # Feature status
-        st.subheader("🚀 Feature Status")
+        st.subheader(" Feature Status")
         
         col1, col2, col3 = st.columns(3)
         
         with col1:
             st.markdown("""
             <div class="metric-card">
-                <h4>📈 Cohort Analysis</h4>
+                <h4> Cohort Analysis</h4>
                 <p>Status: <span class="status-indicator status-online"></span> Ready</p>
                 <p>Requires: Date + User columns</p>
             </div>
@@ -692,7 +692,7 @@ with tab3:
         with col2:
             st.markdown("""
             <div class="metric-card">
-                <h4>🧪 A/B Testing</h4>
+                <h4> A/B Testing</h4>
                 <p>Status: <span class="status-indicator status-online"></span> Ready</p>
                 <p>Requires: Group + Metric columns</p>
             </div>
@@ -701,43 +701,43 @@ with tab3:
         with col3:
             st.markdown("""
             <div class="metric-card">
-                <h4>🔄 Real-time</h4>
+                <h4> Real-time</h4>
                 <p>Status: <span class="status-indicator status-offline"></span> Coming Soon</p>
                 <p>Auto-refresh capabilities</p>
             </div>
             """, unsafe_allow_html=True)
         
         # Quick analysis suggestions
-        st.subheader("💡 Suggested Analyses")
+        st.subheader(" Suggested Analyses")
         
         if date_cols and len(categorical_cols) > 0:
             st.markdown("**Based on your data, you can perform:**")
-            st.markdown("- 📈 **Cohort Analysis** using date and categorical columns")
-            st.markdown("- 🧪 **A/B Testing** comparing different categories")
-            st.markdown("- 📊 **Time Series Analysis** for trend identification")
+            st.markdown("-  **Cohort Analysis** using date and categorical columns")
+            st.markdown("-  **A/B Testing** comparing different categories")
+            st.markdown("-  **Time Series Analysis** for trend identification")
         
         # Placeholder for future implementation
-        st.info("🚧 Advanced analytics features will be implemented as separate modules. For now, use the chatbot for detailed analysis!")
+        st.info(" Advanced analytics features will be implemented as separate modules. For now, use the chatbot for detailed analysis!")
         
     else:
-        st.info("👆 Please upload a CSV file to access advanced features")
+        st.info(" Please upload a CSV file to access advanced features")
 
 with tab4:
     # SETTINGS TAB
-    st.header("⚙️ Settings")
+    st.header(" Settings")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("🎨 Appearance")
-        st.info("🌙 **Dark Mode Only** - Optimized for extended use and reduced eye strain")
+        st.subheader(" Appearance")
+        st.info(" **Dark Mode Only** - Optimized for extended use and reduced eye strain")
         
-        st.subheader("📤 Export Options")
+        st.subheader(" Export Options")
         if st.session_state.uploaded_data is not None:
             # Export data as CSV
             csv = st.session_state.uploaded_data.to_csv(index=False)
             st.download_button(
-                label="📊 Download Data (CSV)",
+                label=" Download Data (CSV)",
                 data=csv,
                 file_name=f"{st.session_state.uploaded_filename}_export.csv",
                 mime="text/csv",
@@ -748,7 +748,7 @@ with tab4:
             if st.session_state.messages:
                 chat_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
                 st.download_button(
-                    label="💬 Download Chat (TXT)",
+                    label=" Download Chat (TXT)",
                     data=chat_text,
                     file_name=f"chat_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
                     mime="text/plain",
@@ -756,7 +756,7 @@ with tab4:
                 )
     
     with col2:
-        st.subheader("ℹ️ System Information")
+        st.subheader("ℹ System Information")
         st.info(f"""
         **Current Session:**
         - Messages: {len(st.session_state.messages)}
@@ -765,8 +765,8 @@ with tab4:
         - File: {st.session_state.uploaded_filename if st.session_state.uploaded_filename else 'None'}
         """)
         
-        st.subheader("🔄 System Actions")
-        if st.button("🗑️ Clear All Data", type="secondary"):
+        st.subheader(" System Actions")
+        if st.button(" Clear All Data", type="secondary"):
             st.session_state.messages = []
             st.session_state.message_charts = {}
             st.session_state.uploaded_data = None
@@ -774,7 +774,7 @@ with tab4:
             st.session_state.file_uploaded = False
             st.rerun()
         
-        if st.button("🔄 Reset Session", type="secondary"):
+        if st.button(" Reset Session", type="secondary"):
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
             st.rerun()
@@ -782,7 +782,7 @@ with tab4:
 # Sidebar - File Upload (always visible)
 with st.sidebar:
     st.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     
     uploaded_file = st.file_uploader(
         "Choose CSV file",
@@ -798,17 +798,17 @@ with st.sidebar:
             st.session_state.uploaded_filename = uploaded_file.name
             st.session_state.file_uploaded = True  # Set flag for main content
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Prominent instruction
             st.markdown("""
             <div style='background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); 
                         padding: 1rem; border-radius: 10px; margin: 1rem 0;
                         border: 2px solid #66bb6a;'>
-                <h4 style='color: white; margin: 0;'>🚀 Ready to Chat!</h4>
+                <h4 style='color: white; margin: 0;'> Ready to Chat!</h4>
                 <p style='color: white; margin: 0.5rem 0 0 0;'>
-                    Go to the <strong>🤖 AI Chatbot</strong> tab above to start asking questions!
+                    Go to the <strong> AI Chatbot</strong> tab above to start asking questions!
                 </p>
             </div>
             """, unsafe_allow_html=True)
@@ -817,16 +817,16 @@ with st.sidebar:
             st.rerun()
             
             # Show preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
             
             # Show columns
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     st.write(f"• {col} ({df[col].dtype})")
                     
         except Exception as e:
-            st.error(f"❌ Error loading file: {str(e)}")
+            st.error(f" Error loading file: {str(e)}")
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -834,7 +834,7 @@ with st.sidebar:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 2rem;'>
-    <p>🚀 AI Analytics Intelligence System - Professional Edition</p>
-    <p>💡 Robust, responsive, and feature-rich analytics platform</p>
+    <p> AI Analytics Intelligence System - Professional Edition</p>
+    <p> Robust, responsive, and feature-rich analytics platform</p>
 </div>
 """, unsafe_allow_html=True)

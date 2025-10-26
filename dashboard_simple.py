@@ -18,7 +18,7 @@ from src.conversational.smart_agent import SmartAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard",
-    page_icon="🤖",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -145,13 +145,13 @@ def get_theme_css(theme):
 st.markdown(get_theme_css(st.session_state.get('theme', 'light')), unsafe_allow_html=True)
 
 # Title
-st.markdown('<div class="main-header">🤖 AI Analytics Intelligence System</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> AI Analytics Intelligence System</div>', unsafe_allow_html=True)
 st.markdown("**Ask questions, get instant analytics with auto-generated visualizations**")
 st.markdown("---")
 
 # Sidebar
 with st.sidebar:
-    st.header("🎨 Settings")
+    st.header(" Settings")
     theme = st.selectbox(
         "Theme",
         ["light", "dark"],
@@ -165,7 +165,7 @@ with st.sidebar:
     st.markdown("---")
     
     # File Upload
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     uploaded_file = st.file_uploader(
         "Choose CSV file",
         type=['csv'],
@@ -179,26 +179,26 @@ with st.sidebar:
             st.session_state.uploaded_data = df
             st.session_state.uploaded_filename = uploaded_file.name
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Show preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
             
             # Show columns
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     st.write(f"• {col} ({df[col].dtype})")
                     
         except Exception as e:
-            st.error(f"❌ Error loading file: {str(e)}")
+            st.error(f" Error loading file: {str(e)}")
     
     st.markdown("---")
     
     # Quick Actions
     if st.session_state.uploaded_data is not None:
-        st.header("⚡ Quick Actions")
+        st.header(" Quick Actions")
         quick_questions = [
             "What is the total revenue?",
             "Show me top 5 products",
@@ -209,7 +209,7 @@ with st.sidebar:
         ]
         
         for question in quick_questions:
-            if st.button(f"💬 {question}", key=f"quick_{question}"):
+            if st.button(f" {question}", key=f"quick_{question}"):
                 st.session_state.messages.append({"role": "user", "content": question})
                 st.rerun()
 
@@ -218,7 +218,7 @@ col1, col2 = st.columns([2, 1])
 
 with col1:
     # Chat interface
-    st.header("🤖 AI Analytics Assistant")
+    st.header(" AI Analytics Assistant")
     
     # Display chat messages
     for message in st.session_state.messages:
@@ -244,7 +244,7 @@ with col1:
                 
                 # Get AI response
                 try:
-                    with st.spinner("🤖 AI is thinking..."):
+                    with st.spinner(" AI is thinking..."):
                         agent = SmartAnalyticsAgent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask(user_input)
@@ -258,36 +258,36 @@ with col1:
                     
                     # Show suggestions if vague
                     if response.get('is_vague', False) and 'suggested_questions' in response:
-                        st.markdown("**💡 Try asking:**")
+                        st.markdown("** Try asking:**")
                         for suggestion in response['suggested_questions'][:3]:
-                            if st.button(f"💬 {suggestion}", key=f"suggest_{suggestion}"):
+                            if st.button(f" {suggestion}", key=f"suggest_{suggestion}"):
                                 st.session_state.messages.append({"role": "user", "content": suggestion})
                                 st.rerun()
                     
                     st.rerun()
                     
                 except Exception as e:
-                    st.error(f"❌ Error: {str(e)}")
+                    st.error(f" Error: {str(e)}")
         
         # Clear chat button
-        if st.button("🗑️ Clear Chat", key="clear_chat"):
+        if st.button(" Clear Chat", key="clear_chat"):
             st.session_state.messages = []
             st.rerun()
             
     else:
-        st.info("👆 Please upload a CSV file to start chatting with your data")
+        st.info(" Please upload a CSV file to start chatting with your data")
 
 with col2:
     # Data metrics
     if st.session_state.uploaded_data is not None:
-        st.header("📊 Data Overview")
+        st.header(" Data Overview")
         
         col2_1, col2_2 = st.columns(2)
         
         with col2_1:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>📊 Total Rows</h3>
+                <h3> Total Rows</h3>
                 <h2>{len(st.session_state.uploaded_data):,}</h2>
             </div>
             ''', unsafe_allow_html=True)
@@ -295,7 +295,7 @@ with col2:
         with col2_2:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>📋 Columns</h3>
+                <h3> Columns</h3>
                 <h2>{len(st.session_state.uploaded_data.columns)}</h2>
             </div>
             ''', unsafe_allow_html=True)
@@ -305,20 +305,20 @@ with col2:
                           (len(st.session_state.uploaded_data) * len(st.session_state.uploaded_data.columns))) * 100
         
         if null_percentage < 5:
-            st.success(f"✅ Data Quality: Excellent ({null_percentage:.1f}% missing)")
+            st.success(f" Data Quality: Excellent ({null_percentage:.1f}% missing)")
         elif null_percentage < 15:
-            st.warning(f"⚠️ Data Quality: Good ({null_percentage:.1f}% missing)")
+            st.warning(f" Data Quality: Good ({null_percentage:.1f}% missing)")
         else:
-            st.error(f"❌ Data Quality: Needs attention ({null_percentage:.1f}% missing)")
+            st.error(f" Data Quality: Needs attention ({null_percentage:.1f}% missing)")
         
         # Export options
         st.markdown("---")
-        st.header("📤 Export")
+        st.header(" Export")
         
         # Export data as CSV
         csv = st.session_state.uploaded_data.to_csv(index=False)
         st.download_button(
-            label="📊 Download Data (CSV)",
+            label=" Download Data (CSV)",
             data=csv,
             file_name=f"{st.session_state.uploaded_filename}_export.csv",
             mime="text/csv",
@@ -329,7 +329,7 @@ with col2:
         if st.session_state.messages:
             chat_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
             st.download_button(
-                label="💬 Download Chat (TXT)",
+                label=" Download Chat (TXT)",
                 data=chat_text,
                 file_name=f"chat_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
                 mime="text/plain",
@@ -339,7 +339,7 @@ with col2:
     else:
         st.markdown("""
         <div class="metric-card">
-            <h3>🚀 Get Started</h3>
+            <h3> Get Started</h3>
             <p>Upload a CSV file to begin analyzing your data with AI!</p>
         </div>
         """, unsafe_allow_html=True)
@@ -348,7 +348,7 @@ with col2:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 1rem;'>
-    <p>🤖 AI Analytics Intelligence System - Simple & Reliable</p>
-    <p>💡 No infinite loops - just clean, working analytics!</p>
+    <p> AI Analytics Intelligence System - Simple & Reliable</p>
+    <p> No infinite loops - just clean, working analytics!</p>
 </div>
 """, unsafe_allow_html=True)

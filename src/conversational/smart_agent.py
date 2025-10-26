@@ -348,7 +348,7 @@ I'm not sure how to analyze that with your current dataset. Could you please be 
         # Product/Category questions
         product_cols = [c for c in categorical_cols if any(word in c.lower() for word in ['product', 'item', 'category', 'type'])]
         if product_cols and numeric_cols:
-            suggestions.append(f"🏆 Show me the top 5 {product_cols[0].replace('_', ' ')}")
+            suggestions.append(f" Show me the top 5 {product_cols[0].replace('_', ' ')}")
         
         # Regional/Segment questions
         segment_cols = [c for c in categorical_cols if any(word in c.lower() for word in ['region', 'location', 'segment', 'group', 'category'])]
@@ -357,11 +357,11 @@ I'm not sure how to analyze that with your current dataset. Could you please be 
         
         # Time-based questions
         if date_cols and numeric_cols:
-            suggestions.append(f"📈 Show me trends in {numeric_cols[0].replace('_', ' ')} over time")
+            suggestions.append(f" Show me trends in {numeric_cols[0].replace('_', ' ')} over time")
         
         # Average questions
         if numeric_cols:
-            suggestions.append(f"📊 What is the average {numeric_cols[0].replace('_', ' ')}?")
+            suggestions.append(f" What is the average {numeric_cols[0].replace('_', ' ')}?")
         
         # Customer questions
         customer_cols = [c for c in categorical_cols if any(word in c.lower() for word in ['customer', 'client', 'user'])]
@@ -371,9 +371,9 @@ I'm not sure how to analyze that with your current dataset. Could you please be 
         # If we have few suggestions, add generic ones
         if len(suggestions) < 3:
             suggestions.extend([
-                "📋 Give me a summary of the data",
-                "🔍 What are the key statistics?",
-                "💡 What insights can you find?"
+                " Give me a summary of the data",
+                " What are the key statistics?",
+                " What insights can you find?"
             ])
         
         return suggestions[:6]  # Return top 6 suggestions
@@ -892,9 +892,9 @@ The data shows a **{direction}** trend over the analyzed period. The {value_col}
                 top_item = list(ranking.keys())[0]
                 bottom_item = list(ranking.keys())[-1]
                 
-                recommendations.append(f"💡 Prioritize resources for {top_item} (top performer)")
-                recommendations.append(f"⚠️ Investigate underperformance of {bottom_item}")
-                recommendations.append(f"📊 Consider reallocating budget from low to high performers")
+                recommendations.append(f" Prioritize resources for {top_item} (top performer)")
+                recommendations.append(f" Investigate underperformance of {bottom_item}")
+                recommendations.append(f" Consider reallocating budget from low to high performers")
         
         elif question_type == 'trend_analysis':
             direction = data.get('trend_direction')
@@ -902,17 +902,17 @@ The data shows a **{direction}** trend over the analyzed period. The {value_col}
             
             if direction == 'decreasing':
                 recommendations.append(f"🔴 Urgent: Address {abs(change):.1f}% decline with corrective actions")
-                recommendations.append(f"🔍 Conduct root cause analysis to identify drivers")
+                recommendations.append(f" Conduct root cause analysis to identify drivers")
             elif direction == 'increasing':
-                recommendations.append(f"✅ Capitalize on positive {change:.1f}% growth trend")
-                recommendations.append(f"📈 Consider scaling successful strategies")
+                recommendations.append(f" Capitalize on positive {change:.1f}% growth trend")
+                recommendations.append(f" Consider scaling successful strategies")
             else:
-                recommendations.append(f"📊 Monitor closely for emerging patterns")
+                recommendations.append(f" Monitor closely for emerging patterns")
         
         elif question_type == 'aggregation':
             # Add context-based recommendations
-            recommendations.append("📋 Regular monitoring recommended")
-            recommendations.append("📊 Set up automated alerts for significant changes")
+            recommendations.append(" Regular monitoring recommended")
+            recommendations.append(" Set up automated alerts for significant changes")
         
         return recommendations
     

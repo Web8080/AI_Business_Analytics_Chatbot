@@ -73,3 +73,8 @@ htmlcov/
 *.db
 *.sqlite3
 
+# Markdown files (exclude all except README.md)
+*.md
+!README.md
+!results/README.md
+

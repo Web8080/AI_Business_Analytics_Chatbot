@@ -8,7 +8,7 @@
 
 > **Fully Automated Analytics Intelligence System** that ingests data from PDF/CSV files, performs end-to-end analysis, and provides natural language conversational interface for non-technical users.
 
-## 🌐 Live Demo
+## Live Demo
 
 **Try it online - no installation required!**
 
@@ -30,25 +30,25 @@ This system eliminates **95% of manual analytics workload** by automating the en
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                   Conversational Interface                   │
-│              (LangChain + OpenAI GPT-4)                     │
-└──────────────────┬──────────────────────────────────────────┘
-                   │
-┌──────────────────▼──────────────────────────────────────────┐
-│                    FastAPI Backend                           │
-│            (RESTful API with async support)                  │
-└──────┬────────────┬────────────┬────────────┬───────────────┘
-       │            │            │            │
-┌──────▼──────┐ ┌──▼──────┐ ┌──▼──────┐ ┌──▼──────────┐
-│   Data      │ │Analytics│ │Visualiz-│ │   Report    │
-│ Ingestion   │ │ Engine  │ │ ation   │ │ Generation  │
-│             │ │         │ │         │ │             │
-│• PDF Parser │ │• Descrip│ │• Plotly │ │• PDF Reports│
-│• CSV Parser │ │• Diagnos│ │• Charts │ │• Executive  │
-│• Validation │ │• Predict│ │• Dashbrd│ │  Summaries  │
-│• Cleaning   │ │• Prescri│ │         │ │             │
-└─────────────┘ └─────────┘ └─────────┘ └─────────────┘
+
+                   Conversational Interface                   
+              (LangChain + OpenAI GPT-4)                     
+
+                   
+
+                    FastAPI Backend                           
+            (RESTful API with async support)                  
+
+                                           
+   
+   Data       Analytics Visualiz-    Report    
+ Ingestion     Engine    ation     Generation  
+                                               
+• PDF Parser  • Descrip • Plotly  • PDF Reports
+• CSV Parser  • Diagnos • Charts  • Executive  
+• Validation  • Predict • Dashbrd   Summaries  
+• Cleaning    • Prescri                        
+   
 ```
 
 ## Interactive Dashboard
@@ -63,20 +63,20 @@ Access at: **http://localhost:8501**
 
 ### Dashboard Features
 
-**🤖 AI Chatbot Interface**
+**AI Chatbot Interface**
 - Upload CSV files via drag-and-drop
 - Ask questions in natural language
 - Get instant analytics with auto-generated visualizations
 - Intelligent vague question detection
 - Contextual suggestions based on your data
 
-**🎯 Model Accuracy Page**
+**Model Accuracy Page**
 - Real-time performance metrics (MAE, MAPE, R²)
 - Feature importance charts
 - Churn prediction analytics
 - Model comparison matrix
 
-**📊 Analytics Pages**
+**Analytics Pages**
 - Executive overview with KPIs
 - Descriptive analytics & statistics
 - Predictive models & forecasting
@@ -86,19 +86,19 @@ Access at: **http://localhost:8501**
 
 ### Dashboard Screenshots
 
-#### 📊 Main Dashboard Interface
+#### Main Dashboard Interface
 ![Dashboard Overview](dashboard_overview.png)
 *Clean, modern interface with data upload, AI chat, and real-time analytics*
 
-#### 🤖 AI Chatbot in Action
+#### AI Chatbot in Action
 ![Chatbot Interface](chatbot_interface.png)
 *Natural language queries with instant responses and auto-generated visualizations*
 
-#### 📈 Analytics Results & Visualizations
+#### Analytics Results & Visualizations
 ![Analytics Results](analytics_results.png)
 *Interactive charts, confidence scores, and strategic recommendations*
 
-#### 🎯 Intelligent Question Handling
+#### Intelligent Question Handling
 ![Vague Question Handling](vague_question_handling.png)
 *Smart detection of vague questions with contextual suggestions*
 
@@ -292,36 +292,36 @@ Once the server is running, access interactive API documentation at:
 
 ```
 AI_Analytics_Intelligence_System/
-├── src/
-│   ├── api/                    # FastAPI backend
-│   │   └── main.py            # Main API application
-│   ├── data_ingestion/        # Data parsing modules
-│   │   ├── pdf_parser.py      # PDF table extraction
-│   │   └── csv_parser.py      # CSV parsing with validation
-│   ├── data_cleaning/         # Data cleaning pipeline
-│   │   └── cleaner.py         # Automated cleaning
-│   ├── analytics/             # Analytics engine
-│   │   ├── descriptive.py     # Summary statistics, KPIs
-│   │   ├── diagnostic.py      # Root cause analysis
-│   │   ├── predictive.py      # Forecasting, ML models
-│   │   └── prescriptive.py    # Recommendations
-│   ├── visualization/         # Visualization engine
-│   │   └── charts.py          # Plotly charts
-│   ├── conversational/        # AI interface
-│   │   └── agent.py           # LangChain agent
-│   └── reports/               # Report generation
-│       └── generator.py       # PDF report builder
-├── data/
-│   ├── uploads/               # Uploaded files
-│   ├── processed/             # Processed datasets
-│   └── sample/                # Sample data files
-├── reports/
-│   └── generated/             # Generated reports
-├── logs/                      # Application logs
-├── config.py                  # Configuration management
-├── requirements.txt           # Python dependencies
-├── .env.example              # Environment template
-└── README.md                 # This file
+ src/
+    api/                    # FastAPI backend
+       main.py            # Main API application
+    data_ingestion/        # Data parsing modules
+       pdf_parser.py      # PDF table extraction
+       csv_parser.py      # CSV parsing with validation
+    data_cleaning/         # Data cleaning pipeline
+       cleaner.py         # Automated cleaning
+    analytics/             # Analytics engine
+       descriptive.py     # Summary statistics, KPIs
+       diagnostic.py      # Root cause analysis
+       predictive.py      # Forecasting, ML models
+       prescriptive.py    # Recommendations
+    visualization/         # Visualization engine
+       charts.py          # Plotly charts
+    conversational/        # AI interface
+       agent.py           # LangChain agent
+    reports/               # Report generation
+        generator.py       # PDF report builder
+ data/
+    uploads/               # Uploaded files
+    processed/             # Processed datasets
+    sample/                # Sample data files
+ reports/
+    generated/             # Generated reports
+ logs/                      # Application logs
+ config.py                  # Configuration management
+ requirements.txt           # Python dependencies
+ .env.example              # Environment template
+ README.md                 # This file
 ```
 
 ## Real-World Impact

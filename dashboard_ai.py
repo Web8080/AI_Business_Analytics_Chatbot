@@ -18,7 +18,7 @@ from src.conversational.smart_agent import SmartAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard",
-    page_icon="📊",
+    page_icon="",
     layout="wide"
 )
 
@@ -82,13 +82,13 @@ if 'uploaded_data' not in st.session_state:
     st.session_state.uploaded_data = None
 
 # Title
-st.markdown('<div class="main-header">🤖 AI-Powered Analytics Intelligence System</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> AI-Powered Analytics Intelligence System</div>', unsafe_allow_html=True)
 st.markdown("##### Ask questions, get instant analytics with auto-generated visualizations")
 st.markdown("---")
 
 # Sidebar
 with st.sidebar:
-    st.header("📤 Upload Data")
+    st.header(" Upload Data")
     
     uploaded_file = st.file_uploader(
         "Choose CSV file",
@@ -102,15 +102,15 @@ with st.sidebar:
             st.session_state.uploaded_data = df
             st.session_state.agent.load_data(df)
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Data preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head(5), use_container_width=True)
             
             # Column info
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     dtype = 'Numeric' if pd.api.types.is_numeric_dtype(df[col]) else 'Text'
                     st.text(f"• {col} ({dtype})")
@@ -121,7 +121,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Sample questions
-    st.markdown("### 💡 Example Questions")
+    st.markdown("###  Example Questions")
     example_questions = [
         "What is the total revenue?",
         "Show me top 5 products",
@@ -137,7 +137,7 @@ with st.sidebar:
     
     st.markdown("---")
     
-    if st.button("🗑️ Clear Chat", use_container_width=True):
+    if st.button(" Clear Chat", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
 
@@ -187,18 +187,18 @@ if st.session_state.uploaded_data is not None:
             # Show recommendations or suggested questions
             if msg.get('is_vague') and msg['content'].get('recommendations'):
                 # This is a vague question - show suggested questions
-                st.markdown("**📝 Try asking:**")
+                st.markdown("** Try asking:**")
                 for suggestion in msg['content']['recommendations']:
                     st.markdown(f"- {suggestion}")
             elif msg['content'].get('recommendations'):
                 # Strategic recommendations
-                with st.expander("💡 Strategic Recommendations"):
+                with st.expander(" Strategic Recommendations"):
                     for rec in msg['content']['recommendations']:
                         st.markdown(f"- {rec}")
             
             # Show SQL equivalent
             if msg['content'].get('sql_equivalent'):
-                with st.expander("🔍 Query Details"):
+                with st.expander(" Query Details"):
                     st.code(msg['content']['sql_equivalent'], language='sql')
                     st.caption(f"Execution time: {msg['content'].get('execution_time', 0):.3f}s")
     
@@ -219,7 +219,7 @@ if st.session_state.uploaded_data is not None:
         })
         
         # Get AI response with analytics and visualizations
-        with st.spinner('🤖 Analyzing your data...'):
+        with st.spinner(' Analyzing your data...'):
             response = st.session_state.agent.ask(user_input)
             response['timestamp'] = pd.Timestamp.now().isoformat()
         
@@ -239,13 +239,13 @@ else:
     
     with col2:
         st.markdown("""
-        ## 👋 Welcome to AI Analytics Intelligence System
+        ##  Welcome to AI Analytics Intelligence System
         
         ### Get Started in 3 Steps:
         
-        1. **📤 Upload** your CSV file (left sidebar)
-        2. **💬 Ask** questions in natural language
-        3. **📊 Get** instant analytics with auto-generated charts
+        1. ** Upload** your CSV file (left sidebar)
+        2. ** Ask** questions in natural language
+        3. ** Get** instant analytics with auto-generated charts
         
         ---
         
@@ -268,7 +268,7 @@ else:
         Located in: `data/sample/`
         """)
         
-        st.info("👈 Upload a CSV file from the sidebar to begin!")
+        st.info(" Upload a CSV file from the sidebar to begin!")
 
 # Footer
 st.markdown("---")

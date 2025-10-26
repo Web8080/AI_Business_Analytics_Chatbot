@@ -35,7 +35,7 @@ from src.conversational.smart_agent import SmartAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard - Voice",
-    page_icon="🎤",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -76,21 +76,21 @@ class VoiceProcessor:
         
         try:
             with self.microphone as source:
-                st.info("🎤 Listening... Speak now!")
+                st.info(" Listening... Speak now!")
                 self.recognizer.adjust_for_ambient_noise(source)
                 audio = self.recognizer.listen(source, timeout=5)
             
-            st.info("🔄 Processing speech...")
+            st.info(" Processing speech...")
             text = self.recognizer.recognize_google(audio, language=st.session_state.speech_language)
             return text
         except sr.WaitTimeoutError:
             st.error("⏰ No speech detected. Please try again.")
             return None
         except sr.UnknownValueError:
-            st.error("❌ Could not understand speech. Please try again.")
+            st.error(" Could not understand speech. Please try again.")
             return None
         except sr.RequestError as e:
-            st.error(f"❌ Speech recognition error: {e}")
+            st.error(f" Speech recognition error: {e}")
             return None
     
     def text_to_speech(self, text):
@@ -121,7 +121,7 @@ class VoiceProcessor:
             
             return True
         except Exception as e:
-            st.error(f"❌ Text-to-speech error: {e}")
+            st.error(f" Text-to-speech error: {e}")
             return False
 
 # Initialize voice processor
@@ -252,21 +252,21 @@ def get_theme_css(theme):
 st.markdown(get_theme_css(st.session_state.theme), unsafe_allow_html=True)
 
 # Title
-st.markdown('<div class="main-header">🎤 AI Analytics Dashboard - Voice Edition</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> AI Analytics Dashboard - Voice Edition</div>', unsafe_allow_html=True)
 st.markdown("Ask questions **by voice** and get **spoken responses** with instant analytics")
 st.markdown("---")
 
 # Voice status indicator
 if VOICE_AVAILABLE and st.session_state.voice_enabled:
-    st.markdown('<div class="voice-indicator">🎤 Voice Mode: ON</div>', unsafe_allow_html=True)
+    st.markdown('<div class="voice-indicator"> Voice Mode: ON</div>', unsafe_allow_html=True)
 elif VOICE_AVAILABLE:
-    st.info("🎤 Voice features available - enable in sidebar")
+    st.info(" Voice features available - enable in sidebar")
 else:
-    st.warning("🎤 Voice features not available - install required packages")
+    st.warning(" Voice features not available - install required packages")
 
 # Sidebar with Voice Controls
 with st.sidebar:
-    st.header("🎤 Voice Settings")
+    st.header(" Voice Settings")
     
     if VOICE_AVAILABLE:
         # Voice enable/disable
@@ -315,20 +315,20 @@ with st.sidebar:
                 st.rerun()
             
             # Test voice
-            if st.button("🎤 Test Voice Input"):
+            if st.button(" Test Voice Input"):
                 with st.spinner("Listening..."):
                     text = voice_processor.speech_to_text()
                     if text:
-                        st.success(f"🎤 Heard: '{text}'")
+                        st.success(f" Heard: '{text}'")
                         st.session_state.messages.append({"role": "user", "content": text})
                         st.rerun()
             
-            if st.button("🔊 Test Voice Output"):
+            if st.button(" Test Voice Output"):
                 test_text = "Hello! This is a test of the voice output system."
                 if voice_processor.text_to_speech(test_text):
-                    st.success("🔊 Voice output test completed!")
+                    st.success(" Voice output test completed!")
                 else:
-                    st.error("❌ Voice output test failed")
+                    st.error(" Voice output test failed")
     else:
         st.error("Voice features not available")
         st.code("pip install speech_recognition pyttsx3 gtts pygame")
@@ -336,7 +336,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Theme toggle
-    st.header("🎨 Settings")
+    st.header(" Settings")
     theme = st.selectbox(
         "Theme",
         ["light", "dark"],
@@ -350,7 +350,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Quick Actions
-    st.header("⚡ Quick Actions")
+    st.header(" Quick Actions")
     quick_questions = [
         "What is the total revenue?",
         "Show me top 5 products",
@@ -361,14 +361,14 @@ with st.sidebar:
     ]
     
     for question in quick_questions:
-        if st.button(f"💬 {question}", key=f"quick_{question}"):
+        if st.button(f" {question}", key=f"quick_{question}"):
             st.session_state.messages.append({"role": "user", "content": question})
             st.rerun()
     
     st.markdown("---")
     
     # File Upload
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     uploaded_file = st.file_uploader(
         "Choose CSV file",
         type=['csv'],
@@ -382,27 +382,27 @@ with st.sidebar:
             st.session_state.uploaded_data = df
             st.session_state.uploaded_filename = uploaded_file.name
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Show preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
             
             # Show columns
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     st.write(f"• {col} ({df[col].dtype})")
                     
         except Exception as e:
-            st.error(f"❌ Error loading file: {str(e)}")
+            st.error(f" Error loading file: {str(e)}")
 
 # Main content area
 col1, col2 = st.columns([2, 1])
 
 with col1:
     # Chat interface
-    st.header("🤖 AI Analytics Assistant")
+    st.header(" AI Analytics Assistant")
     
     # Display chat messages
     for message in st.session_state.messages:
@@ -416,15 +416,15 @@ with col1:
         col_voice1, col_voice2 = st.columns([1, 1])
         
         with col_voice1:
-            if st.button("🎤 Ask by Voice", type="primary", help="Click and speak your question"):
-                with st.spinner("🎤 Listening..."):
+            if st.button(" Ask by Voice", type="primary", help="Click and speak your question"):
+                with st.spinner(" Listening..."):
                     text = voice_processor.speech_to_text()
                     if text:
                         st.session_state.messages.append({"role": "user", "content": text})
                         st.rerun()
         
         with col_voice2:
-            if st.button("🔊 Speak Last Response", help="Have the AI speak its last response"):
+            if st.button(" Speak Last Response", help="Have the AI speak its last response"):
                 if st.session_state.messages and st.session_state.messages[-1]["role"] == "assistant":
                     voice_processor.text_to_speech(st.session_state.messages[-1]["content"])
     
@@ -457,21 +457,21 @@ with col1:
                     st.rerun()
                     
                 except Exception as e:
-                    st.error(f"❌ Error: {str(e)}")
+                    st.error(f" Error: {str(e)}")
     else:
-        st.info("👆 Please upload a CSV file to start chatting with your data")
+        st.info(" Please upload a CSV file to start chatting with your data")
 
 with col2:
     # Voice metrics
     if st.session_state.uploaded_data is not None:
-        st.header("🎤 Voice Analytics")
+        st.header(" Voice Analytics")
         
         # Voice status
         if VOICE_AVAILABLE and st.session_state.voice_enabled:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>🎤 Voice Status</h3>
-                <h2>🟢 Active</h2>
+                <h3> Voice Status</h3>
+                <h2> Active</h2>
                 <p>Language: {st.session_state.speech_language.upper()}</p>
                 <p>Speed: {st.session_state.voice_speed}x</p>
             </div>
@@ -479,8 +479,8 @@ with col2:
         else:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>🎤 Voice Status</h3>
-                <h2>🔴 Inactive</h2>
+                <h3> Voice Status</h3>
+                <h2> Inactive</h2>
                 <p>Enable in sidebar</p>
             </div>
             ''', unsafe_allow_html=True)
@@ -491,7 +491,7 @@ with col2:
         with col2_1:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>📊 Total Rows</h3>
+                <h3> Total Rows</h3>
                 <h2>{len(st.session_state.uploaded_data):,}</h2>
             </div>
             ''', unsafe_allow_html=True)
@@ -499,7 +499,7 @@ with col2:
         with col2_2:
             st.markdown(f'''
             <div class="metric-card">
-                <h3>📋 Columns</h3>
+                <h3> Columns</h3>
                 <h2>{len(st.session_state.uploaded_data.columns)}</h2>
             </div>
             ''', unsafe_allow_html=True)
@@ -508,7 +508,7 @@ with col2:
         voice_messages = [msg for msg in st.session_state.messages if msg["role"] == "user"]
         st.markdown(f'''
         <div class="metric-card">
-            <h3>💬 Messages</h3>
+            <h3> Messages</h3>
             <h2>{len(voice_messages)}</h2>
             <p>Total interactions</p>
         </div>
@@ -517,7 +517,7 @@ with col2:
     else:
         st.markdown("""
         <div class="metric-card">
-            <h3>🚀 Get Started</h3>
+            <h3> Get Started</h3>
             <p>Upload a CSV file to begin voice-powered analytics!</p>
         </div>
         """, unsafe_allow_html=True)
@@ -526,7 +526,7 @@ with col2:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 1rem;'>
-    <p>🎤 AI Analytics Intelligence System - Voice Edition</p>
-    <p>💡 Speak your questions and hear the answers!</p>
+    <p> AI Analytics Intelligence System - Voice Edition</p>
+    <p> Speak your questions and hear the answers!</p>
 </div>
 """, unsafe_allow_html=True)

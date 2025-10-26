@@ -11,7 +11,7 @@ from pathlib import Path
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard",
-    page_icon="📊",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -142,7 +142,7 @@ if page == "Overview":
         st.subheader("Top Recommendations")
         if recommendations:
             for i, rec in enumerate(recommendations['recommendations'][:3], 1):
-                priority_color = "🔴" if rec['priority'] == 'high' else "🟡"
+                priority_color = "" if rec['priority'] == 'high' else ""
                 st.markdown(f"{priority_color} **{i}.** {rec['recommendation'][:100]}...")
     
     # Data Quality
@@ -189,7 +189,7 @@ elif page == "Descriptive Analytics":
                 st.markdown(f"**{metric.title()}**")
             
             with col2:
-                direction_emoji = "📈" if trend_data['direction'] == 'increasing' else "📉" if trend_data['direction'] == 'decreasing' else "➡️"
+                direction_emoji = "" if trend_data['direction'] == 'increasing' else "" if trend_data['direction'] == 'decreasing' else ""
                 st.markdown(f"{direction_emoji} {trend_data['direction'].upper()}")
                 st.progress(min(abs(trend_data['r_squared']), 1.0))
             
@@ -201,7 +201,7 @@ elif page == "Predictive Models":
     st.header("Predictive Analytics & Model Performance")
     
     # Forecast Model
-    st.subheader("📈 Time Series Forecast")
+    st.subheader(" Time Series Forecast")
     col1, col2, col3 = st.columns(3)
     
     if forecast and forecast['status'] == 'success':
@@ -258,7 +258,7 @@ elif page == "Predictive Models":
     st.markdown("---")
     
     # Churn Prediction
-    st.subheader("👥 Customer Churn Prediction")
+    st.subheader(" Customer Churn Prediction")
     if churn and churn['status'] == 'success':
         col1, col2, col3 = st.columns(3)
         
@@ -299,7 +299,7 @@ elif page == "Recommendations":
         
         # Display recommendations
         for i, rec in enumerate(filtered_recs, 1):
-            priority_emoji = "🔴" if rec['priority'] == 'high' else "🟡" if rec['priority'] == 'medium' else "🟢"
+            priority_emoji = "" if rec['priority'] == 'high' else "" if rec['priority'] == 'medium' else ""
             
             with st.expander(f"{priority_emoji} Recommendation {i}: {rec.get('type', 'General').replace('_', ' ').title()}", expanded=(i <= 3)):
                 st.markdown(f"**Priority:** {rec['priority'].upper()}")

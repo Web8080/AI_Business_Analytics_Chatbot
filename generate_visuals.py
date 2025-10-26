@@ -35,14 +35,14 @@ for json_file, html_file in charts.items():
         
         # Save as HTML (interactive)
         fig.write_html(str(html_path))
-        print(f"✓ {html_file}")
+        print(f" {html_file}")
         
         # Try to save as PNG if kaleido is available
         try:
             png_file = html_file.replace('.html', '.png')
             png_path = images_dir / png_file
             fig.write_image(str(png_path), width=1200, height=600)
-            print(f"✓ {png_file}")
+            print(f" {png_file}")
         except Exception as e:
             print(f"  (PNG skipped - install kaleido: pip install kaleido)")
 

@@ -21,7 +21,7 @@ from src.conversational.openai_agent import OpenAIAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Intelligence System - OpenAI Powered",
-    page_icon="🚀",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -367,12 +367,12 @@ st.markdown(get_theme_css(st.session_state.get('theme', 'dark')), unsafe_allow_h
 
 # Main header
 st.markdown('<div class="main-header">', unsafe_allow_html=True)
-st.markdown('<h1 class="main-title">🚀 AI Analytics Intelligence System</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title"> AI Analytics Intelligence System</h1>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">OpenAI GPT-4 Powered Analytics Platform with Intelligent Fallback</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Main navigation tabs
-tab1, tab2, tab3, tab4 = st.tabs(["🤖 AI Chatbot", "📊 Data Overview", "🔧 Advanced Features", "⚙️ Settings"])
+tab1, tab2, tab3, tab4 = st.tabs([" AI Chatbot", " Data Overview", " Advanced Features", " Settings"])
 
 with tab1:
     # CHATBOT TAB - Main functionality
@@ -385,7 +385,7 @@ with tab1:
         <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                     padding: 2rem; border-radius: 15px; margin-bottom: 2rem;
                     border: 2px solid #764ba2; text-align: center;'>
-            <h2 style='color: white; margin: 0;'>🚀 Data Loaded Successfully!</h2>
+            <h2 style='color: white; margin: 0;'> Data Loaded Successfully!</h2>
             <p style='color: white; margin: 1rem 0 0 0; font-size: 1.2rem;'>
                 Ask me anything about your data and I'll provide instant insights with charts!
             </p>
@@ -399,7 +399,7 @@ with tab1:
     
     with col1:
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
-        st.header("🤖 AI Analytics Assistant")
+        st.header(" AI Analytics Assistant")
         
         # Display chat messages with charts
         for idx, message in enumerate(st.session_state.messages):
@@ -456,7 +456,7 @@ with tab1:
                             )
                             st.plotly_chart(fig, width="stretch", key=f"chart_{idx}")
                     except Exception as chart_error:
-                        st.caption(f"⚠️ Chart display error: {str(chart_error)}")
+                        st.caption(f" Chart display error: {str(chart_error)}")
                         # Debug: show chart data structure
                         st.caption(f"Chart data: {str(chart_data)[:200]}...")
         
@@ -474,9 +474,9 @@ with tab1:
                 
                 col_send, col_clear = st.columns([1, 1])
                 with col_send:
-                    send_pressed = st.form_submit_button("🚀 Send", type="primary", width="stretch")
+                    send_pressed = st.form_submit_button(" Send", type="primary", width="stretch")
                 with col_clear:
-                    clear_pressed = st.form_submit_button("🗑️ Clear Chat", width="stretch")
+                    clear_pressed = st.form_submit_button(" Clear Chat", width="stretch")
             
             # Handle form submission
             if send_pressed and user_input:
@@ -485,7 +485,7 @@ with tab1:
                 
                 # Get AI response
                 try:
-                    with st.spinner("🤖 AI is analyzing your data..."):
+                    with st.spinner(" AI is analyzing your data..."):
                         agent = get_agent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask(user_input)
@@ -501,7 +501,7 @@ with tab1:
                     st.rerun()
                     
                 except Exception as e:
-                    st.error(f"❌ Error: {str(e)}")
+                    st.error(f" Error: {str(e)}")
             
             if clear_pressed:
                 st.session_state.messages = []
@@ -513,12 +513,12 @@ with tab1:
             <div style='background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); 
                         padding: 2rem; border-radius: 15px; margin: 2rem 0;
                         border: 2px solid #ee5a24; text-align: center;'>
-                <h3 style='color: white; margin: 0;'>📁 No Data Uploaded</h3>
+                <h3 style='color: white; margin: 0;'> No Data Uploaded</h3>
                 <p style='color: white; margin: 1rem 0 0 0; font-size: 1.1rem;'>
                     Please upload a CSV file in the sidebar to start chatting with your data!
                 </p>
                 <p style='color: white; margin: 0.5rem 0 0 0; opacity: 0.9;'>
-                    👈 Use the file uploader in the left sidebar
+                     Use the file uploader in the left sidebar
                 </p>
             </div>
             """, unsafe_allow_html=True)
@@ -530,24 +530,24 @@ with tab1:
         if (st.session_state.get('uploaded_data') is not None and 
             st.session_state.get('file_uploaded', False)):
             st.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
-            st.header("📊 Data Status")
+            st.header(" Data Status")
             
             # Status indicator
             st.markdown('<span class="status-indicator status-online"></span> **System Online**', unsafe_allow_html=True)
             
             # File info
-            st.subheader("📁 File Information")
+            st.subheader(" File Information")
             st.info(f"**File:** {st.session_state.uploaded_filename}")
             st.info(f"**Rows:** {len(st.session_state.uploaded_data)}")
             st.info(f"**Columns:** {len(st.session_state.uploaded_data.columns)}")
             
             # Quick actions
-            st.subheader("⚡ Quick Actions")
+            st.subheader(" Quick Actions")
             
-            if st.button("📈 Show Data Summary", width="stretch"):
+            if st.button(" Show Data Summary", width="stretch"):
                 st.session_state.messages.append({"role": "user", "content": "Give me a summary of the data"})
                 try:
-                    with st.spinner("🤖 Analyzing..."):
+                    with st.spinner(" Analyzing..."):
                         agent = get_agent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask("Give me a summary of the data")
@@ -562,10 +562,10 @@ with tab1:
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
             
-            if st.button("📊 Show Top Items", width="stretch"):
+            if st.button(" Show Top Items", width="stretch"):
                 st.session_state.messages.append({"role": "user", "content": "Show me the top 5 items"})
                 try:
-                    with st.spinner("🤖 Analyzing..."):
+                    with st.spinner(" Analyzing..."):
                         agent = get_agent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask("Show me the top 5 items")
@@ -580,10 +580,10 @@ with tab1:
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
             
-            if st.button("📈 Show Trends", width="stretch"):
+            if st.button(" Show Trends", width="stretch"):
                 st.session_state.messages.append({"role": "user", "content": "Show me trends in the data"})
                 try:
-                    with st.spinner("🤖 Analyzing..."):
+                    with st.spinner(" Analyzing..."):
                         agent = get_agent()
                         agent.load_data(st.session_state.uploaded_data)
                         response = agent.ask("Show me trends in the data")
@@ -602,7 +602,7 @@ with tab1:
 
 with tab2:
     # DATA OVERVIEW TAB
-    st.header("📊 Data Overview")
+    st.header(" Data Overview")
     
     if (st.session_state.get('uploaded_data') is not None and 
         st.session_state.get('file_uploaded', False)):
@@ -620,7 +620,7 @@ with tab2:
             st.metric("Memory Usage", f"{df.memory_usage(deep=True).sum() / 1024:.1f} KB")
         
         # Data types
-        st.subheader("📋 Column Information")
+        st.subheader(" Column Information")
         type_counts = df.dtypes.value_counts()
         type_labels = [str(dtype) for dtype in type_counts.index]
         
@@ -633,7 +633,7 @@ with tab2:
         st.plotly_chart(fig, width="stretch", key="data_types_chart")
         
         # Missing values
-        st.subheader("🔍 Missing Values")
+        st.subheader(" Missing Values")
         missing_data = df.isnull().sum()
         missing_df = pd.DataFrame({
             'Column': missing_data.index,
@@ -644,23 +644,23 @@ with tab2:
         st.dataframe(missing_df, width="stretch")
         
         # Sample data
-        st.subheader("👀 Sample Data")
+        st.subheader(" Sample Data")
         st.dataframe(df.head(10), width="stretch")
         
     else:
-        st.info("👆 Please upload a CSV file to view data overview")
+        st.info(" Please upload a CSV file to view data overview")
 
 with tab3:
     # ADVANCED FEATURES TAB
-    st.header("🔧 Advanced Features")
+    st.header(" Advanced Features")
     
-    st.subheader("🤖 AI Agent Status")
+    st.subheader(" AI Agent Status")
     
     # Show basic status without loading agent
     st.info("Click 'Check Status' button below to view detailed agent information")
     
     # Only load agent when button is clicked
-    if st.button("🔄 Check Status", key="check_status_btn"):
+    if st.button(" Check Status", key="check_status_btn"):
         try:
             with st.spinner("Checking agent status..."):
                 agent = get_agent()
@@ -670,23 +670,23 @@ with tab3:
                 
                 with col1:
                     if status['openai_available']:
-                        st.success("✅ OpenAI GPT-4 Available")
+                        st.success(" OpenAI GPT-4 Available")
                     else:
-                        st.warning("⚠️ OpenAI GPT-4 Not Available")
+                        st.warning(" OpenAI GPT-4 Not Available")
                     
                     if status['api_key_configured']:
-                        st.success("✅ API Key Configured")
+                        st.success(" API Key Configured")
                     else:
-                        st.warning("⚠️ API Key Not Configured")
+                        st.warning(" API Key Not Configured")
                 
                 with col2:
                     if status['fallback_system']:
-                        st.success("✅ Fallback System Active")
+                        st.success(" Fallback System Active")
                     
-                    st.info(f"🔧 {len(status['capabilities'])} Capabilities")
+                    st.info(f" {len(status['capabilities'])} Capabilities")
                 
                 # Capabilities
-                st.subheader("🚀 System Capabilities")
+                st.subheader(" System Capabilities")
                 for capability in status['capabilities']:
                     st.markdown(f"• {capability}")
                     
@@ -695,31 +695,31 @@ with tab3:
 
 with tab4:
     # SETTINGS TAB
-    st.header("⚙️ Settings")
+    st.header(" Settings")
     
-    st.subheader("🔧 System Configuration")
+    st.subheader(" System Configuration")
     
     # OpenAI API Key
-    st.subheader("🔑 OpenAI API Key")
+    st.subheader(" OpenAI API Key")
     current_key = os.getenv('OPENAI_API_KEY', '')
     if current_key:
-        st.success("✅ API Key is configured")
-        if st.button("🔍 Test Connection"):
+        st.success(" API Key is configured")
+        if st.button(" Test Connection"):
             try:
                 agent = get_agent()
                 status = agent.get_status()
                 if status['openai_available']:
-                    st.success("✅ Connection successful!")
+                    st.success(" Connection successful!")
                 else:
-                    st.error("❌ Connection failed")
+                    st.error(" Connection failed")
             except Exception as e:
-                st.error(f"❌ Error: {str(e)}")
+                st.error(f" Error: {str(e)}")
     else:
-        st.warning("⚠️ No API key configured")
+        st.warning(" No API key configured")
         st.info("Set OPENAI_API_KEY environment variable or add it to .env file")
     
     # System Information
-    st.subheader("ℹ️ System Information")
+    st.subheader("ℹ System Information")
     st.info(f"""
     **Current Session:**
     - Messages: {len(st.session_state.messages)}
@@ -728,8 +728,8 @@ with tab4:
     - File: {st.session_state.uploaded_filename if st.session_state.uploaded_filename else 'None'}
     """)
     
-    st.subheader("🔄 System Actions")
-    if st.button("🗑️ Clear All Data", type="secondary"):
+    st.subheader(" System Actions")
+    if st.button(" Clear All Data", type="secondary"):
         st.session_state.messages = []
         st.session_state.message_charts = {}
         st.session_state.uploaded_data = None
@@ -737,7 +737,7 @@ with tab4:
         st.session_state.file_uploaded = False
         st.rerun()
     
-    if st.button("🔄 Reset Session", type="secondary"):
+    if st.button(" Reset Session", type="secondary"):
         for key in list(st.session_state.keys()):
             del st.session_state[key]
         st.rerun()
@@ -745,7 +745,7 @@ with tab4:
 # Sidebar - File Upload (always visible)
 with st.sidebar:
     st.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     
     uploaded_file = st.file_uploader(
         "Choose CSV file",
@@ -761,23 +761,23 @@ with st.sidebar:
             st.session_state.uploaded_filename = uploaded_file.name
             st.session_state.file_uploaded = True  # Set flag for main content
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Prominent instruction
             st.markdown("""
             <div style='background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); 
                         padding: 1rem; border-radius: 10px; margin: 1rem 0;
                         border: 2px solid #66bb6a;'>
-                <h4 style='color: white; margin: 0;'>🚀 Ready to Chat!</h4>
+                <h4 style='color: white; margin: 0;'> Ready to Chat!</h4>
                 <p style='color: white; margin: 0.5rem 0 0 0;'>
-                    Go to the <strong>🤖 AI Chatbot</strong> tab above to start asking questions!
+                    Go to the <strong> AI Chatbot</strong> tab above to start asking questions!
                 </p>
             </div>
             """, unsafe_allow_html=True)
             
             # Show preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
             
             # Force rerun to update main content (only once)
@@ -786,12 +786,12 @@ with st.sidebar:
                 st.rerun()
             
             # Show columns
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     st.write(f"• {col} ({df[col].dtype})")
                     
         except Exception as e:
-            st.error(f"❌ Error loading file: {str(e)}")
+            st.error(f" Error loading file: {str(e)}")
     
     st.markdown('</div>', unsafe_allow_html=True)
     
@@ -801,6 +801,6 @@ with st.sidebar:
     <div style='text-align: center; color: #888; font-size: 0.8rem;'>
         AI Analytics Intelligence System<br>
         OpenAI GPT-4 Powered Edition<br>
-        <span style='color: #4CAF50;'>●</span> Professional Analytics Platform
+        <span style='color: #4CAF50;'></span> Professional Analytics Platform
     </div>
     """, unsafe_allow_html=True)

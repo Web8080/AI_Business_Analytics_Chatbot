@@ -46,11 +46,11 @@ print("-" * 80)
 start_time = time.time()
 
 parse_result = csv_parser.parse_csv('data/sample/sales_data.csv')
-print(f"✓ Loaded sales data: {parse_result['rows']} rows, {parse_result['columns']} columns")
+print(f" Loaded sales data: {parse_result['rows']} rows, {parse_result['columns']} columns")
 
 df = parse_result['dataframe']
 cleaned_df, cleaning_report = data_cleaner.clean_dataframe(df)
-print(f"✓ Data cleaned: {len(cleaned_df)} rows after cleaning")
+print(f" Data cleaned: {len(cleaned_df)} rows after cleaning")
 print(f"  - Duplicates removed: {cleaning_report['rows_removed']}")
 print(f"  - Quality score: {data_cleaner.validate_data_quality(cleaned_df)['quality_score']}/100")
 
@@ -63,7 +63,7 @@ results['stages']['data_ingestion'] = {
 
 # Save cleaned data
 cleaned_df.to_csv('results/cleaned_sales_data.csv', index=False)
-print(f"✓ Saved cleaned data to results/cleaned_sales_data.csv")
+print(f" Saved cleaned data to results/cleaned_sales_data.csv")
 print()
 
 # Stage 2: Descriptive Analytics
@@ -72,14 +72,14 @@ print("-" * 80)
 start_time = time.time()
 
 summary = descriptive.generate_summary_statistics(cleaned_df)
-print(f"✓ Summary Statistics Generated")
+print(f" Summary Statistics Generated")
 print(f"  - Numeric columns: {len(summary['numeric_columns'])}")
 print(f"  - Categorical columns: {len(summary['categorical_columns'])}")
 
 # Save summary
 with open('results/descriptive_summary.json', 'w') as f:
     json.dump(summary, f, indent=2, default=str)
-print(f"✓ Saved to results/descriptive_summary.json")
+print(f" Saved to results/descriptive_summary.json")
 
 # KPI Calculation
 kpi_config = {
@@ -89,7 +89,7 @@ kpi_config = {
     'date_column': 'date'
 }
 kpis = descriptive.calculate_kpis(cleaned_df, kpi_config)
-print(f"✓ KPIs Calculated:")
+print(f" KPIs Calculated:")
 if 'revenue' in kpis:
     print(f"  - Total Revenue: ${kpis['revenue']['total_revenue']:,.2f}")
     print(f"  - Average Revenue: ${kpis['revenue']['average_revenue']:,.2f}")
@@ -98,13 +98,13 @@ if 'customers' in kpis:
 
 # Trend Analysis
 trends = descriptive.analyze_trends(cleaned_df, 'date', ['revenue', 'quantity'])
-print(f"✓ Trend Analysis:")
+print(f" Trend Analysis:")
 for col, trend in trends.get('trends', {}).items():
     print(f"  - {col}: {trend['direction']} ({trend['percent_change']:+.1f}%)")
 
 # Correlation Analysis
 corr_analysis = descriptive.correlation_analysis(cleaned_df)
-print(f"✓ Correlation Analysis: {len(corr_analysis.get('strong_correlations', []))} strong correlations found")
+print(f" Correlation Analysis: {len(corr_analysis.get('strong_correlations', []))} strong correlations found")
 
 results['stages']['descriptive'] = {
     'duration': time.time() - start_time,
@@ -133,7 +133,7 @@ root_causes = diagnostic.root_cause_analysis(
     'revenue', 
     ['region', 'category', 'product']
 )
-print(f"✓ Root Cause Analysis:")
+print(f" Root Cause Analysis:")
 print(f"  - {root_causes['total_causes_found']} potential causes identified")
 if root_causes['root_causes']:
     top_cause = root_causes['root_causes'][0]
@@ -141,11 +141,11 @@ if root_causes['root_causes']:
 
 # Segment Analysis
 segment_analysis = diagnostic.segment_analysis(cleaned_df, 'region', ['revenue', 'quantity'])
-print(f"✓ Segment Analysis: {segment_analysis['total_segments']} segments analyzed")
+print(f" Segment Analysis: {segment_analysis['total_segments']} segments analyzed")
 
 # Anomaly Detection
 anomalies = diagnostic.anomaly_detection(cleaned_df, ['revenue', 'quantity', 'price'])
-print(f"✓ Anomaly Detection: {anomalies['total_anomalies']} anomalies detected")
+print(f" Anomaly Detection: {anomalies['total_anomalies']} anomalies detected")
 
 results['stages']['diagnostic'] = {
     'duration': time.time() - start_time,
@@ -178,7 +178,7 @@ forecast_result = predictive.forecast_time_series(
     model_type='statistical'
 )
 if forecast_result['status'] == 'success':
-    print(f"✓ Forecast Model Trained")
+    print(f" Forecast Model Trained")
     print(f"  - Model Type: {forecast_result['model_type']}")
     if 'historical_performance' in forecast_result:
         perf = forecast_result['historical_performance']
@@ -195,7 +195,7 @@ xgb_result = predictive.predict_with_xgboost(
     feature_columns
 )
 if xgb_result['status'] == 'success':
-    print(f"✓ XGBoost Model Trained")
+    print(f" XGBoost Model Trained")
     print(f"  - R² Score: {xgb_result['performance']['r2_score']:.4f}")
     print(f"  - MAE: ${xgb_result['performance']['mae']:,.2f}")
     print(f"  - RMSE: ${xgb_result['performance']['rmse']:,.2f}")
@@ -211,7 +211,7 @@ churn_result = predictive.predict_churn(
     threshold_days=15
 )
 if churn_result['status'] == 'success':
-    print(f"✓ Churn Model Completed")
+    print(f" Churn Model Completed")
     print(f"  - Total Users: {churn_result['total_users']}")
     print(f"  - Churn Rate: {churn_result['churn_rate']:.1f}%")
     print(f"  - High Risk Users: {len(churn_result['high_risk_users'])}")
@@ -257,7 +257,7 @@ combined_results = {
 }
 
 recommendations = prescriptive.generate_recommendations(combined_results)
-print(f"✓ Generated {recommendations['total_recommendations']} recommendations")
+print(f" Generated {recommendations['total_recommendations']} recommendations")
 for i, rec in enumerate(recommendations['recommendations'][:5], 1):
     print(f"  {i}. [{rec['priority'].upper()}] {rec['recommendation'][:80]}...")
 
@@ -268,7 +268,7 @@ inventory_opt = prescriptive.optimize_inventory(
     'quantity',
     lead_time_days=7
 )
-print(f"✓ Inventory Optimization:")
+print(f" Inventory Optimization:")
 print(f"  - Products analyzed: {inventory_opt['total_products']}")
 print(f"  - Reorder recommendations: {inventory_opt['products_needing_reorder']}")
 
@@ -279,7 +279,7 @@ pricing_opt = prescriptive.optimize_pricing(
     'quantity',
     ['region']
 )
-print(f"✓ Pricing Optimization:")
+print(f" Pricing Optimization:")
 print(f"  - Optimal Price: ${pricing_opt['optimal_price']:.2f}")
 print(f"  - Current Avg: ${pricing_opt['current_avg_price']:.2f}")
 
@@ -315,7 +315,7 @@ ts_chart = chart_gen.create_time_series_chart(
 if ts_chart['status'] == 'success':
     with open('results/chart_timeseries.json', 'w') as f:
         f.write(ts_chart['figure'])
-    print("✓ Time Series Chart created")
+    print(" Time Series Chart created")
 
 # Bar chart
 bar_chart = chart_gen.create_bar_chart(
@@ -325,7 +325,7 @@ bar_chart = chart_gen.create_bar_chart(
 if bar_chart['status'] == 'success':
     with open('results/chart_bar.json', 'w') as f:
         f.write(bar_chart['figure'])
-    print("✓ Bar Chart created")
+    print(" Bar Chart created")
 
 # Correlation heatmap
 if corr_analysis['status'] == 'success':
@@ -337,7 +337,7 @@ if corr_analysis['status'] == 'success':
     if heatmap['status'] == 'success':
         with open('results/chart_heatmap.json', 'w') as f:
             f.write(heatmap['figure'])
-        print("✓ Correlation Heatmap created")
+        print(" Correlation Heatmap created")
 
 # Forecast chart
 if forecast_result['status'] == 'success':
@@ -349,9 +349,9 @@ if forecast_result['status'] == 'success':
     if forecast_chart['status'] == 'success':
         with open('results/chart_forecast.json', 'w') as f:
             f.write(forecast_chart['figure'])
-        print("✓ Forecast Chart created")
+        print(" Forecast Chart created")
 
-print("✓ All visualizations saved to results/ folder")
+print(" All visualizations saved to results/ folder")
 print()
 
 # Stage 7: Generate PDF Report
@@ -373,7 +373,7 @@ report_path = report_gen.generate_comprehensive_report(
     include_visualizations=True
 )
 
-print(f"✓ PDF Report Generated: {report_path}")
+print(f" PDF Report Generated: {report_path}")
 print()
 
 # Save master results file
@@ -419,7 +419,7 @@ if 'predictive' in results['stages']:
 print("\n" + "="*80)
 print("OUTPUTS GENERATED")
 print("="*80)
-print("📁 results/")
+print(" results/")
 print("   - cleaned_sales_data.csv")
 print("   - descriptive_summary.json")
 print("   - kpis.json")

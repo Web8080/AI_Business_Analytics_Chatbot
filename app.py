@@ -15,7 +15,7 @@ sys.path.append(str(Path(__file__).parent))
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Intelligence System",
-    page_icon="🚀",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -71,7 +71,7 @@ if 'agent' not in st.session_state:
 # Header
 st.markdown("""
 <div class="main-header">
-    <h1 style='color: white; margin: 0;'>🚀 AI Analytics Intelligence System</h1>
+    <h1 style='color: white; margin: 0;'> AI Analytics Intelligence System</h1>
     <p style='color: #e0e0e0; margin: 0.5rem 0 0 0;'>
         OpenAI GPT-4 Powered with Intelligent Fallback
     </p>
@@ -80,7 +80,7 @@ st.markdown("""
 
 # Sidebar - File Upload
 with st.sidebar:
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     
     uploaded_file = st.file_uploader(
         "Choose CSV file",
@@ -92,25 +92,25 @@ with st.sidebar:
         try:
             df = pd.read_csv(uploaded_file)
             st.session_state.uploaded_data = df
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
                 
         except Exception as e:
-            st.error(f"❌ Error: {str(e)}")
+            st.error(f" Error: {str(e)}")
     
     st.markdown("---")
     
     # Data status
     if st.session_state.uploaded_data is not None:
-        st.success("🟢 Data Loaded")
+        st.success(" Data Loaded")
     else:
-        st.warning("⚠️ No Data Loaded")
+        st.warning(" No Data Loaded")
     
     # Clear button
-    if st.button("🗑️ Clear All Data"):
+    if st.button(" Clear All Data"):
         st.session_state.messages = []
         st.session_state.uploaded_data = None
         st.session_state.agent_loaded = False
@@ -121,20 +121,20 @@ with st.sidebar:
 if st.session_state.uploaded_data is None:
     st.markdown("""
     <div style='background: rgba(255,255,255,0.1); padding: 3rem; border-radius: 15px; text-align: center;'>
-        <h2 style='color: white;'>👋 Welcome!</h2>
+        <h2 style='color: white;'> Welcome!</h2>
         <p style='color: #e0e0e0; font-size: 1.2rem;'>
             Upload a CSV file to get started with AI-powered analytics!
         </p>
         <br>
         <p style='color: #b0b0b0;'>
-            👈 Use the sidebar to upload your data
+             Use the sidebar to upload your data
         </p>
     </div>
     """, unsafe_allow_html=True)
 else:
     # Lazy load agent only when needed
     if not st.session_state.agent_loaded:
-        with st.spinner("🤖 Initializing AI agent... (this may take 5-10 seconds)"):
+        with st.spinner(" Initializing AI agent... (this may take 5-10 seconds)"):
             try:
                 from src.conversational.openai_agent import OpenAIAnalyticsAgent
                 st.session_state.agent = OpenAIAnalyticsAgent()
@@ -149,16 +149,16 @@ else:
         try:
             status = st.session_state.agent.get_status()
             if status.get('openai_available'):
-                st.success("🟢 OpenAI GPT-4 Mode Active")
+                st.success(" OpenAI GPT-4 Mode Active")
             else:
-                st.info("🟡 Fallback Mode Active (Advanced Rules)")
+                st.info(" Fallback Mode Active (Advanced Rules)")
         except:
-            st.info("🟡 Fallback Mode Active")
+            st.info(" Fallback Mode Active")
     
     st.markdown("---")
     
     # Display chat history
-    st.subheader("🤖 AI Analytics Assistant")
+    st.subheader(" AI Analytics Assistant")
     
     for message in st.session_state.messages:
         if message["role"] == "user":
@@ -193,7 +193,7 @@ else:
             placeholder="e.g., What is the total revenue?",
             key="chat_input"
         )
-        send_pressed = st.form_submit_button("📤 Send")
+        send_pressed = st.form_submit_button(" Send")
         
         if send_pressed and user_input and st.session_state.agent:
             # Add user message
@@ -201,7 +201,7 @@ else:
             
             # Get AI response
             try:
-                with st.spinner("🤖 Analyzing..."):
+                with st.spinner(" Analyzing..."):
                     response = st.session_state.agent.ask(user_input)
                     
                     # Add AI message
@@ -218,16 +218,16 @@ else:
                     st.rerun()
                     
             except Exception as e:
-                st.error(f"❌ Error: {str(e)}")
+                st.error(f" Error: {str(e)}")
     
     # Quick actions
     st.markdown("---")
-    st.subheader("⚡ Quick Actions")
+    st.subheader(" Quick Actions")
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        if st.button("📊 Show Summary", key="btn_summary"):
+        if st.button(" Show Summary", key="btn_summary"):
             st.session_state.messages.append({"role": "user", "content": "Give me a summary"})
             try:
                 response = st.session_state.agent.ask("Give me a summary of the data")
@@ -240,7 +240,7 @@ else:
                 st.error(f"Error: {str(e)}")
     
     with col2:
-        if st.button("📈 Top Items", key="btn_top"):
+        if st.button(" Top Items", key="btn_top"):
             st.session_state.messages.append({"role": "user", "content": "Show top 5 items"})
             try:
                 response = st.session_state.agent.ask("Show me the top 5 items")
@@ -253,7 +253,7 @@ else:
                 st.error(f"Error: {str(e)}")
     
     with col3:
-        if st.button("📉 Trends", key="btn_trends"):
+        if st.button(" Trends", key="btn_trends"):
             st.session_state.messages.append({"role": "user", "content": "Show trends"})
             try:
                 response = st.session_state.agent.ask("Show me trends in the data")
@@ -266,11 +266,11 @@ else:
                 st.error(f"Error: {str(e)}")
     
     # Clear chat button
-    if st.button("🗑️ Clear Chat", key="btn_clear_chat"):
+    if st.button(" Clear Chat", key="btn_clear_chat"):
         st.session_state.messages = []
         st.rerun()
 
 # Footer
 st.markdown("---")
-st.caption("🔒 Your data stays private and is never stored permanently")
+st.caption(" Your data stays private and is never stored permanently")
 

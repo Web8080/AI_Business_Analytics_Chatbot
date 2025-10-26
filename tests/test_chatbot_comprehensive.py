@@ -54,7 +54,7 @@ class TestChatbotFunctionality:
             assert 'answer' in response
             assert 'confidence' in response
             assert len(response['answer']) > 0
-            print(f"✅ {question} -> {response['answer'][:50]}...")
+            print(f"[OK] {question} -> {response['answer'][:50]}...")
     
     def test_chart_generation(self, agent, sample_data):
         """Test chart generation for various questions"""
@@ -74,7 +74,7 @@ class TestChatbotFunctionality:
                 assert response['chart_data']['type'] == expected_type
                 assert 'x' in response['chart_data']
                 assert 'y' in response['chart_data']
-                print(f"✅ {question} -> {expected_type} chart generated")
+                print(f"[OK] {question} -> {expected_type} chart generated")
     
     def test_vague_questions(self, agent, sample_data):
         """Test handling of vague questions"""
@@ -92,14 +92,14 @@ class TestChatbotFunctionality:
             assert 'answer' in response
             # Vague questions should have guidance
             assert any(keyword in response['answer'].lower() for keyword in ['help', 'data', 'ask', 'questions'])
-            print(f"✅ {question} -> Handled gracefully")
+            print(f"[OK] {question} -> Handled gracefully")
     
     def test_no_data_scenario(self, agent):
         """Test behavior when no data is loaded"""
         response = agent.ask("what is the total revenue?")
         assert 'answer' in response
         assert 'no data' in response['answer'].lower() or 'load data' in response['answer'].lower()
-        print("✅ No data scenario handled")
+        print("[OK] No data scenario handled")
     
     def test_confidence_scores(self, agent, sample_data):
         """Test confidence scores are reasonable"""
@@ -114,7 +114,7 @@ class TestChatbotFunctionality:
             response = agent.ask(question)
             assert 'confidence' in response
             assert 0 <= response['confidence'] <= 1
-            print(f"✅ {question} -> Confidence: {response['confidence']:.2f}")
+            print(f"[OK] {question} -> Confidence: {response['confidence']:.2f}")
     
     def test_edge_cases(self, agent, sample_data):
         """Test edge cases"""
@@ -131,9 +131,9 @@ class TestChatbotFunctionality:
             try:
                 response = agent.ask(question)
                 assert 'answer' in response
-                print(f"✅ Edge case handled: {repr(question[:50])}")
+                print(f"[OK] Edge case handled: {repr(question[:50])}")
             except Exception as e:
-                print(f"⚠️ Edge case failed: {repr(question[:50])} -> {e}")
+                print(f"[WARN] Edge case failed: {repr(question[:50])} -> {e}")
 
 
 class TestChartTypes:
@@ -154,14 +154,14 @@ class TestChartTypes:
         assert response['chart_data']['type'] == 'bar'
         assert len(response['chart_data']['x']) > 0
         assert len(response['chart_data']['y']) > 0
-        print("✅ Bar chart generated successfully")
+        print("[OK] Bar chart generated successfully")
     
     def test_line_chart(self, agent):
         """Test line chart generation"""
         response = agent.ask("show trends over time")
         assert response['chart_data'] is not None
         assert response['chart_data']['type'] == 'line'
-        print("✅ Line chart generated successfully")
+        print("[OK] Line chart generated successfully")
     
     def test_chart_data_format(self, agent):
         """Test chart data has correct format"""
@@ -173,7 +173,7 @@ class TestChartTypes:
             assert 'y' in chart
             assert 'title' in chart
             assert len(chart['x']) == len(chart['y'])
-            print("✅ Chart data format is correct")
+            print("[OK] Chart data format is correct")
 
 
 class TestDataTypes:
@@ -187,7 +187,7 @@ class TestDataTypes:
         
         response = agent.ask("what is the total revenue?")
         assert 'answer' in response
-        print("✅ Sales data processed successfully")
+        print("[OK] Sales data processed successfully")
     
     def test_ecommerce_data(self):
         """Test with ecommerce data"""
@@ -197,7 +197,7 @@ class TestDataTypes:
         
         response = agent.ask("what is the total?")
         assert 'answer' in response
-        print("✅ Ecommerce data processed successfully")
+        print("[OK] Ecommerce data processed successfully")
     
     def test_customer_data(self):
         """Test with customer data"""
@@ -207,7 +207,7 @@ class TestDataTypes:
         
         response = agent.ask("how many customers?")
         assert 'answer' in response
-        print("✅ Customer data processed successfully")
+        print("[OK] Customer data processed successfully")
 
 
 class TestPerformance:
@@ -227,7 +227,7 @@ class TestPerformance:
         
         response_time = end_time - start_time
         assert response_time < 2.0  # Should respond within 2 seconds
-        print(f"✅ Response time: {response_time:.2f}s")
+        print(f"[OK] Response time: {response_time:.2f}s")
     
     def test_chart_generation_time(self):
         """Test chart generation time"""
@@ -243,7 +243,7 @@ class TestPerformance:
         
         response_time = end_time - start_time
         assert response_time < 3.0  # Should generate chart within 3 seconds
-        print(f"✅ Chart generation time: {response_time:.2f}s")
+        print(f"[OK] Chart generation time: {response_time:.2f}s")
 
 
 if __name__ == "__main__":

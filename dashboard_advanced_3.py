@@ -23,7 +23,7 @@ from src.conversational.smart_agent import SmartAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard - Advanced Analytics",
-    page_icon="📊",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -275,16 +275,16 @@ def get_theme_css(theme):
 st.markdown(get_theme_css(st.session_state.get('theme', 'light')), unsafe_allow_html=True)
 
 # Title
-st.markdown('<div class="main-header">📊 AI Analytics Dashboard - Advanced Analytics</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> AI Analytics Dashboard - Advanced Analytics</div>', unsafe_allow_html=True)
 st.markdown("**Cohort Analysis • A/B Testing • Comparative Analysis • Scenario Planning**")
 st.markdown("---")
 
 # Sidebar
 with st.sidebar:
-    st.header("📊 Advanced Analytics")
+    st.header(" Advanced Analytics")
     
     # Theme toggle
-    st.header("🎨 Settings")
+    st.header(" Settings")
     theme = st.selectbox(
         "Theme",
         ["light", "dark"],
@@ -298,7 +298,7 @@ with st.sidebar:
     st.markdown("---")
     
     # File Upload
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     uploaded_file = st.file_uploader(
         "Choose CSV file",
         type=['csv'],
@@ -313,28 +313,28 @@ with st.sidebar:
             st.session_state.uploaded_filename = uploaded_file.name
             advanced_analytics.load_data(df)
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Show preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
             
             # Show columns
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     st.write(f"• {col} ({df[col].dtype})")
                     
         except Exception as e:
-            st.error(f"❌ Error loading file: {str(e)}")
+            st.error(f" Error loading file: {str(e)}")
 
 # Main content
 if st.session_state.uploaded_data is not None:
     # Analytics tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["📈 Cohort Analysis", "🧪 A/B Testing", "📊 Comparative Analysis", "🎯 Scenario Planning"])
+    tab1, tab2, tab3, tab4 = st.tabs([" Cohort Analysis", " A/B Testing", " Comparative Analysis", " Scenario Planning"])
     
     with tab1:
-        st.header("📈 Cohort Analysis")
+        st.header(" Cohort Analysis")
         st.markdown("Analyze customer behavior and retention over time")
         
         col1, col2, col3 = st.columns(3)
@@ -346,7 +346,7 @@ if st.session_state.uploaded_data is not None:
         with col3:
             metric_col = st.selectbox("Metric Column", st.session_state.uploaded_data.columns, key="cohort_metric")
         
-        if st.button("🔍 Run Cohort Analysis", type="primary"):
+        if st.button(" Run Cohort Analysis", type="primary"):
             with st.spinner("Analyzing cohorts..."):
                 cohort_results = advanced_analytics.cohort_analysis(user_col, date_col, metric_col)
                 
@@ -354,7 +354,7 @@ if st.session_state.uploaded_data is not None:
                     st.session_state.cohort_data = cohort_results
                     
                     # Display results
-                    st.success("✅ Cohort analysis completed!")
+                    st.success(" Cohort analysis completed!")
                     
                     # Cohort size chart
                     fig_cohort = px.bar(
@@ -380,7 +380,7 @@ if st.session_state.uploaded_data is not None:
                     st.plotly_chart(fig_heatmap, use_container_width=True)
     
     with tab2:
-        st.header("🧪 A/B Testing")
+        st.header(" A/B Testing")
         st.markdown("Compare two groups with statistical significance testing")
         
         col1, col2, col3 = st.columns(3)
@@ -392,7 +392,7 @@ if st.session_state.uploaded_data is not None:
         with col3:
             alpha = st.slider("Significance Level (α)", 0.01, 0.10, 0.05, 0.01, key="ab_alpha")
         
-        if st.button("🧪 Run A/B Test", type="primary"):
+        if st.button(" Run A/B Test", type="primary"):
             with st.spinner("Running A/B test..."):
                 ab_results = advanced_analytics.ab_test_analysis(group_col, metric_col, alpha)
                 
@@ -400,7 +400,7 @@ if st.session_state.uploaded_data is not None:
                     st.session_state.ab_test_data = ab_results
                     
                     # Display results
-                    st.success("✅ A/B test completed!")
+                    st.success(" A/B test completed!")
                     
                     # Results summary
                     col1, col2 = st.columns(2)
@@ -408,7 +408,7 @@ if st.session_state.uploaded_data is not None:
                     with col1:
                         st.markdown(f'''
                         <div class="analytics-card">
-                            <h3>📊 Group A: {ab_results['group_a']['name']}</h3>
+                            <h3> Group A: {ab_results['group_a']['name']}</h3>
                             <p><strong>Mean:</strong> {ab_results['group_a']['mean']:.2f}</p>
                             <p><strong>Std Dev:</strong> {ab_results['group_a']['std']:.2f}</p>
                             <p><strong>Sample Size:</strong> {ab_results['group_a']['n']:,}</p>
@@ -418,7 +418,7 @@ if st.session_state.uploaded_data is not None:
                     with col2:
                         st.markdown(f'''
                         <div class="analytics-card">
-                            <h3>📊 Group B: {ab_results['group_b']['name']}</h3>
+                            <h3> Group B: {ab_results['group_b']['name']}</h3>
                             <p><strong>Mean:</strong> {ab_results['group_b']['mean']:.2f}</p>
                             <p><strong>Std Dev:</strong> {ab_results['group_b']['std']:.2f}</p>
                             <p><strong>Sample Size:</strong> {ab_results['group_b']['n']:,}</p>
@@ -428,10 +428,10 @@ if st.session_state.uploaded_data is not None:
                     # Statistical results
                     st.markdown(f'''
                     <div class="analytics-card">
-                        <h3>📈 Statistical Results</h3>
+                        <h3> Statistical Results</h3>
                         <p><strong>P-value:</strong> {ab_results['p_value']:.4f}</p>
                         <p><strong>Effect Size (Cohen's d):</strong> {ab_results['cohens_d']:.3f}</p>
-                        <p><strong>Significant:</strong> {"✅ Yes" if ab_results['is_significant'] else "❌ No"}</p>
+                        <p><strong>Significant:</strong> {" Yes" if ab_results['is_significant'] else " No"}</p>
                     </div>
                     ''', unsafe_allow_html=True)
                     
@@ -448,7 +448,7 @@ if st.session_state.uploaded_data is not None:
                     st.plotly_chart(fig_ab, use_container_width=True)
     
     with tab3:
-        st.header("📊 Comparative Analysis")
+        st.header(" Comparative Analysis")
         st.markdown("Period-over-period comparison and growth analysis")
         
         col1, col2, col3 = st.columns(3)
@@ -460,13 +460,13 @@ if st.session_state.uploaded_data is not None:
         with col3:
             periods = st.slider("Number of Periods", 2, 12, 2, key="comp_periods")
         
-        if st.button("📊 Run Comparative Analysis", type="primary"):
+        if st.button(" Run Comparative Analysis", type="primary"):
             with st.spinner("Analyzing periods..."):
                 comp_results = advanced_analytics.comparative_analysis(date_col, metric_col, periods)
                 
                 if comp_results:
                     # Display results
-                    st.success("✅ Comparative analysis completed!")
+                    st.success(" Comparative analysis completed!")
                     
                     # Period comparison
                     period_data = []
@@ -486,7 +486,7 @@ if st.session_state.uploaded_data is not None:
                     growth_color = "green" if comp_results['growth_rate'] > 0 else "red"
                     st.markdown(f'''
                     <div class="metric-highlight" style="background: {growth_color};">
-                        📈 Growth Rate: {comp_results['growth_rate']:.2f}%
+                         Growth Rate: {comp_results['growth_rate']:.2f}%
                     </div>
                     ''', unsafe_allow_html=True)
                     
@@ -501,10 +501,10 @@ if st.session_state.uploaded_data is not None:
                     st.plotly_chart(fig_comp, use_container_width=True)
     
     with tab4:
-        st.header("🎯 Scenario Planning")
+        st.header(" Scenario Planning")
         st.markdown("What-if analysis and forecasting scenarios")
         
-        st.info("🚧 Scenario Planning feature coming soon!")
+        st.info(" Scenario Planning feature coming soon!")
         st.markdown("""
         **Planned Features:**
         - What-if analysis tools
@@ -517,13 +517,13 @@ if st.session_state.uploaded_data is not None:
 else:
     st.markdown("""
     <div class="analytics-card">
-        <h3>🚀 Get Started with Advanced Analytics</h3>
+        <h3> Get Started with Advanced Analytics</h3>
         <p>Upload a CSV file to access:</p>
         <ul>
-            <li>📈 <strong>Cohort Analysis</strong> - Customer retention and behavior</li>
-            <li>🧪 <strong>A/B Testing</strong> - Statistical significance testing</li>
-            <li>📊 <strong>Comparative Analysis</strong> - Period-over-period comparisons</li>
-            <li>🎯 <strong>Scenario Planning</strong> - What-if analysis (coming soon)</li>
+            <li> <strong>Cohort Analysis</strong> - Customer retention and behavior</li>
+            <li> <strong>A/B Testing</strong> - Statistical significance testing</li>
+            <li> <strong>Comparative Analysis</strong> - Period-over-period comparisons</li>
+            <li> <strong>Scenario Planning</strong> - What-if analysis (coming soon)</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -532,7 +532,7 @@ else:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 1rem;'>
-    <p>📊 AI Analytics Intelligence System - Advanced Analytics Edition</p>
-    <p>💡 Professional-grade analytics with statistical rigor!</p>
+    <p> AI Analytics Intelligence System - Advanced Analytics Edition</p>
+    <p> Professional-grade analytics with statistical rigor!</p>
 </div>
 """, unsafe_allow_html=True)

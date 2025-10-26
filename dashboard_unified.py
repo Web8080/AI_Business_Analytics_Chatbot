@@ -22,7 +22,7 @@ from src.conversational.smart_agent import SmartAnalyticsAgent
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard - Unified",
-    page_icon="🚀",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -175,26 +175,26 @@ def get_theme_css(theme):
 st.markdown(get_theme_css(st.session_state.get('theme', 'light')), unsafe_allow_html=True)
 
 # Title
-st.markdown('<div class="main-header">🚀 AI Analytics Intelligence System</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> AI Analytics Intelligence System</div>', unsafe_allow_html=True)
 st.markdown("**Unified Dashboard: Chatbot + Advanced Analytics + Real-time + Voice**")
 st.markdown("---")
 
 # Sidebar Navigation
 with st.sidebar:
-    st.header("🎯 Navigation")
+    st.header(" Navigation")
     
     # Main pages
     pages = {
-        "🤖 Chatbot": "Chatbot",
-        "📊 Data Overview": "Data Overview", 
-        "📈 Advanced Analytics": "Advanced Analytics",
-        "🔄 Real-time": "Real-time",
-        "🎤 Voice": "Voice",
-        "⚙️ Settings": "Settings"
+        " Chatbot": "Chatbot",
+        " Data Overview": "Data Overview", 
+        " Advanced Analytics": "Advanced Analytics",
+        " Real-time": "Real-time",
+        " Voice": "Voice",
+        " Settings": "Settings"
     }
     
     # Get current page index safely
-    current_page_display = f"🤖 {st.session_state.current_page}" if st.session_state.current_page != "Chatbot" else "🤖 Chatbot"
+    current_page_display = f" {st.session_state.current_page}" if st.session_state.current_page != "Chatbot" else " Chatbot"
     try:
         current_index = list(pages.keys()).index(current_page_display)
     except ValueError:
@@ -212,7 +212,7 @@ with st.sidebar:
     st.markdown("---")
     
     # File Upload (always available)
-    st.header("📁 Upload Data")
+    st.header(" Upload Data")
     uploaded_file = st.file_uploader(
         "Choose CSV file",
         type=['csv'],
@@ -228,26 +228,26 @@ with st.sidebar:
             st.session_state.data_version += 1
             st.session_state.last_refresh = datetime.now()
             
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+            st.success(f" Loaded: {uploaded_file.name}")
+            st.info(f" {len(df)} rows × {len(df.columns)} columns")
             
             # Show preview
-            with st.expander("👀 Preview Data"):
+            with st.expander(" Preview Data"):
                 st.dataframe(df.head())
             
             # Show columns
-            with st.expander("📋 Columns"):
+            with st.expander(" Columns"):
                 for col in df.columns:
                     st.write(f"• {col} ({df[col].dtype})")
                     
         except Exception as e:
-            st.error(f"❌ Error loading file: {str(e)}")
+            st.error(f" Error loading file: {str(e)}")
     
     st.markdown("---")
     
     # Quick Actions (always available)
     if st.session_state.uploaded_data is not None:
-        st.header("⚡ Quick Actions")
+        st.header(" Quick Actions")
         quick_questions = [
             "What is the total revenue?",
             "Show me top 5 products",
@@ -258,7 +258,7 @@ with st.sidebar:
         ]
         
         for question in quick_questions:
-            if st.button(f"💬 {question}", key=f"quick_{question}"):
+            if st.button(f" {question}", key=f"quick_{question}"):
                 st.session_state.messages.append({"role": "user", "content": question})
                 st.rerun()
 
@@ -268,7 +268,7 @@ if st.session_state.current_page == "Chatbot":
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.header("🤖 AI Analytics Assistant")
+        st.header(" AI Analytics Assistant")
         
         # Display chat messages
         for message in st.session_state.messages:
@@ -305,30 +305,30 @@ if st.session_state.current_page == "Chatbot":
                         
                         # Show suggestions if vague
                         if response.get('is_vague', False) and 'suggested_questions' in response:
-                            st.markdown("**💡 Try asking:**")
+                            st.markdown("** Try asking:**")
                             for suggestion in response['suggested_questions'][:3]:
-                                if st.button(f"💬 {suggestion}", key=f"suggest_{suggestion}"):
+                                if st.button(f" {suggestion}", key=f"suggest_{suggestion}"):
                                     st.session_state.messages.append({"role": "user", "content": suggestion})
                                     st.rerun()
                         
                         st.rerun()
                         
                     except Exception as e:
-                        st.error(f"❌ Error: {str(e)}")
+                        st.error(f" Error: {str(e)}")
         else:
-            st.info("👆 Please upload a CSV file to start chatting with your data")
+            st.info(" Please upload a CSV file to start chatting with your data")
     
     with col2:
         # Data metrics
         if st.session_state.uploaded_data is not None:
-            st.header("📊 Data Overview")
+            st.header(" Data Overview")
             
             col2_1, col2_2 = st.columns(2)
             
             with col2_1:
                 st.markdown(f'''
                 <div class="metric-card">
-                    <h3>📊 Total Rows</h3>
+                    <h3> Total Rows</h3>
                     <h2>{len(st.session_state.uploaded_data):,}</h2>
                 </div>
                 ''', unsafe_allow_html=True)
@@ -336,7 +336,7 @@ if st.session_state.current_page == "Chatbot":
             with col2_2:
                 st.markdown(f'''
                 <div class="metric-card">
-                    <h3>📋 Columns</h3>
+                    <h3> Columns</h3>
                     <h2>{len(st.session_state.uploaded_data.columns)}</h2>
                 </div>
                 ''', unsafe_allow_html=True)
@@ -346,22 +346,22 @@ if st.session_state.current_page == "Chatbot":
                               (len(st.session_state.uploaded_data) * len(st.session_state.uploaded_data.columns))) * 100
             
             if null_percentage < 5:
-                st.success(f"✅ Data Quality: Excellent ({null_percentage:.1f}% missing)")
+                st.success(f" Data Quality: Excellent ({null_percentage:.1f}% missing)")
             elif null_percentage < 15:
-                st.warning(f"⚠️ Data Quality: Good ({null_percentage:.1f}% missing)")
+                st.warning(f" Data Quality: Good ({null_percentage:.1f}% missing)")
             else:
-                st.error(f"❌ Data Quality: Needs attention ({null_percentage:.1f}% missing)")
+                st.error(f" Data Quality: Needs attention ({null_percentage:.1f}% missing)")
         else:
             st.markdown("""
             <div class="metric-card">
-                <h3>🚀 Get Started</h3>
+                <h3> Get Started</h3>
                 <p>Upload a CSV file to begin analyzing your data with AI!</p>
             </div>
             """, unsafe_allow_html=True)
 
 elif st.session_state.current_page == "Data Overview":
     # DATA OVERVIEW PAGE
-    st.header("📊 Data Overview")
+    st.header(" Data Overview")
     
     if st.session_state.uploaded_data is not None:
         df = st.session_state.uploaded_data
@@ -379,7 +379,7 @@ elif st.session_state.current_page == "Data Overview":
             st.metric("Data Version", f"v{st.session_state.data_version}")
         
         # Data types
-        st.subheader("📋 Column Information")
+        st.subheader(" Column Information")
         col_info = pd.DataFrame({
             'Column': df.columns,
             'Type': df.dtypes,
@@ -390,26 +390,26 @@ elif st.session_state.current_page == "Data Overview":
         st.dataframe(col_info, use_container_width=True)
         
         # Sample data
-        st.subheader("👀 Sample Data")
+        st.subheader(" Sample Data")
         st.dataframe(df.head(10), use_container_width=True)
         
     else:
-        st.info("👆 Please upload a CSV file to view data overview")
+        st.info(" Please upload a CSV file to view data overview")
 
 elif st.session_state.current_page == "Advanced Analytics":
     # ADVANCED ANALYTICS PAGE
-    st.header("📈 Advanced Analytics")
+    st.header(" Advanced Analytics")
     
     if st.session_state.uploaded_data is not None:
         st.markdown("""
         <div class="feature-card">
-            <h3>🎯 Advanced Analytics Features</h3>
+            <h3> Advanced Analytics Features</h3>
             <p>Professional-grade analytics tools for deep data insights:</p>
             <ul>
-                <li>📈 <strong>Cohort Analysis</strong> - Customer retention and behavior tracking</li>
-                <li>🧪 <strong>A/B Testing</strong> - Statistical significance testing</li>
-                <li>📊 <strong>Comparative Analysis</strong> - Period-over-period comparisons</li>
-                <li>🎯 <strong>Scenario Planning</strong> - What-if analysis</li>
+                <li> <strong>Cohort Analysis</strong> - Customer retention and behavior tracking</li>
+                <li> <strong>A/B Testing</strong> - Statistical significance testing</li>
+                <li> <strong>Comparative Analysis</strong> - Period-over-period comparisons</li>
+                <li> <strong>Scenario Planning</strong> - What-if analysis</li>
             </ul>
             <p><em>These features require specific data structures and are best used with time-series or customer data.</em></p>
         </div>
@@ -428,46 +428,46 @@ elif st.session_state.current_page == "Advanced Analytics":
                 pass
         
         if date_cols:
-            st.success(f"✅ Found {len(date_cols)} date columns: {', '.join(date_cols)}")
-            st.info("💡 Your data is suitable for cohort analysis and time-based comparisons!")
+            st.success(f" Found {len(date_cols)} date columns: {', '.join(date_cols)}")
+            st.info(" Your data is suitable for cohort analysis and time-based comparisons!")
         else:
-            st.warning("⚠️ No date columns detected. Advanced analytics work best with time-series data.")
+            st.warning(" No date columns detected. Advanced analytics work best with time-series data.")
         
         # Check for categorical columns
         categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
         if categorical_cols:
-            st.success(f"✅ Found {len(categorical_cols)} categorical columns: {', '.join(categorical_cols)}")
-            st.info("💡 Your data is suitable for A/B testing and comparative analysis!")
+            st.success(f" Found {len(categorical_cols)} categorical columns: {', '.join(categorical_cols)}")
+            st.info(" Your data is suitable for A/B testing and comparative analysis!")
         
         # Quick analysis suggestions
-        st.subheader("💡 Suggested Analyses")
+        st.subheader(" Suggested Analyses")
         
         if date_cols and len(categorical_cols) > 0:
             st.markdown("**Based on your data, you can perform:**")
-            st.markdown("- 📈 **Cohort Analysis** using date and categorical columns")
-            st.markdown("- 🧪 **A/B Testing** comparing different categories")
-            st.markdown("- 📊 **Time Series Analysis** for trend identification")
+            st.markdown("-  **Cohort Analysis** using date and categorical columns")
+            st.markdown("-  **A/B Testing** comparing different categories")
+            st.markdown("-  **Time Series Analysis** for trend identification")
         
         # Placeholder for future implementation
-        st.info("🚧 Advanced analytics features will be implemented in the next version. For now, use the chatbot for detailed analysis!")
+        st.info(" Advanced analytics features will be implemented in the next version. For now, use the chatbot for detailed analysis!")
         
     else:
-        st.info("👆 Please upload a CSV file to access advanced analytics")
+        st.info(" Please upload a CSV file to access advanced analytics")
 
 elif st.session_state.current_page == "Real-time":
     # REAL-TIME PAGE
-    st.header("🔄 Real-time Features")
+    st.header(" Real-time Features")
     
     if st.session_state.uploaded_data is not None:
         st.markdown("""
         <div class="feature-card">
-            <h3>🔄 Real-time Data Refresh</h3>
+            <h3> Real-time Data Refresh</h3>
             <p>Keep your analytics up-to-date with automatic data refresh:</p>
             <ul>
                 <li>⏰ <strong>Auto-refresh</strong> - Updates every 30 seconds</li>
-                <li>📊 <strong>Version Tracking</strong> - Track data changes over time</li>
-                <li>🟢 <strong>Freshness Indicators</strong> - Know when data was last updated</li>
-                <li>🎛️ <strong>Configurable Intervals</strong> - Customize refresh frequency</li>
+                <li> <strong>Version Tracking</strong> - Track data changes over time</li>
+                <li> <strong>Freshness Indicators</strong> - Know when data was last updated</li>
+                <li> <strong>Configurable Intervals</strong> - Customize refresh frequency</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -486,10 +486,10 @@ elif st.session_state.current_page == "Real-time":
                 st.rerun()
         
         with col2:
-            if st.button("🔄 Refresh Now", type="primary"):
+            if st.button(" Refresh Now", type="primary"):
                 st.session_state.data_version += 1
                 st.session_state.last_refresh = datetime.now()
-                st.success(f"✅ Data refreshed! Version: v{st.session_state.data_version}")
+                st.success(f" Data refreshed! Version: v{st.session_state.data_version}")
                 st.rerun()
         
         # Status display
@@ -502,46 +502,46 @@ elif st.session_state.current_page == "Real-time":
             st.metric("Last Refresh", st.session_state.last_refresh.strftime("%H:%M:%S"))
         with col3:
             if time_since_refresh < 60:
-                st.metric("Freshness", "🟢 Fresh")
+                st.metric("Freshness", " Fresh")
             elif time_since_refresh < 300:
-                st.metric("Freshness", "🟡 Recent")
+                st.metric("Freshness", " Recent")
             else:
-                st.metric("Freshness", "🔴 Stale")
+                st.metric("Freshness", " Stale")
         
     else:
-        st.info("👆 Please upload a CSV file to access real-time features")
+        st.info(" Please upload a CSV file to access real-time features")
 
 elif st.session_state.current_page == "Voice":
     # VOICE PAGE
-    st.header("🎤 Voice Features")
+    st.header(" Voice Features")
     
     st.markdown("""
     <div class="feature-card">
-        <h3>🎤 Voice Input/Output</h3>
+        <h3> Voice Input/Output</h3>
         <p>Interact with your data using voice commands:</p>
         <ul>
-            <li>🎤 <strong>Speech-to-Text</strong> - Ask questions by speaking</li>
-            <li>🔊 <strong>Text-to-Speech</strong> - Hear AI responses aloud</li>
-            <li>🌍 <strong>Multi-language</strong> - Support for multiple languages</li>
-            <li>⚡ <strong>Voice Speed Control</strong> - Adjustable playback speed</li>
+            <li> <strong>Speech-to-Text</strong> - Ask questions by speaking</li>
+            <li> <strong>Text-to-Speech</strong> - Hear AI responses aloud</li>
+            <li> <strong>Multi-language</strong> - Support for multiple languages</li>
+            <li> <strong>Voice Speed Control</strong> - Adjustable playback speed</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
     
-    st.info("🚧 Voice features require additional packages and microphone access. They will be available in the next version!")
+    st.info(" Voice features require additional packages and microphone access. They will be available in the next version!")
     
     # Voice status
-    st.subheader("🎤 Voice Status")
-    st.warning("🔴 Voice features not available - requires microphone and additional packages")
+    st.subheader(" Voice Status")
+    st.warning(" Voice features not available - requires microphone and additional packages")
 
 elif st.session_state.current_page == "Settings":
     # SETTINGS PAGE
-    st.header("⚙️ Settings")
+    st.header(" Settings")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("🎨 Appearance")
+        st.subheader(" Appearance")
         theme = st.selectbox(
             "Theme",
             ["light", "dark"],
@@ -553,7 +553,7 @@ elif st.session_state.current_page == "Settings":
             st.rerun()
     
     with col2:
-        st.subheader("🔄 Real-time")
+        st.subheader(" Real-time")
         auto_refresh = st.toggle(
             "Auto-refresh",
             value=st.session_state.auto_refresh,
@@ -564,12 +564,12 @@ elif st.session_state.current_page == "Settings":
             st.rerun()
     
     # Export options
-    st.subheader("📤 Export")
+    st.subheader(" Export")
     if st.session_state.uploaded_data is not None:
         # Export data as CSV
         csv = st.session_state.uploaded_data.to_csv(index=False)
         st.download_button(
-            label="📊 Download Data (CSV)",
+            label=" Download Data (CSV)",
             data=csv,
             file_name=f"{st.session_state.uploaded_filename}_export.csv",
             mime="text/csv",
@@ -580,7 +580,7 @@ elif st.session_state.current_page == "Settings":
         if st.session_state.messages:
             chat_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
             st.download_button(
-                label="💬 Download Chat (TXT)",
+                label=" Download Chat (TXT)",
                 data=chat_text,
                 file_name=f"chat_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
                 mime="text/plain",
@@ -588,7 +588,7 @@ elif st.session_state.current_page == "Settings":
             )
     
     # System info
-    st.subheader("ℹ️ System Information")
+    st.subheader("ℹ System Information")
     st.info(f"""
     **Current Session:**
     - Data Version: v{st.session_state.data_version}
@@ -601,7 +601,7 @@ elif st.session_state.current_page == "Settings":
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 1rem;'>
-    <p>🚀 AI Analytics Intelligence System - Unified Dashboard</p>
-    <p>💡 All features in one place - choose what you need!</p>
+    <p> AI Analytics Intelligence System - Unified Dashboard</p>
+    <p> All features in one place - choose what you need!</p>
 </div>
 """, unsafe_allow_html=True)

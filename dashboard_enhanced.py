@@ -21,7 +21,7 @@ from src.analytics.predictive import PredictiveAnalytics
 # Page configuration
 st.set_page_config(
     page_title="AI Analytics Dashboard",
-    page_icon="📊",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -194,7 +194,7 @@ Please ask a specific question about your data!"""
 
 # CHATBOT PAGE
 if page == "Chatbot (Upload & Query)":
-    st.header("🤖 AI Analytics Chatbot")
+    st.header(" AI Analytics Chatbot")
     st.markdown("Upload your CSV file and ask questions about your data!")
     
     # File upload section
@@ -214,15 +214,15 @@ if page == "Chatbot (Upload & Query)":
                 st.session_state.uploaded_data = df
                 st.session_state.uploaded_filename = uploaded_file.name
                 
-                st.success(f"✓ File uploaded: {uploaded_file.name}")
-                st.info(f"📊 {len(df)} rows × {len(df.columns)} columns")
+                st.success(f" File uploaded: {uploaded_file.name}")
+                st.info(f" {len(df)} rows × {len(df.columns)} columns")
                 
                 # Show preview
-                with st.expander("📋 Data Preview"):
+                with st.expander(" Data Preview"):
                     st.dataframe(df.head(10), use_container_width=True)
                     
                 # Quick stats
-                with st.expander("📈 Quick Statistics"):
+                with st.expander(" Quick Statistics"):
                     col_a, col_b, col_c = st.columns(3)
                     col_a.metric("Total Rows", len(df))
                     col_b.metric("Total Columns", len(df.columns))
@@ -245,7 +245,7 @@ if page == "Chatbot (Upload & Query)":
     st.markdown("---")
     
     # Chat interface
-    st.subheader("💬 Chat with Your Data")
+    st.subheader(" Chat with Your Data")
     
     # Display chat history
     for message in st.session_state.messages:
@@ -271,11 +271,11 @@ if page == "Chatbot (Upload & Query)":
             
             st.rerun()
     else:
-        st.info("👆 Please upload a CSV file to start chatting!")
+        st.info(" Please upload a CSV file to start chatting!")
 
 # MODEL ACCURACY PAGE
 elif page == "Model Accuracy":
-    st.header("🎯 Model Performance & Accuracy Metrics")
+    st.header(" Model Performance & Accuracy Metrics")
     
     st.markdown("""
     Detailed performance metrics for all trained models, showing accuracy, error rates, 
@@ -283,7 +283,7 @@ elif page == "Model Accuracy":
     """)
     
     # Overall Performance Summary
-    st.subheader("📊 Overall Performance Summary")
+    st.subheader(" Overall Performance Summary")
     if summary:
         col1, col2, col3, col4 = st.columns(4)
         
@@ -318,7 +318,7 @@ elif page == "Model Accuracy":
     st.markdown("---")
     
     # Time Series Forecast Model
-    st.subheader("1️⃣ Time Series Forecasting Model")
+    st.subheader("1⃣ Time Series Forecasting Model")
     
     col1, col2 = st.columns([2, 1])
     
@@ -363,13 +363,13 @@ elif page == "Model Accuracy":
                 # Performance interpretation
                 st.markdown("**Performance Analysis:**")
                 if perf['mape'] < 10:
-                    st.success("✓ Excellent forecast accuracy")
+                    st.success(" Excellent forecast accuracy")
                 elif perf['mape'] < 20:
-                    st.info("✓ Good forecast accuracy")
+                    st.info(" Good forecast accuracy")
                 elif perf['mape'] < 50:
-                    st.warning("⚠ Moderate forecast accuracy - consider more data")
+                    st.warning(" Moderate forecast accuracy - consider more data")
                 else:
-                    st.warning("⚠ Lower accuracy - model needs improvement with more historical data")
+                    st.warning(" Lower accuracy - model needs improvement with more historical data")
     
     with col2:
         st.markdown("**Model Details:**")
@@ -384,7 +384,7 @@ elif page == "Model Accuracy":
     st.markdown("---")
     
     # XGBoost Model
-    st.subheader("2️⃣ XGBoost Regression Model")
+    st.subheader("2⃣ XGBoost Regression Model")
     
     if xgboost_result and xgboost_result.get('status') == 'success':
         col1, col2 = st.columns([2, 1])
@@ -456,18 +456,18 @@ elif page == "Model Accuracy":
             
             accuracy_pct = r2 * 100 if r2 else 0
             if accuracy_pct > 80:
-                st.success(f"✓ High Accuracy: {accuracy_pct:.1f}%")
+                st.success(f" High Accuracy: {accuracy_pct:.1f}%")
             elif accuracy_pct > 60:
-                st.info(f"✓ Good Accuracy: {accuracy_pct:.1f}%")
+                st.info(f" Good Accuracy: {accuracy_pct:.1f}%")
             else:
-                st.warning(f"⚠ Moderate Accuracy: {accuracy_pct:.1f}%")
+                st.warning(f" Moderate Accuracy: {accuracy_pct:.1f}%")
     else:
         st.info("XGBoost model metrics available in xgboost_prediction.json")
     
     st.markdown("---")
     
     # Churn Prediction Model
-    st.subheader("3️⃣ Customer Churn Prediction Model")
+    st.subheader("3⃣ Customer Churn Prediction Model")
     
     if churn and churn.get('status') == 'success':
         col1, col2 = st.columns([2, 1])
@@ -530,23 +530,23 @@ elif page == "Model Accuracy":
             """)
             
             if churn['churn_rate'] > 50:
-                st.error("⚠ High churn risk - immediate action needed")
+                st.error(" High churn risk - immediate action needed")
             elif churn['churn_rate'] > 30:
-                st.warning("⚠ Moderate churn risk")
+                st.warning(" Moderate churn risk")
             else:
-                st.success("✓ Low churn risk")
+                st.success(" Low churn risk")
     
     st.markdown("---")
     
     # Model Comparison
-    st.subheader("📊 Model Comparison Matrix")
+    st.subheader(" Model Comparison Matrix")
     
     comparison_data = {
         'Model': ['Time Series Forecast', 'XGBoost Regression', 'Churn Prediction'],
         'Accuracy': ['Low (High MAPE)', 'N/A', 'High'],
         'Speed': ['Fast (0.23s)', 'Fast', 'Instant'],
         'Use Case': ['Revenue Forecasting', 'Price Prediction', 'Customer Retention'],
-        'Status': ['✓ Trained', '✓ Trained', '✓ Trained']
+        'Status': [' Trained', ' Trained', ' Trained']
     }
     
     comp_df = pd.DataFrame(comparison_data)
