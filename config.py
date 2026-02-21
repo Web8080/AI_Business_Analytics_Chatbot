@@ -9,9 +9,13 @@ import os
 class Settings(BaseSettings):
     """Application settings loaded from environment variables"""
     
-    # OpenAI Configuration
-    openai_api_key: str
+    # OpenAI (optional; omit to use Ollama)
+    openai_api_key: Optional[str] = None
     openai_model: str = "gpt-4-turbo-preview"
+    
+    # Ollama (used when OPENAI_API_KEY is not set; works in production if Ollama runs on a server)
+    ollama_base_url: str = "http://localhost:11434"
+    ollama_model: str = "llama3.2"
     
     # API Configuration
     api_host: str = "0.0.0.0"
@@ -22,7 +26,7 @@ class Settings(BaseSettings):
     # Database Configuration
     database_url: str = "sqlite:///./analytics.db"
     
-    # Email Configuration
+    # Email Configuration (for report distribution)
     smtp_host: str = "smtp.gmail.com"
     smtp_port: int = 587
     smtp_username: Optional[str] = None

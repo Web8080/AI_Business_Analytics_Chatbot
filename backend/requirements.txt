@@ -1,0 +1,13 @@
+# Victor.I - Django backend for AI Analytics
+Django>=5.0
+djangorestframework
+django-cors-headers
+pandas
+python-dotenv
+openai
+langchain
+tiktoken
+chardet
+scikit-learn
+numpy
+plotly

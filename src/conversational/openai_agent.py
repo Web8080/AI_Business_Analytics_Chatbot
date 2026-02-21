@@ -1,10 +1,13 @@
 """
-OpenAI-Powered Analytics Agent
-Integrates GPT-4 with fallback to rule-based system
+OpenAI- and Ollama-powered Analytics Agent
+Uses OpenAI when API key is set; otherwise Ollama (works in production if Ollama runs on a server).
+Falls back to rule-based system when neither is available.
 """
 import os
 import json
 import logging
+import urllib.request
+import urllib.error
 from typing import Dict, Any, Optional, Tuple
 import pandas as pd
 import plotly.graph_objects as go
@@ -23,35 +26,59 @@ from .smart_agent import SmartAnalyticsAgent
 
 logger = logging.getLogger(__name__)
 
+
+def _call_ollama(base_url: str, model: str, prompt: str, timeout: int = 60) -> Tuple[str, bool]:
+    """Call Ollama /api/chat. Works in production if base_url points to your Ollama server."""
+    url = (base_url.rstrip("/") + "/api/chat").replace("//api", "/api")
+    body = json.dumps({
+        "model": model,
+        "messages": [
+            {"role": "system", "content": "You are an expert data analyst. Answer concisely with specific numbers and insights."},
+            {"role": "user", "content": prompt},
+        ],
+        "stream": False,
+    }).encode("utf-8")
+    req = urllib.request.Request(url, data=body, method="POST", headers={"Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read().decode())
+            msg = data.get("message") or {}
+            answer = (msg.get("content") or "").strip()
+            return answer, bool(answer)
+    except (urllib.error.URLError, OSError, json.JSONDecodeError) as e:
+        logger.warning("Ollama request failed: %s", e)
+        return "", False
+
+
 class OpenAIAnalyticsAgent(SmartAnalyticsAgent):
     """
-    Advanced AI-powered analytics agent using OpenAI GPT-4
-    with intelligent fallback to rule-based system
+    Analytics agent: OpenAI (if key set), else Ollama, else rule-based.
+    Ollama works in production when OLLAMA_BASE_URL points to your Ollama server.
     """
     
     def __init__(self, api_key: Optional[str] = None):
         super().__init__()
         
-        # Initialize OpenAI if available
-        self.openai_available = OPENAI_AVAILABLE
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or ""
+        self.openai_available = OPENAI_AVAILABLE and bool(self.api_key)
         self.openai_client = None
         
-        if self.openai_available:
-            # Get API key from environment or parameter
-            self.api_key = api_key or os.getenv('OPENAI_API_KEY')
-            
-            if self.api_key:
-                try:
-                    openai.api_key = self.api_key
-                    self.openai_client = openai
-                    logger.info("OpenAI client initialized successfully")
-                except Exception as e:
-                    logger.error(f"Failed to initialize OpenAI client: {e}")
-                    self.openai_available = False
-            else:
-                logger.warning("No OpenAI API key found. Using fallback system.")
+        if OPENAI_AVAILABLE and self.api_key:
+            try:
+                openai.api_key = self.api_key
+                self.openai_client = openai
+                logger.info("OpenAI client initialized successfully")
+            except Exception as e:
+                logger.error("Failed to initialize OpenAI client: %s", e)
                 self.openai_available = False
-        else:
+        
+        self.ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").strip()
+        self.ollama_model = os.getenv("OLLAMA_MODEL", "llama3.2").strip()
+        self.ollama_available = bool(self.ollama_base_url and self.ollama_model)
+        
+        if not self.openai_available and self.ollama_available:
+            logger.info("Using Ollama at %s with model %s", self.ollama_base_url, self.ollama_model)
+        elif not self.openai_available:
             logger.info("Using fallback rule-based system")
     
     def _build_data_context(self, df: pd.DataFrame) -> str:
@@ -188,7 +215,7 @@ class OpenAIAnalyticsAgent(SmartAnalyticsAgent):
         
         # Keywords that suggest chart generation
         chart_keywords = {
-            "bar": ["top", "best", "worst", "highest", "lowest", "compare", "ranking"],
+            "bar": ["top", "best", "worst", "highest", "lowest", "compare", "ranking", "chart", "show me a chart"],
             "line": ["trend", "over time", "time series", "evolution", "change"],
             "pie": ["percentage", "proportion", "share", "breakdown", "distribution"],
             "scatter": ["correlation", "relationship", "scatter", "plot"],
@@ -206,34 +233,40 @@ class OpenAIAnalyticsAgent(SmartAnalyticsAgent):
         return None
     
     def _generate_chart_data(self, chart_type: str, question: str, df: pd.DataFrame) -> Dict[str, Any]:
-        """Generate chart data based on question and data"""
+        """Generate chart data based on question and data. Returns flat x/y for frontend Recharts."""
         try:
             if chart_type == "bar":
-                # Find numeric column for ranking
-                numeric_cols = df.select_dtypes(include=['number']).columns
-                if len(numeric_cols) > 0:
-                    col = numeric_cols[0]
-                    top_data = df.nlargest(10, col)[col].head(10)
-                    
-                    # Create simple bar chart data
-                    chart_data = {
-                        "data": [
-                            {
-                                "x": top_data.index.tolist(),
-                                "y": top_data.values.tolist(),
-                                "type": "bar",
-                                "name": col
-                            }
-                        ],
-                        "layout": {
-                            "title": f"Top 10 by {col}",
-                            "template": "plotly_dark"
+                question_lower = question.lower()
+                # Prefer product/category + quantity or first numeric for "highest quantity" style
+                cat_cols = df.select_dtypes(include=["object"]).columns
+                num_cols = df.select_dtypes(include=["number"]).columns
+                if "quantity" in question_lower or "product" in question_lower:
+                    qty_col = next((c for c in num_cols if "quantity" in c.lower() or "qty" in c.lower()), None)
+                    prod_col = next((c for c in cat_cols if "product" in c.lower() or "item" in c.lower()), cat_cols[0] if len(cat_cols) else None)
+                    if qty_col is not None and prod_col is not None:
+                        grouped = df.groupby(prod_col)[qty_col].sum().sort_values(ascending=False).head(10)
+                        return {
+                            "type": "bar",
+                            "title": f"Top 10 by {qty_col}",
+                            "x": grouped.index.tolist(),
+                            "y": grouped.values.tolist(),
                         }
-                    }
+                if len(num_cols) > 0:
+                    col = num_cols[0]
+                    top_data = df.nlargest(10, col)
+                    if len(cat_cols) > 0:
+                        cat_col = cat_cols[0]
+                        if cat_col in top_data.columns:
+                            x_vals = top_data[cat_col].tolist()
+                        else:
+                            x_vals = top_data.index.astype(str).tolist()
+                    else:
+                        x_vals = top_data.index.astype(str).tolist()
                     return {
                         "type": "bar",
-                        "data": chart_data,
-                        "title": f"Top 10 by {col}"
+                        "title": f"Top 10 by {col}",
+                        "x": x_vals,
+                        "y": top_data[col].tolist(),
                     }
             
             elif chart_type == "line":
@@ -325,26 +358,38 @@ class OpenAIAnalyticsAgent(SmartAnalyticsAgent):
         # Try OpenAI first if available
         if self.openai_available and self.openai_client:
             logger.info("Using OpenAI for question analysis")
-            
             try:
                 prompt = self._create_openai_prompt(question, self.current_data)
                 answer, success = self._call_openai(prompt)
-                
                 if success and answer:
-                    # Determine if chart is needed
                     chart_data = self._determine_chart_type(question, answer, self.current_data)
-                    
                     return {
-                        'answer': answer,
-                        'confidence': 0.9,  # High confidence for OpenAI responses
-                        'chart_data': chart_data,
-                        'source': 'openai'
+                        "answer": answer,
+                        "confidence": 0.9,
+                        "chart_data": chart_data,
+                        "source": "openai",
                     }
-                else:
-                    logger.warning("OpenAI failed, falling back to rule-based system")
-                    
+                logger.warning("OpenAI failed, trying Ollama or fallback")
             except Exception as e:
-                logger.error(f"OpenAI error: {e}, falling back to rule-based system")
+                logger.error("OpenAI error: %s", e)
+        
+        # Try Ollama if configured (works in production when Ollama runs on a server)
+        if self.ollama_available:
+            logger.info("Using Ollama for question analysis")
+            try:
+                prompt = self._create_openai_prompt(question, self.current_data)
+                answer, success = _call_ollama(self.ollama_base_url, self.ollama_model, prompt)
+                if success and answer:
+                    chart_data = self._determine_chart_type(question, answer, self.current_data)
+                    return {
+                        "answer": answer,
+                        "confidence": 0.85,
+                        "chart_data": chart_data,
+                        "source": "ollama",
+                    }
+                logger.warning("Ollama failed, using rule-based fallback")
+            except Exception as e:
+                logger.error("Ollama error: %s", e)
         
         # Fallback to rule-based system
         logger.info("Using rule-based fallback system")
@@ -364,14 +409,15 @@ class OpenAIAnalyticsAgent(SmartAnalyticsAgent):
     def get_status(self) -> Dict[str, Any]:
         """Get agent status and capabilities"""
         return {
-            'openai_available': self.openai_available,
-            'api_key_configured': bool(self.api_key),
-            'fallback_system': True,
-            'capabilities': [
-                'Natural language data analysis',
-                'Automatic chart generation',
-                'Statistical insights',
-                'Context-aware responses',
-                'Robust fallback system'
-            ]
+            "openai_available": self.openai_available,
+            "ollama_available": self.ollama_available,
+            "api_key_configured": bool(self.api_key),
+            "fallback_system": True,
+            "capabilities": [
+                "Natural language data analysis",
+                "Automatic chart generation",
+                "Statistical insights",
+                "Context-aware responses",
+                "Robust fallback system",
+            ],
         }

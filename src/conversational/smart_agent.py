@@ -8,6 +8,7 @@ Advanced AI-Powered Conversational Analytics Agent
 - 100,000+ intent patterns with fuzzy matching
 """
 from typing import Dict, Any, Optional, List, Tuple
+import re
 import pandas as pd
 import numpy as np
 import json
@@ -73,11 +74,13 @@ class SmartAnalyticsAgent:
         self.data_summary = None
         self.conversation_context = []
         
-        # Keywords that indicate vague or irrelevant questions
+        # Keywords that indicate vague or irrelevant questions.
+        # Short tokens that must match as whole words only (so "hi" does not match "highest")
+        self.irrelevant_whole_word = ['hi', 'hey', 'bye', 'hello']
         self.irrelevant_keywords = [
             'weather', 'news', 'sports', 'politics', 'recipe', 'movie', 'music',
-            'game', 'celebrity', 'joke', 'story', 'poem', 'song', 'hello', 'hi',
-            'how are you', 'thank you', 'thanks', 'bye', 'goodbye'
+            'game', 'celebrity', 'joke', 'story', 'poem', 'song',
+            'how are you', 'thank you', 'thanks', 'goodbye'
         ]
         
         self.vague_patterns = [
@@ -260,16 +263,23 @@ I can answer specific questions about your dataset. To get started, try asking a
                 'suggested_questions': self._generate_suggested_questions()
             }
         
-        # Check for irrelevant topics
+        # Check for irrelevant topics (whole-word for short tokens so "highest" is not flagged)
+        for keyword in self.irrelevant_whole_word:
+            if re.search(r'\b' + re.escape(keyword) + r'\b', question_lower):
+                return {
+                    'is_vague': True,
+                    'guidance_message': """I'm your data analyst. Ask me anything about your uploaded dataset.
+
+Here are some questions you can try:""",
+                    'suggested_questions': self._generate_suggested_questions()
+                }
         for keyword in self.irrelevant_keywords:
             if keyword in question_lower:
                 return {
                     'is_vague': True,
-                    'guidance_message': f"""I appreciate your interest, but I'm specifically designed to analyze your **data**.
+                    'guidance_message': f"""I'm designed to analyze your **data**. I can't help with {keyword}-related topics.
 
-I can't help with {keyword}-related questions, but I'm excellent at analyzing your uploaded dataset!
-
-**Let me help you with your data instead.** Here are some questions I can answer:""",
+Here are some questions about your dataset:""",
                     'suggested_questions': self._generate_suggested_questions()
                 }
         
@@ -287,9 +297,10 @@ To provide meaningful insights, I need a specific question about your data.
                 }
         
         # Check if question has ANY recognizable data-related keywords
-        data_keywords = ['total', 'sum', 'average', 'mean', 'count', 'how many', 'show', 
-                        'top', 'bottom', 'best', 'worst', 'trend', 'forecast', 'predict',
-                        'compare', 'analysis', 'revenue', 'sales', 'customer', 'product']
+        data_keywords = ['total', 'sum', 'average', 'mean', 'count', 'how many', 'show',
+                        'top', 'bottom', 'best', 'worst', 'highest', 'lowest', 'most', 'least',
+                        'trend', 'forecast', 'predict', 'compare', 'analysis', 'analyze',
+                        'revenue', 'sales', 'customer', 'product', 'quantity', 'chart']
         
         # Also check for column names
         column_mentioned = False
@@ -343,37 +354,37 @@ I'm not sure how to analyze that with your current dataset. Could you please be 
         # Revenue/Sales questions
         revenue_cols = [c for c in numeric_cols if any(word in c.lower() for word in ['revenue', 'sales', 'amount', 'total', 'price'])]
         if revenue_cols:
-            suggestions.append(f"💰 What is the total {revenue_cols[0].replace('_', ' ')}?")
+            suggestions.append(f"What is the total {revenue_cols[0].replace('_', ' ')}?")
         
         # Product/Category questions
         product_cols = [c for c in categorical_cols if any(word in c.lower() for word in ['product', 'item', 'category', 'type'])]
         if product_cols and numeric_cols:
-            suggestions.append(f" Show me the top 5 {product_cols[0].replace('_', ' ')}")
+            suggestions.append(f"Show me the top 5 {product_cols[0].replace('_', ' ')}")
         
         # Regional/Segment questions
         segment_cols = [c for c in categorical_cols if any(word in c.lower() for word in ['region', 'location', 'segment', 'group', 'category'])]
         if segment_cols and numeric_cols:
-            suggestions.append(f"🌍 Compare {segment_cols[0].replace('_', ' ')} performance")
+            suggestions.append(f"Compare {segment_cols[0].replace('_', ' ')} performance")
         
         # Time-based questions
         if date_cols and numeric_cols:
-            suggestions.append(f" Show me trends in {numeric_cols[0].replace('_', ' ')} over time")
+            suggestions.append(f"Show me trends in {numeric_cols[0].replace('_', ' ')} over time")
         
         # Average questions
         if numeric_cols:
-            suggestions.append(f" What is the average {numeric_cols[0].replace('_', ' ')}?")
+            suggestions.append(f"What is the average {numeric_cols[0].replace('_', ' ')}?")
         
         # Customer questions
         customer_cols = [c for c in categorical_cols if any(word in c.lower() for word in ['customer', 'client', 'user'])]
         if customer_cols:
-            suggestions.append(f"👥 How many unique {customer_cols[0].replace('_', ' ')} do we have?")
+            suggestions.append(f"How many unique {customer_cols[0].replace('_', ' ')} do we have?")
         
         # If we have few suggestions, add generic ones
         if len(suggestions) < 3:
             suggestions.extend([
-                " Give me a summary of the data",
-                " What are the key statistics?",
-                " What insights can you find?"
+                "Give me a summary of the data",
+                "What are the key statistics?",
+                "What insights can you find?"
             ])
         
         return suggestions[:6]  # Return top 6 suggestions
@@ -448,6 +459,15 @@ I'm not sure how to analyze that with your current dataset. Could you please be 
             intent['question_type'] = 'statistics'
             intent['operations'] = ['mean', 'median', 'stats']
             intent['visualization_type'] = 'distribution'
+
+        elif any(word in question_lower for word in ['chart', 'graph', 'visualize', 'plot', 'show']) and any(w in question_lower for w in ['chart', 'data', 'graph']):
+            intent['question_type'] = 'ranking'
+            intent['operations'] = ['groupby', 'sort']
+            intent['visualization_type'] = 'bar_chart'
+        elif any(word in question_lower for word in ['analyze', 'analysis']) and len(question_lower.split()) <= 6:
+            intent['question_type'] = 'ranking'
+            intent['operations'] = ['groupby', 'sort']
+            intent['visualization_type'] = 'bar_chart'
         
         # Detect target columns
         for col in df.columns:
@@ -471,6 +491,9 @@ I'm not sure how to analyze that with your current dataset. Could you please be 
             if any(word in question_lower for word in ['region', 'location', 'area']):
                 region_cols = [c for c in df.columns if 'region' in c.lower() or 'location' in c.lower()]
                 intent['target_columns'].extend(region_cols[:1])
+            if any(word in question_lower for word in ['quantity', 'amount', 'units', 'qty']):
+                qty_cols = [c for c in df.columns if 'quantity' in c.lower() or 'qty' in c.lower() or 'amount' in c.lower()]
+                intent['target_columns'].extend(qty_cols[:1])
         
         # Generate SQL equivalent for transparency
         intent['sql_equivalent'] = self._generate_sql_equivalent(intent)

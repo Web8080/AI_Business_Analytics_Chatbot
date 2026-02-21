@@ -1,0 +1,26 @@
+date,product_name,category,quantity_sold,unit_price,total_revenue,customer_id,region,payment_method
+2024-01-15,Wireless Mouse,Electronics,12,29.99,359.88,CUST001,North,Credit Card
+2024-01-16,Office Desk,Furniture,3,299.99,899.97,CUST002,South,PayPal
+2024-01-17,USB Cable,Electronics,25,9.99,249.75,CUST003,East,Credit Card
+2024-01-18,Office Chair,Furniture,5,199.99,999.95,CUST004,West,Debit Card
+2024-01-19,Laptop Stand,Electronics,8,49.99,399.92,CUST005,North,Credit Card
+2024-01-20,Notebook Set,Stationery,50,12.99,649.50,CUST006,South,Cash
+2024-01-21,Desk Lamp,Electronics,15,34.99,524.85,CUST007,East,Credit Card
+2024-01-22,Ergonomic Keyboard,Electronics,10,89.99,899.90,CUST008,West,PayPal
+2024-01-23,Filing Cabinet,Furniture,4,149.99,599.96,CUST009,North,Credit Card
+2024-01-24,Monitor Stand,Electronics,7,59.99,419.93,CUST010,South,Debit Card
+2024-01-25,Wireless Mouse,Electronics,18,29.99,539.82,CUST011,East,Credit Card
+2024-01-26,Office Desk,Furniture,2,299.99,599.98,CUST012,West,PayPal
+2024-01-27,USB Cable,Electronics,30,9.99,299.70,CUST013,North,Cash
+2024-01-28,Office Chair,Furniture,6,199.99,1199.94,CUST014,South,Credit Card
+2024-01-29,Laptop Stand,Electronics,12,49.99,599.88,CUST015,East,Debit Card
+2024-01-30,Notebook Set,Stationery,45,12.99,584.55,CUST016,West,Credit Card
+2024-01-31,Desk Lamp,Electronics,20,34.99,699.80,CUST017,North,PayPal
+2024-02-01,Ergonomic Keyboard,Electronics,14,89.99,1259.86,CUST018,South,Credit Card
+2024-02-02,Filing Cabinet,Furniture,3,149.99,449.97,CUST019,East,Debit Card
+2024-02-03,Monitor Stand,Electronics,9,59.99,539.91,CUST020,West,Credit Card
+2024-02-04,Wireless Mouse,Electronics,22,29.99,659.78,CUST021,North,Cash
+2024-02-05,Office Desk,Furniture,4,299.99,1199.96,CUST022,South,Credit Card
+2024-02-06,USB Cable,Electronics,35,9.99,349.65,CUST023,East,PayPal
+2024-02-07,Office Chair,Furniture,7,199.99,1399.93,CUST024,West,Credit Card
+2024-02-08,Laptop Stand,Electronics,11,49.99,549.89,CUST025,North,Debit Card

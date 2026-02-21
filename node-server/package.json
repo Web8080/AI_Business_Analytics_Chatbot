@@ -1,0 +1,13 @@
+{
+  "name": "ai-analytics-ws",
+  "version": "1.0.0",
+  "description": "WebSocket server for streaming AI Analytics chat (Victor.I)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

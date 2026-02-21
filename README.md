@@ -1,4 +1,6 @@
-# AI Analytics Intelligence System with Conversational Interface
+# AI QueryLens – AI Analytics Intelligence System
+
+**Product name: AI QueryLens.** Conversational analytics: ask questions about your data in plain language.
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
@@ -6,7 +8,7 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://streamlit.io)
 
-> **Fully Automated Analytics Intelligence System** that ingests data from PDF/CSV files, performs end-to-end analysis, and provides natural language conversational interface for non-technical users.
+> **Fully Automated Analytics Intelligence System** that ingests data from PDF/CSV files, performs end-to-end analysis, and provides a natural language conversational interface for non-technical users.
 
 ## Live Demo
 
@@ -53,10 +55,30 @@ This system eliminates **95% of manual analytics workload** by automating the en
 
 ## Interactive Dashboard
 
-**Launch the AI-powered dashboard:**
+### Option A: Full-Stack Dashboard (Django + Node + Next.js)
+
+Architecture: Django (primary API), Node (WebSocket for streaming), Next.js frontend. Deploy frontend to AWS with S3 + CloudFront or Amplify.
+
+**Local run (three terminals):**
 
 ```bash
-streamlit run dashboard_ai.py
+./scripts/run-local.sh
+```
+
+Then run each printed command in its own terminal:
+
+1. **Django API:** `cd backend && pip install -r requirements.txt && python manage.py runserver`
+2. **Node WS:** `cd node-server && npm install && npm run dev`
+3. **Frontend:** `cd frontend && npm install && npm run dev`
+
+Open **http://localhost:3000**. See [docs/plans/2025-02-21-fullstack-aws-design.md](docs/plans/2025-02-21-fullstack-aws-design.md) and [docs/plans/2025-02-21-fullstack-aws-implementation.md](docs/plans/2025-02-21-fullstack-aws-implementation.md).
+
+**AWS deployment:** Frontend: build Next.js and deploy to S3 + CloudFront or AWS Amplify. Backend: Django and Node on App Runner or ECS. See `docs/aws-deploy-frontend.md` (if present) or the design doc.
+
+### Option B: Streamlit dashboard
+
+```bash
+streamlit run app.py
 ```
 
 Access at: **http://localhost:8501**
