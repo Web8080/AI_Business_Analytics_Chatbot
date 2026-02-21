@@ -28,7 +28,7 @@ Quick checklist for deploying AI QueryLens to AWS.
 - [ ] AWS Console → App Runner → Create service
 - [ ] Source: ECR → `querylens-api:latest`
 - [ ] Service name: `querylens-api`
-- [ ] Port: `8000`
+- [ ] Port: `8000` (container entrypoint reads `PORT` from env; use 8000 in App Runner config)
 - [ ] CPU/Memory: 1 vCPU, 2 GB
 - [ ] Environment variables (from `.env.aws`):
   - [ ] `SECRET_KEY` (generate with Python command)
@@ -101,6 +101,16 @@ Quick checklist for deploying AI QueryLens to AWS.
 - Use App Runner auto-scaling (pay only for usage)
 - Enable CloudFront for Amplify (better performance)
 - Use RDS for production database (instead of SQLite)
+
+## Troubleshooting: Django container not starting
+
+- **Port:** The container entrypoint binds to `$PORT` (default 8000). In App Runner, set the port to `8000` so it matches.
+- **Required env:** Set at least `SECRET_KEY` and `DEBUG=0`. If `ALLOWED_HOSTS` is missing, the app allows `.awsapprunner.com` when `DEBUG=0`.
+- **Logs:** In App Runner → your service → Logs, check the latest deployment log. Look for:
+  - `ModuleNotFoundError` or `ImportError` → rebuild image with `backend/` and `src/` present; ensure `PYTHONPATH=/app`.
+  - `OperationalError` (SQLite) → migrations run in entrypoint; if the filesystem is read-only, the app may fail (use RDS or a writable volume in production).
+  - Gunicorn "Listening at" → app started; if health check still fails, confirm the health URL is `https://<your-url>/api/health/` and returns 200.
+- **Health check path:** Use `/api/health/` (with trailing slash). The root `/` is not routed.
 
 ## Support
 

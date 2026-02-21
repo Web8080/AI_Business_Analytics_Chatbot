@@ -7,7 +7,11 @@ REPO_ROOT = BASE_DIR.parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-production")
 DEBUG = os.environ.get("DEBUG", "1") == "1"
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+_allowed = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").strip()
+ALLOWED_HOSTS = [h.strip() for h in _allowed.split(",") if h.strip()]
+# App Runner and similar: allow *.awsapprunner.com so health checks succeed before user sets ALLOWED_HOSTS
+if not DEBUG and not any("awsapprunner.com" in h for h in ALLOWED_HOSTS):
+    ALLOWED_HOSTS.append(".awsapprunner.com")
 
 INSTALLED_APPS = [
     "django.contrib.auth",
