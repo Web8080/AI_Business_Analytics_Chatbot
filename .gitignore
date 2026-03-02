@@ -86,4 +86,5 @@ htmlcov/
 !README.md
 !results/README.md
 !docs/*.md
+!RENDER_DEPLOY.md
 
