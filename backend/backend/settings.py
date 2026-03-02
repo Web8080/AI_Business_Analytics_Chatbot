@@ -9,12 +9,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-production")
 DEBUG = os.environ.get("DEBUG", "1") == "1"
 _allowed = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").strip()
 ALLOWED_HOSTS = [h.strip() for h in _allowed.split(",") if h.strip()]
-# App Runner / Render: allow platform hosts so health checks succeed before user sets ALLOWED_HOSTS
-if not DEBUG:
-    if not any("awsapprunner.com" in h for h in ALLOWED_HOSTS):
-        ALLOWED_HOSTS.append(".awsapprunner.com")
-    if not any("onrender.com" in h for h in ALLOWED_HOSTS):
-        ALLOWED_HOSTS.append(".onrender.com")
+# App Runner / Render: allow platform hosts so requests succeed even if ALLOWED_HOSTS env is unset
+if not any("awsapprunner.com" in h for h in ALLOWED_HOSTS):
+    ALLOWED_HOSTS.append(".awsapprunner.com")
+if not any("onrender.com" in h for h in ALLOWED_HOSTS):
+    ALLOWED_HOSTS.append(".onrender.com")
 
 INSTALLED_APPS = [
     "django.contrib.auth",
