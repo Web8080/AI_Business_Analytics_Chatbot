@@ -45,6 +45,8 @@ git push origin main
 
 ## Step 2: Deploy on Render
 
+Use **Dockerfile path: backend/Dockerfile** so the Django API runs (Ollama support, no OpenAI required). The root `Dockerfile` runs the legacy FastAPI app and does not support Ollama.
+
 1. Go to: https://render.com
 2. Sign up with GitHub
 3. Click **New +** → **Web Service**
@@ -52,9 +54,9 @@ git push origin main
 5. Settings:
    - **Name:** querylens-api
    - **Environment:** Docker
-   - **Dockerfile Path:** backend/Dockerfile
+   - **Dockerfile Path:** `backend/Dockerfile` (required for Ollama support; do not use the root Dockerfile)
    - **Instance Type:** Free
-   - **Health Check Path:** `/api/health/` (so Render knows the app is up)
+   - **Health Check Path:** `/api/health/`
 6. Add environment variables:
    - `SECRET_KEY` = (generate random string)
    - `DEBUG` = 0

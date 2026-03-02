@@ -1,53 +1,69 @@
 """
-Conversational AI Agent - Natural language interface using LangChain and OpenAI
+Conversational AI Agent - Natural language interface using LangChain and OpenAI (optional).
+When no OpenAI API key is set, LLM is disabled; use the Django backend (openai_agent + Ollama) for Ollama-only deployments.
 """
-from langchain_openai import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.agents import AgentExecutor, create_openai_functions_agent
-from langchain.tools import Tool
-from langchain.memory import ConversationBufferMemory
 from typing import Dict, Any, List, Optional
 import logging
 import json
 
 logger = logging.getLogger(__name__)
 
+# Optional: only needed when OPENAI_API_KEY is set
+try:
+    from langchain_openai import ChatOpenAI
+    from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+    from langchain.agents import AgentExecutor, create_openai_functions_agent
+    from langchain.tools import Tool
+    from langchain.memory import ConversationBufferMemory
+    _LANGCHAIN_AVAILABLE = True
+except ImportError:
+    ChatOpenAI = None
+    ChatPromptTemplate = None
+    MessagesPlaceholder = None
+    AgentExecutor = None
+    create_openai_functions_agent = None
+    Tool = None
+    ConversationBufferMemory = None
+    _LANGCHAIN_AVAILABLE = False
+
 
 class ConversationalAgent:
-    """AI agent for natural language analytics queries"""
+    """AI agent for natural language analytics queries. Uses OpenAI when key is set; otherwise LLM is disabled."""
     
     def __init__(self, api_key: str, model: str = "gpt-4-turbo-preview"):
         """
-        Initialize conversational agent
-        
-        Args:
-            api_key: OpenAI API key
-            model: Model name
+        Initialize conversational agent. If api_key is empty or langchain_openai is not installed, LLM is disabled.
         """
-        self.llm = ChatOpenAI(
-            api_key=api_key,
-            model=model,
-            temperature=0.1
-        )
-        self.memory = ConversationBufferMemory(
-            memory_key="chat_history",
-            return_messages=True
-        )
+        self.llm = None
+        self.memory = None
         self.tools = []
         self.agent = None
-        
-        logger.info(f"Initialized conversational agent with model: {model}")
+        self.executor = None
+        use_openai = api_key and _LANGCHAIN_AVAILABLE and ChatOpenAI is not None
+        if use_openai:
+            try:
+                self.llm = ChatOpenAI(api_key=api_key, model=model, temperature=0.1)
+                self.memory = ConversationBufferMemory(
+                    memory_key="chat_history",
+                    return_messages=True
+                )
+                logger.info("Initialized conversational agent with OpenAI model: %s", model)
+            except Exception as e:
+                logger.warning("OpenAI init failed, running without LLM: %s", e)
+        else:
+            if not api_key:
+                logger.info("No OpenAI API key; agent running without LLM. Use Django backend (backend/Dockerfile) for Ollama.")
+            else:
+                logger.warning("langchain_openai not installed; agent running without LLM.")
     
     def register_analytics_tools(self, analytics_engine):
         """
-        Register analytics functions as tools
-        
-        Args:
-            analytics_engine: Analytics engine instance with methods
+        Register analytics functions as tools (only when LLM is available).
         """
+        if not _LANGCHAIN_AVAILABLE or self.llm is None or Tool is None:
+            logger.info("Skipping tool registration (no LLM)")
+            return
         logger.info("Registering analytics tools")
-        
-        # Tool for descriptive analytics
         descriptive_tool = Tool(
             name="descriptive_analytics",
             func=lambda query: self._execute_descriptive_analytics(analytics_engine, query),
@@ -79,7 +95,9 @@ class ConversationalAgent:
         self._create_agent()
     
     def _create_agent(self):
-        """Create LangChain agent with tools"""
+        """Create LangChain agent with tools (only when LLM is available)."""
+        if self.llm is None or not _LANGCHAIN_AVAILABLE:
+            return
         prompt = ChatPromptTemplate.from_messages([
             ("system", """You are an AI analytics assistant with access to powerful analytics tools.
             You can answer questions about data by using the appropriate analytics tools.
@@ -174,10 +192,11 @@ class ConversationalAgent:
             if self.executor:
                 response = self.executor.invoke({"input": enhanced_question})
                 answer = response.get('output', 'Unable to process query')
-            else:
-                # Fallback to direct LLM call
+            elif self.llm:
                 response = self.llm.invoke(enhanced_question)
                 answer = response.content
+            else:
+                answer = "LLM not configured. Set OPENAI_API_KEY or use the Django backend (backend/Dockerfile) with Ollama."
             
             return {
                 'question': question,
@@ -207,6 +226,8 @@ class ConversationalAgent:
         """
         logger.info("Generating automated insights")
         
+        if self.llm is None:
+            return {'insights': {}, 'status': 'error', 'message': 'LLM not configured. Use Django backend with Ollama or set OPENAI_API_KEY.'}
         try:
             prompt = f"""Based on the following data summary, generate key insights and observations:
 
@@ -257,8 +278,9 @@ Format as a structured JSON response."""
         Returns:
             Natural language explanation
         """
-        logger.info(f"Generating explanation for {explain_for}")
-        
+        logger.info("Generating explanation for %s", explain_for)
+        if self.llm is None:
+            return "LLM not configured. Use Django backend with Ollama or set OPENAI_API_KEY."
         try:
             audience_context = {
                 'business_user': 'a non-technical business user without assuming statistical knowledge',
@@ -287,6 +309,7 @@ Keep it under 200 words."""
     
     def clear_memory(self):
         """Clear conversation memory"""
-        self.memory.clear()
+        if self.memory:
+            self.memory.clear()
         logger.info("Conversation memory cleared")
 
