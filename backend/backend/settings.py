@@ -9,15 +9,17 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-production")
 DEBUG = os.environ.get("DEBUG", "1") == "1"
 _allowed = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").strip()
 ALLOWED_HOSTS = [h.strip() for h in _allowed.split(",") if h.strip()]
-# Render: add exact host from Render's env so ALLOWED_HOSTS always allows this service
-_render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "").strip()
-if _render_host and _render_host not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append(_render_host)
-# App Runner / Render: allow platform wildcards so health checks and requests succeed
-if not any("awsapprunner.com" in h for h in ALLOWED_HOSTS):
-    ALLOWED_HOSTS.append(".awsapprunner.com")
-if not any("onrender.com" in h for h in ALLOWED_HOSTS):
-    ALLOWED_HOSTS.append(".onrender.com")
+# Render: allow any host so the service always accepts requests (Render sets RENDER= true)
+if os.environ.get("RENDER"):
+    ALLOWED_HOSTS = ["*"]
+else:
+    _render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "").strip()
+    if _render_host and _render_host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(_render_host)
+    if not any("awsapprunner.com" in h for h in ALLOWED_HOSTS):
+        ALLOWED_HOSTS.append(".awsapprunner.com")
+    if not any("onrender.com" in h for h in ALLOWED_HOSTS):
+        ALLOWED_HOSTS.append(".onrender.com")
 
 INSTALLED_APPS = [
     "django.contrib.auth",
