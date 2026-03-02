@@ -4,6 +4,17 @@
 
 Quick checklist for deploying AI QueryLens to AWS.
 
+## Deployment progress
+
+| Step | Status | Notes |
+|------|--------|--------|
+| Pre-deployment (CLI, Docker, Toolkit) | | |
+| Build & push images to ECR | | Run `./scripts/deploy-aws.sh us-east-1` |
+| Deploy Django API (App Runner) | | Port 8000, health `/api/health/`, SECRET_KEY, DEBUG=0 |
+| Deploy Node WS (App Runner) | | |
+| Deploy frontend (Amplify) | | |
+| Update CORS / test | | |
+
 ## Pre-Deployment
 
 - [ ] AWS CLI installed and configured (`aws configure`)
